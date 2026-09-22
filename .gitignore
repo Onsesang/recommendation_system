@@ -1,0 +1,14 @@
+# Large training data
+texture_project/images_train/
+texture_project/data/product_images.json
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environments
+.venv/
+venv/
+
+# Secrets
+.env

@@ -1,0 +1,683 @@
+{
+  "schema_version": 1,
+  "experiment": {
+    "number": 20,
+    "name": "tactile_recommender_spec_completion",
+    "version": "1.0",
+    "design_frozen_date": "2026-09-08",
+    "timezone": "Asia/Seoul",
+    "project_root": "/home/user/onsesang/material_span_grounding",
+    "experiment_root": "/home/user/onsesang/material_span_grounding/experiments/20_tactile_recommender_spec_completion"
+  },
+  "claim_tracks": {
+    "track_a_reused_official_test": {
+      "label": "locked_posthoc_exploratory_followup",
+      "confirmatory": false,
+      "reason": "The official Amazon_Fashion test split was opened by Experiment 16 before this preregistration.",
+      "allowed_claim": "Exploratory incremental utility under a configuration frozen before Experiment 20 test access.",
+      "forbidden_claims": [
+        "fresh confirmatory test",
+        "independent test confirmation",
+        "confirmatory p-value"
+      ]
+    },
+    "track_b_prospective_human": {
+      "label": "confirmatory_only_if_independent_guards_pass",
+      "confirmatory": true,
+      "required_independence": "User/query/candidate manifest and family-level development/test partition are frozen before new labels are collected; hidden test labels remain sealed through model and alpha selection; annotator provenance is complete.",
+      "status": "planned_uncollected"
+    },
+    "track_c_future_temporal": {
+      "label": "confirmatory_only_on_genuinely_unseen_interactions",
+      "confirmatory": true,
+      "required_independence": "Interactions are from a new temporal period and were not used in Experiments 16-20 training, development, evaluation, or design.",
+      "status": "awaiting_unseen_data"
+    },
+    "internal_resplit": {
+      "label": "robustness_only",
+      "confirmatory": false,
+      "reason": "Previously used interactions cannot become fresh confirmatory data by being repartitioned after prior model training or inspection."
+    }
+  },
+  "state_machines": {
+    "track_a": {
+      "state_file": "artifacts/protocol_state.json",
+      "initial_state": "implemented_not_scored",
+      "terminal_state": "complete_locked_posthoc_exploratory",
+      "allowed_transitions": [
+        [
+          "implemented_not_scored",
+          "implementation_frozen_before_validation"
+        ],
+        [
+          "implementation_frozen_before_validation",
+          "validation_locked_before_exp20_test"
+        ],
+        [
+          "validation_locked_before_exp20_test",
+          "exploratory_test_opened_no_retuning"
+        ],
+        [
+          "exploratory_test_opened_no_retuning",
+          "complete_locked_posthoc_exploratory"
+        ]
+      ],
+      "reset_transition_allowed": false,
+      "implementation_lock_requires": [
+        "protocol_sha256",
+        "model_variants_sha256",
+        "metric_code_sha256_map",
+        "complete_input_manifest_with_no_unresolved_required_hash",
+        "environment_versions",
+        "unit_tests_passed",
+        "synthetic_dry_run_passed_without_official_validation_or_test_metrics"
+      ],
+      "validation_lock_requires": [
+        "selected_learning_rate_and_epoch_for_all_five_variants",
+        "selected_candidate_budget",
+        "all_validation_selected_alphas",
+        "validation_selection_artifact_sha256_map",
+        "selected_checkpoint_sha256_map",
+        "protocol_and_metric_code_hashes_unchanged",
+        "assert_no_experiment16_test_artifact_was_a_development_or_selection_input"
+      ],
+      "test_read_gate": {
+        "required_state": "validation_locked_before_exp20_test",
+        "irreversible_next_state": "exploratory_test_opened_no_retuning",
+        "conditionally_allowed_input_id": "exp16_processed_test_targets"
+      },
+      "forbidden_after_test_open": [
+        "parameter_training",
+        "checkpoint_selection",
+        "profile_selection",
+        "class_selection",
+        "graph_change",
+        "candidate_budget_change",
+        "alpha_change",
+        "normalization_change",
+        "cohort_redefinition",
+        "metric_code_change"
+      ],
+      "post_lock_change_policy": "Any scientific change requires a new experiment directory/version; identical-hash operational resume is the only permitted retry."
+    },
+    "prospective_human": {
+      "state_file": "artifacts/human_protocol_state.json",
+      "initial_state": "planned_uncollected",
+      "terminal_state": "complete_confirmatory_if_all_guards_pass",
+      "allowed_transitions": [
+        [
+          "planned_uncollected",
+          "manifest_frozen_before_annotation"
+        ],
+        [
+          "manifest_frozen_before_annotation",
+          "development_labels_opened"
+        ],
+        [
+          "development_labels_opened",
+          "human_test_locked"
+        ],
+        [
+          "human_test_locked",
+          "human_test_opened_no_retuning"
+        ],
+        [
+          "human_test_opened_no_retuning",
+          "complete_confirmatory_if_all_guards_pass"
+        ]
+      ],
+      "reset_transition_allowed": false,
+      "confirmatory_guards": [
+        "candidate_query_user_manifest_frozen_before_annotation",
+        "family_level_development_test_partition_frozen_before_annotation",
+        "test_labels_hidden_until_human_test_locked",
+        "annotator_id_timestamp_and_provenance_complete",
+        "no_ai_label_treated_as_human",
+        "all_system_outputs_frozen_before_test_labels_open"
+      ]
+    },
+    "future_temporal": {
+      "state_file": "artifacts/temporal_protocol_state.json",
+      "initial_state": "awaiting_unseen_data",
+      "terminal_state": "complete_confirmatory_if_all_guards_pass",
+      "required_first_transition": [
+        "awaiting_unseen_data",
+        "new_data_identity_and_cutoff_frozen_unopened"
+      ],
+      "reset_transition_allowed": false
+    }
+  },
+  "dataset": {
+    "name": "McAuley-Lab Amazon Reviews'23 Amazon_Fashion",
+    "revision": "2aa726ef444e72c6a1364c4baa0bcdfb1de55db6",
+    "split_protocol": "benchmark/0core/last_out",
+    "canonical_item_id": "parent_asin",
+    "catalog_policy": "union_of_all_official_parent_asin_without_tactile_or_image_filter",
+    "interaction_semantics": "review_or_rating_event_not_assumed_click_or_purchase",
+    "verified_purchase_semantics": "verified_purchase_true_is_the_only_verified_purchase_evidence",
+    "train_parameter_updates": "official_train_only",
+    "validation_history": "strictly_preceding_official_train_events",
+    "test_history": "official_train_plus_chronologically_preceding_validation_event_without_parameter_refit",
+    "seen_item_removal": "all_preceding_parent_asin_interactions_for_every_method",
+    "unknown_or_missing_tactile": "retain_item_and_apply_zero_tactile_branch_or_neutral_reranking_adjustment",
+    "oracle_target_category_forbidden": true,
+    "official_source_expected_sha256": {
+      "train": "bb685d5b1f166a3bd213a12488714b86e4c927f09b8114e2fd097bb37857dc3c",
+      "validation": "5ef546f40fa40ff8bae755924f481eab3062458b23465e1db1aba2efff966ede",
+      "test": "91bbeaa067e0b1fcab4f8077d51aec2d2860c787d35862a9eff937becea63698"
+    },
+    "mixed_split_guard": {
+      "source": "experiments/16_strong_recommender_tactile/data/events.parquet",
+      "policy": "Only an audited preparation module may read this mixed-split source before the test lock, and it must materialize a train-only view using split == train. Training and validation modules may not read the mixed-split source directly.",
+      "required_output": "data/train_events.parquet"
+    }
+  },
+  "input_integrity": {
+    "manifest_path": "artifacts/input_manifest.json",
+    "access_log_path": "artifacts/input_access.jsonl",
+    "hash_algorithm": "sha256",
+    "path_resolution": "absolute_resolved_path",
+    "large_file_access": "read_only_with_numpy_mmap_mode_r_when_applicable",
+    "hard_links_allowed": false,
+    "symlink_policy": "resolve_target_then_hash_and_allowlist_the_resolved_path",
+    "unmanifested_input_policy": "hard_fail",
+    "hash_mismatch_policy": "hard_fail",
+    "unresolved_required_hash_at_implementation_lock_policy": "hard_fail",
+    "output_write_scope": "/home/user/onsesang/material_span_grounding/experiments/20_tactile_recommender_spec_completion",
+    "atomic_output_policy": "temporary_file_then_os_replace",
+    "allowed_inputs": [
+      {
+        "id": "official_last2_checkpoint",
+        "path": "experiments/12_class_multilabel_fashionclip_ft/models/fashionclip_last2.pt",
+        "expected_sha256": "073b542a9d6bd4450aa1f48596c756cc0812b1b5d914945e8f94f7c3fda1934a",
+        "usage": "frozen_inference_identity_only",
+        "required_before": "implementation_frozen_before_validation"
+      },
+      {
+        "id": "full_catalog_tactile_profiles",
+        "path": "experiments/16_strong_recommender_tactile/artifacts/product_tactile_profiles.parquet",
+        "expected_sha256": "a56b834afa985b6bb3a44e5e4cb9dc553693d2b66202c284283b20c945190133",
+        "usage": "frozen_continuous_14d_features",
+        "required_before": "implementation_frozen_before_validation"
+      },
+      {
+        "id": "tactile_coverage",
+        "path": "experiments/16_strong_recommender_tactile/artifacts/tactile_coverage.json",
+        "expected_sha256": "ceaa09e889b63278f923e23be00778e7517e5ff8aafd02de30de80606db1a49b",
+        "usage": "coverage_and_checkpoint_provenance",
+        "required_before": "implementation_frozen_before_validation"
+      },
+      {
+        "id": "generic_image_features",
+        "path": "experiments/16_strong_recommender_tactile/data/smore/image_feat.npy",
+        "expected_sha256": "f8555764be7eb7c2fde9efefed211c67026c0c5aaaf9a7b2a112405acb3c8d1c",
+        "usage": "generic_visual_modality",
+        "required_before": "implementation_frozen_before_validation"
+      },
+      {
+        "id": "generic_text_features",
+        "path": "experiments/16_strong_recommender_tactile/data/smore/text_feat.npy",
+        "expected_sha256": "8ddfea1615b318dc3c8ddd8bb02954af3f13c93faafcb6583b4b908042b519c2",
+        "usage": "generic_text_modality",
+        "required_before": "implementation_frozen_before_validation"
+      },
+      {
+        "id": "generic_image_availability",
+        "path": "experiments/16_strong_recommender_tactile/data/smore/image_available.npy",
+        "expected_sha256": "d31fb89de6f8769e844269125375e1d3dbf5f8d3fa84709655b57a2042dce6e5",
+        "usage": "generic_visual_missing_mask",
+        "required_before": "implementation_frozen_before_validation"
+      },
+      {
+        "id": "generic_text_availability",
+        "path": "experiments/16_strong_recommender_tactile/data/smore/text_available.npy",
+        "expected_sha256": "0c6067391d31e5791f45c2977cb3eec0afde6299e53563409070f0ff15ceb46e",
+        "usage": "generic_text_missing_mask",
+        "required_before": "implementation_frozen_before_validation"
+      },
+      {
+        "id": "generic_image_graph",
+        "path": "experiments/16_strong_recommender_tactile/data/smore/image_adj_40_True.pt",
+        "expected_sha256": "3bc234ecb3e0f1dc481f69c865cec14e266e92618062791feaebe2bc10be9711",
+        "usage": "generic_visual_graph",
+        "required_before": "implementation_frozen_before_validation"
+      },
+      {
+        "id": "generic_text_graph",
+        "path": "experiments/16_strong_recommender_tactile/data/smore/text_adj_10_True.pt",
+        "expected_sha256": "90c951e6c7b073a644098cfef97f65ce285ed214097f65bfa73d36a7a7b07acf",
+        "usage": "generic_text_graph",
+        "required_before": "implementation_frozen_before_validation"
+      },
+      {
+        "id": "processed_catalog",
+        "path": "experiments/16_strong_recommender_tactile/data/catalog.parquet",
+        "expected_sha256": null,
+        "usage": "full_item_universe_and_train_counts",
+        "required_before": "implementation_frozen_before_validation",
+        "hash_requirement": "materialize_in_input_manifest_before_lock"
+      },
+      {
+        "id": "processed_item_metadata",
+        "path": "experiments/16_strong_recommender_tactile/data/item_metadata.parquet",
+        "expected_sha256": null,
+        "usage": "parent_asin_title_text_image_and_diagnostic_category",
+        "required_before": "implementation_frozen_before_validation",
+        "hash_requirement": "materialize_in_input_manifest_before_lock"
+      },
+      {
+        "id": "processed_users",
+        "path": "experiments/16_strong_recommender_tactile/data/users.parquet",
+        "expected_sha256": null,
+        "usage": "canonical_user_mapping",
+        "required_before": "implementation_frozen_before_validation",
+        "hash_requirement": "materialize_in_input_manifest_before_lock"
+      },
+      {
+        "id": "child_parent_mapping",
+        "path": "experiments/16_strong_recommender_tactile/data/child_parent_mapping.parquet",
+        "expected_sha256": null,
+        "usage": "explicit_child_to_parent_mapping_without_fuzzy_matching",
+        "required_before": "implementation_frozen_before_validation",
+        "hash_requirement": "materialize_in_input_manifest_before_lock"
+      },
+      {
+        "id": "mixed_processed_events_for_audited_splitter_only",
+        "path": "experiments/16_strong_recommender_tactile/data/events.parquet",
+        "expected_sha256": null,
+        "usage": "audited_materialization_of_train_only_view_only",
+        "reader_allowlist": [
+          "freeze_inputs.py",
+          "prepare_development_views.py"
+        ],
+        "required_before": "implementation_frozen_before_validation",
+        "hash_requirement": "materialize_in_input_manifest_before_lock"
+      },
+      {
+        "id": "exp16_processed_validation_targets",
+        "path": "experiments/16_strong_recommender_tactile/data/validation_targets.parquet",
+        "expected_sha256": null,
+        "usage": "validation_selection_only",
+        "required_before": "implementation_frozen_before_validation",
+        "hash_requirement": "materialize_in_input_manifest_before_lock"
+      },
+      {
+        "id": "v3_observed_tactile_targets",
+        "path": "experiments/12_class_multilabel_fashionclip_ft/artifacts/product_class_targets.npz",
+        "expected_sha256": null,
+        "usage": "track_a_exploratory_rq3_with_mask_unknown_excluded",
+        "required_before": "implementation_frozen_before_validation",
+        "hash_requirement": "materialize_in_input_manifest_before_lock"
+      },
+      {
+        "id": "v3_family_split",
+        "path": "tactile_coldstart_qwen_v2_full/manifests/family_split_20260901.json",
+        "expected_sha256": null,
+        "usage": "family_identity_and_outside_training_family_analysis",
+        "required_before": "implementation_frozen_before_validation",
+        "hash_requirement": "materialize_in_input_manifest_before_lock"
+      }
+    ],
+    "conditionally_allowed_inputs": [
+      {
+        "id": "exp16_processed_test_targets",
+        "path": "experiments/16_strong_recommender_tactile/data/test_targets.parquet",
+        "expected_sha256": null,
+        "usage": "track_a_final_posthoc_exploratory_evaluation_only",
+        "earliest_state": "validation_locked_before_exp20_test",
+        "on_first_read_transition_to": "exploratory_test_opened_no_retuning",
+        "hash_requirement": "record_without_metric_computation_in_sealed_input_manifest_before_implementation_lock"
+      },
+      {
+        "id": "exp19_validated_review_evidence",
+        "path": "experiments/19_explicit_preference_exploratory/artifacts/validated_evidence.parquet",
+        "expected_sha256": null,
+        "usage": "optional_separately_labeled_exploratory_review_evidence_only",
+        "earliest_state": "implementation_frozen_before_validation",
+        "prohibitions": [
+          "not_human_gold",
+          "not_primary_endpoint",
+          "not_confirmatory",
+          "no_new_qwen_calls"
+        ]
+      },
+      {
+        "id": "new_prospective_human_labels",
+        "path": "artifacts/human_annotations.parquet",
+        "expected_sha256": null,
+        "usage": "track_b_only",
+        "earliest_state": "human_test_opened_no_retuning",
+        "required_provenance": [
+          "annotator_id",
+          "timestamp",
+          "annotation_source",
+          "candidate_manifest_sha256",
+          "partition"
+        ]
+      }
+    ],
+    "forbidden_input_globs": [
+      "experiments/16_strong_recommender_tactile/artifacts/*test*",
+      "experiments/16_strong_recommender_tactile/artifacts/test_candidate_chunks/**",
+      "experiments/16_strong_recommender_tactile/artifacts/test_smore_candidate_chunks/**",
+      "experiments/16_strong_recommender_tactile/artifacts/*_test_per_user.parquet",
+      "experiments/16_strong_recommender_tactile/artifacts/general_recommendation_results.json",
+      "experiments/16_strong_recommender_tactile/artifacts/multimodal_recommendation_results.json",
+      "experiments/16_strong_recommender_tactile/artifacts/cold_start_results.json",
+      "experiments/16_strong_recommender_tactile/artifacts/per_user_results.parquet",
+      "experiments/16_strong_recommender_tactile/artifacts/multimodal_per_user_results.parquet",
+      "experiments/16_strong_recommender_tactile/artifacts/qualitative_examples.json",
+      "experiments/16_strong_recommender_tactile/artifacts/candidate_recall.csv",
+      "experiments/14_same_category_evaluation/artifacts/*results*",
+      "experiments/19_explicit_preference_exploratory/artifacts/results.json",
+      "experiments/19_explicit_preference_exploratory/artifacts/test_*",
+      "experiments/15_human_audit/annotations/human_audit.csv"
+    ],
+    "forbidden_checkpoint_use": {
+      "glob": "experiments/16_strong_recommender_tactile/artifacts/checkpoints/*.pt",
+      "policy": "No Experiment 16 recommender checkpoint may initialize, select, or substitute for an Experiment 20 model. It may be inspected only as a post-completion audit reference after Track A is terminal."
+    },
+    "forbidden_information_flows": [
+      "test_metric_to_hyperparameter",
+      "test_target_or_rank_to_candidate_generation",
+      "test_result_to_cohort_definition",
+      "experiment14_or_19_test_result_to_model_or_alpha_selection",
+      "incomplete_human_audit_to_gold_label",
+      "review_derived_and_image_derived_evidence_collapsed_without_source_field"
+    ]
+  },
+  "primary_analysis": {
+    "track": "track_a_reused_official_test",
+    "contrast": {
+      "proposed_model_id": "I_VX_T",
+      "control_model_id": "I_VX",
+      "estimand": "per_user_ndcg_at_10_proposed_minus_control"
+    },
+    "population": "all_official_test_targets",
+    "metric": "ndcg_at_10",
+    "direction": "greater_is_better",
+    "primary_seed": 20260904,
+    "bootstrap": {
+      "unit": "paired_user",
+      "replicates": 1000,
+      "seed": 20260904,
+      "interval": "percentile_95"
+    },
+    "exploratory_success_rule": "point_estimate_gt_0_and_ci95_low_gt_0",
+    "confirmatory_interpretation_allowed": false,
+    "robustness_seeds": [
+      20260905,
+      20260906
+    ],
+    "robustness_can_replace_primary": false
+  },
+  "model_selection": {
+    "architecture_selection_across_five_groups": false,
+    "retain_and_report_all_model_groups": true,
+    "within_group_validation_order": [
+      "ndcg_at_10_desc",
+      "hr_at_10_desc",
+      "mrr_at_10_desc",
+      "epoch_asc",
+      "learning_rate_asc"
+    ],
+    "learning_rate_grid": [
+      0.001,
+      0.0003
+    ],
+    "maximum_epochs": 20,
+    "validation_every_epochs": 5,
+    "test_selection_forbidden": true
+  },
+  "candidate_retrieval": {
+    "reported_k": [
+      100,
+      300,
+      500,
+      1000,
+      3000,
+      10000,
+      30000
+    ],
+    "selection_metric": "full_validation_candidate_recall",
+    "threshold": 0.8,
+    "selection_rule": "smallest_reported_k_meeting_threshold_else_30000",
+    "fallback_status": "retrieval_bottleneck_unresolved",
+    "hybrid_source_order": [
+      "strong",
+      "generic_multimodal",
+      "in_model_tactile",
+      "tactile_ann"
+    ],
+    "hybrid_merge": "equal_opportunity_round_robin_then_deduplicate_until_fixed_total_budget",
+    "tie_break": "parent_asin_ascending",
+    "no_history_tactile_source": "disabled_for_historical_profile_and_enabled_only_for_direct_explicit_query",
+    "existing_experiment16_test_chunks_allowed": false,
+    "test_persistence": "stream_batches_and_store_resume_state_per_user_ranks_and_display_topk_only"
+  },
+  "tactile_graph": {
+    "input": "continuous_14d_last2_probabilities",
+    "input_trainable": false,
+    "normalization": "l2_on_available_rows",
+    "missing_row": "all_zero_and_excluded_from_neighbor_index",
+    "similarity": "cosine_inner_product_after_l2",
+    "k": 40,
+    "self_edges_removed": true,
+    "negative_cosine_clamped_to_zero": true,
+    "reverse_edges_added": true,
+    "normalization_after_symmetrization": "symmetric_degree",
+    "approximate_index": "FAISS_IndexIVFFlat",
+    "nlist": 7270,
+    "index_training_sample": 150000,
+    "index_training_seed": 20260904,
+    "exact_recall_audit": {
+      "query_sample": 1000,
+      "query_seed": 20260904,
+      "metric": "mean_recall_at_40",
+      "minimum": 0.95,
+      "nprobe_escalation": [
+        32,
+        64,
+        128
+      ],
+      "selection_rule": "first_nprobe_meeting_minimum",
+      "if_none_pass": "blocked_no_recommendation_metric_based_graph_tuning"
+    }
+  },
+  "reranking": {
+    "profile_configurations": [
+      "global_all_history_14",
+      "global_all_history_8",
+      "global_rating_ge_4_14",
+      "global_rating_ge_4_8",
+      "category_local_all_history_14",
+      "category_local_all_history_8",
+      "category_local_rating_ge_4_14",
+      "category_local_rating_ge_4_8"
+    ],
+    "primary_profile": "global_all_history_14",
+    "service_safe_implicit_default": "category_local_or_no_tactile_adjustment",
+    "cross_category_global_profile_is_service_default": false,
+    "history_interpretation": "noisy_proxy_not_proof_of_attribute_preference",
+    "similarity": "cosine",
+    "score_normalization": "within_candidate_rank_percentile_average_ties",
+    "formula": "base_percentile + alpha * (tactile_percentile - base_percentile)",
+    "alpha_grid": [
+      0.0,
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.35,
+      0.4,
+      0.45,
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+    ],
+    "alpha_selection": "validation_ndcg_at_10_then_smaller_alpha",
+    "alpha_zero_interpretation": "profile_and_class_are_not_empirically_identified",
+    "select_test_winner_across_profiles": false
+  },
+  "explicit_tactile": {
+    "single_queries": [
+      "smooth",
+      "rough",
+      "thin",
+      "thick",
+      "flexible",
+      "stiff",
+      "warm",
+      "cool"
+    ],
+    "pair_queries": [
+      [
+        "thin",
+        "cool"
+      ],
+      [
+        "thick",
+        "warm"
+      ],
+      [
+        "smooth",
+        "thin"
+      ],
+      [
+        "rough",
+        "thick"
+      ],
+      [
+        "flexible",
+        "thin"
+      ],
+      [
+        "stiff",
+        "thick"
+      ],
+      [
+        "smooth",
+        "cool"
+      ],
+      [
+        "flexible",
+        "cool"
+      ]
+    ],
+    "score": "mean_probability_of_requested_classes",
+    "unselected_class_semantics": "not_negative",
+    "unknown_label_semantics": "exclude_not_negative",
+    "systems": [
+      "strong",
+      "strong_plus_explicit_tactile",
+      "generic_multimodal",
+      "generic_multimodal_plus_explicit_tactile"
+    ],
+    "same_item_universe_required": true,
+    "general_and_explicit_alpha_shared": false,
+    "explicit_alpha_selected_separately_for": [
+      "strong",
+      "generic_multimodal"
+    ],
+    "oracle_target_category_forbidden": true,
+    "new_qwen_calls_allowed": false,
+    "review_and_image_evidence_must_remain_distinct": true,
+    "track_a_v3_status": "exploratory_replication_only"
+  },
+  "cohorts": {
+    "primary": "all_official_targets",
+    "history_secondary": [
+      "train_history_ge_1",
+      "train_history_ge_3",
+      "train_history_ge_5"
+    ],
+    "tactile_support_mutually_exclusive": [
+      "0",
+      "1",
+      "2",
+      "3_to_4",
+      "5_plus"
+    ],
+    "cold_target_train_count": [
+      "0",
+      "le_5",
+      "le_10"
+    ],
+    "other_secondary": [
+      "image_available_and_target_train_count_0",
+      "outside_v3_last2_training_family",
+      "target_in_candidate"
+    ],
+    "definitions_must_be_locked_before_test": true,
+    "every_result_requires_support_count": true,
+    "conditional_can_replace_primary": false
+  },
+  "metrics": {
+    "general_primary": "ndcg_at_10",
+    "general_secondary": [
+      "ndcg_at_5",
+      "hr_at_5",
+      "hr_at_10",
+      "mrr_at_10"
+    ],
+    "candidate": [
+      "recall_at_100",
+      "recall_at_300",
+      "recall_at_500",
+      "recall_at_1000",
+      "recall_at_3000",
+      "recall_at_10000",
+      "recall_at_30000"
+    ],
+    "explicit_tactile": [
+      "ndcg_at_5",
+      "ndcg_at_10",
+      "precision_at_5",
+      "precision_at_10",
+      "recall_at_10",
+      "average_precision_if_binary"
+    ],
+    "rank_movement": [
+      "improved",
+      "unchanged",
+      "worsened",
+      "entered_top10",
+      "left_top10"
+    ]
+  },
+  "reporting": {
+    "required_track_a_terms": [
+      "post-hoc exploratory",
+      "SMORE-derived scalable adaptation",
+      "fixed Last2 tactile modality"
+    ],
+    "forbidden_track_a_terms": [
+      "fresh confirmatory test",
+      "official SMORE reproduction",
+      "history proves tactile preference"
+    ],
+    "negative_or_null_results_must_be_reported": true,
+    "retrieval_failure_must_be_separated_from_reranking_failure": true,
+    "score_breakdown_required": [
+      "base_raw",
+      "base_normalized",
+      "generic_modality_contribution",
+      "tactile_contribution",
+      "tactile_available",
+      "tactile_history_support",
+      "selected_alpha",
+      "checkpoint_sha256"
+    ]
+  }
+}
+

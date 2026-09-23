@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Material Shopping Agent</title>
+  <link rel="stylesheet" href="/agent-static/app.css">
+</head>
+<body>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <main id="authView" class="auth-shell">
+    <section class="auth-intro">
+      <p class="eyebrow">MATERIAL SHOPPING AGENT · V1</p>
+      <h1>대화할수록 내 취향을<br>더 잘 이해하는 쇼핑</h1>
+      <p>실제 구매자 리뷰의 소재 근거, 디자인 이미지, 클릭과 장바구니 기록을 함께 반영합니다.</p>
+      <ul>
+        <li>채팅에서 말한 취향 자동 기억</li>
+        <li>디자인·촉감 신호를 분리한 추천</li>
+        <li>저장된 취향을 언제든 수정·삭제</li>
+      </ul>
+    </section>
+    <section class="auth-card">
+      <div class="auth-tabs">
+        <button class="tab active" data-auth-tab="login">로그인</button>
+        <button class="tab" data-auth-tab="register">회원가입</button>
+      </div>
+      <form id="loginForm" class="auth-form">
+        <label>이메일<input name="email" type="email" required autocomplete="email"></label>
+        <label>비밀번호<input name="password" type="password" required autocomplete="current-password"></label>
+        <button class="primary" type="submit">로그인</button>
+      </form>
+      <form id="registerForm" class="auth-form hidden">
+        <label>이름<input name="display_name" required maxlength="80" autocomplete="name"></label>
+        <label>이메일<input name="email" type="email" required autocomplete="email"></label>
+        <label>비밀번호<input name="password" type="password" minlength="8" required autocomplete="new-password"></label>
+        <button class="primary" type="submit">계정 만들기</button>
+      </form>
+      <p id="authError" class="error"></p>
+    </section>
+  </main>
+
+  <div id="appView" class="app hidden">
+    <header class="topbar">
+      <button id="brandButton" class="brand">MATERIAL <span>AGENT</span></button>
+      <nav>
+        <button id="preferencesButton">내 취향 <span id="preferenceCount" class="count">0</span></button>
+        <button id="cartButton">장바구니 <span id="cartCount" class="count">0</span></button>
+        <button id="logoutButton" class="quiet">로그아웃</button>
+      </nav>
+    </header>
+
+    <div class="workspace">
+      <section class="catalog-panel">
+        <div class="catalog-head">
+          <div>
+            <p class="eyebrow">PERSONALIZED CATALOG</p>
+            <h2 id="catalogTitle">모든 상품</h2>
+            <p id="catalogMeta" class="muted">상품을 불러오는 중입니다.</p>
+          </div>
+          <button id="openChatButton" class="mobile-chat">에이전트에게 묻기</button>
+        </div>
+        <div id="preferenceChips" class="chips"></div>
+        <div id="productGrid" class="product-grid" aria-live="polite"></div>
+        <div class="pagination">
+          <button id="previousPage">이전</button>
+          <span id="pageLabel">1 / 1</span>
+          <button id="nextPage">다음</button>
+        </div>
+      </section>
+
+      <aside id="agentPanel" class="agent-panel">
+        <div class="agent-head">
+          <div>
+            <span class="online-dot"></span>
+            <strong>쇼핑 에이전트</strong>
+            <small id="agentModel">근거 기반 추천</small>
+          </div>
+          <button id="closeChatButton" class="icon-button" aria-label="채팅 닫기">×</button>
+        </div>
+        <div id="messages" class="messages">
+          <article class="message assistant">
+            <p>안녕하세요. 찾는 상품과 중요하게 생각하는 촉감·디자인을 자연스럽게 말해주세요.</p>
+            <div class="suggestions">
+              <button>부드럽고 비치지 않는 바지를 찾아줘</button>
+              <button>세탁 후 잘 늘어나지 않는 치마를 추천해줘</button>
+            </div>
+          </article>
+        </div>
+        <form id="chatForm" class="composer">
+          <textarea id="promptInput" rows="2" maxlength="4000" placeholder="예: 최근 본 상품과 비슷하지만 덜 얇은 치마"></textarea>
+          <button type="submit" class="send" aria-label="전송">↑</button>
+        </form>
+        <p class="agent-note">채팅에서 확인된 취향은 자동 저장되며 ‘내 취향’에서 삭제할 수 있습니다.</p>
+      </aside>
+    </div>
+  </div>
+
+  <dialog id="detailDialog" class="sheet detail-sheet">
+    <button class="dialog-close" data-close="detailDialog">×</button>
+    <div id="detailContent"></div>
+  </dialog>
+
+  <dialog id="cartDialog" class="sheet side-sheet">
+    <button class="dialog-close" data-close="cartDialog">×</button>
+    <h2>장바구니</h2>
+    <div id="cartItems"></div>
+    <div class="checkout-box">
+      <button id="checkoutButton" class="primary" type="button" disabled aria-disabled="true">구매하기 · 준비 중</button>
+      <p>현재 버전에서는 주문과 결제가 실행되지 않습니다.</p>
+    </div>
+  </dialog>
+
+  <dialog id="preferencesDialog" class="sheet side-sheet">
+    <button class="dialog-close" data-close="preferencesDialog">×</button>
+    <h2>에이전트가 기억한 취향</h2>
+    <p class="muted">대화와 명시적 피드백에서 저장된 취향입니다. 잘못된 항목은 삭제할 수 있습니다.</p>
+    <div id="preferenceItems"></div>
+  </dialog>
+
+  <script src="/agent-static/app.js" defer></script>
+</body>
+</html>

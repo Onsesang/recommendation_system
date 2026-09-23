@@ -1,0 +1,62 @@
+{
+  "experiment": "amazon_fashion_two_stage_tactile_reranking",
+  "seed": 20260904,
+  "official_dataset": {
+    "repository": "McAuley-Lab/Amazon-Reviews-2023",
+    "revision": "2aa726ef444e72c6a1364c4baa0bcdfb1de55db6",
+    "protocol": "benchmark/0core/last_out",
+    "files": {
+      "train": "source_data/Amazon_Fashion.train.csv",
+      "validation": "source_data/Amazon_Fashion.valid.csv",
+      "test": "source_data/Amazon_Fashion.test.csv"
+    },
+    "urls": {
+      "train": "https://huggingface.co/datasets/McAuley-Lab/Amazon-Reviews-2023/resolve/2aa726ef444e72c6a1364c4baa0bcdfb1de55db6/benchmark/0core/last_out/Amazon_Fashion.train.csv?download=true",
+      "validation": "https://huggingface.co/datasets/McAuley-Lab/Amazon-Reviews-2023/resolve/2aa726ef444e72c6a1364c4baa0bcdfb1de55db6/benchmark/0core/last_out/Amazon_Fashion.valid.csv?download=true",
+      "test": "https://huggingface.co/datasets/McAuley-Lab/Amazon-Reviews-2023/resolve/2aa726ef444e72c6a1364c4baa0bcdfb1de55db6/benchmark/0core/last_out/Amazon_Fashion.test.csv?download=true"
+    },
+    "expected_sha256": {
+      "train": "bb685d5b1f166a3bd213a12488714b86e4c927f09b8114e2fd097bb37857dc3c",
+      "validation": "5ef546f40fa40ff8bae755924f481eab3062458b23465e1db1aba2efff966ede",
+      "test": "91bbeaa067e0b1fcab4f8077d51aec2d2860c787d35862a9eff937becea63698"
+    }
+  },
+  "raw_reviews_dataset": "/home/user/onsesang/yoojeong/amazon_reviews_all/review_Amazon_Fashion",
+  "local_interaction_cache": "/home/user/onsesang/seoyoung/data/interim/recommendation_interactions.parquet",
+  "tactile_product_metadata": "/home/user/onsesang/material_span_grounding/tactile_coldstart_qwen_v2_full/data/product_master_full_pool.json",
+  "v3_family_split": "/home/user/onsesang/material_span_grounding/tactile_coldstart_qwen_v2_full/manifests/family_split_20260901.json",
+  "fashionclip": {
+    "model_id": "patrickjohncyh/fashion-clip",
+    "revision": "7e3ba62ce16b379a1ab479346b66f192e76f51b7",
+    "snapshot": "/home/user/onsesang/.cache/huggingface/hub/models--patrickjohncyh--fashion-clip/snapshots/7e3ba62ce16b379a1ab479346b66f192e76f51b7",
+    "checkpoint": "/home/user/onsesang/material_span_grounding/experiments/12_class_multilabel_fashionclip_ft/models/fashionclip_last2.pt",
+    "batch_size": 128,
+    "num_workers": 8
+  },
+  "catalog": {
+    "item_id": "parent_asin",
+    "child_aggregation": "arithmetic_mean_continuous_probability",
+    "require_recommendation_interaction": true,
+    "require_tactile_profile": true
+  },
+  "bpr": {
+    "embedding_dim": 64,
+    "learning_rate": 0.001,
+    "weight_decay": 0.000001,
+    "negative_samples": 2,
+    "batch_size": 4096,
+    "maximum_epochs": 100,
+    "early_stopping_patience": 10,
+    "validation_user_batch_size": 512
+  },
+  "candidate_k_values": [100, 200, 300],
+  "candidate_k": 300,
+  "normalization": "within_candidate_percentile_rank_average_ties",
+  "category_profile": "history_frequency_no_smoothing",
+  "tactile_profile": "equal_weight_history_mean",
+  "tactile_similarity": "cosine",
+  "weight_grid": [0.0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1.0],
+  "selection_metric": "ndcg_at_10",
+  "bootstrap_replicates": 1000,
+  "qualitative_examples_per_group": 5
+}

@@ -1,0 +1,57 @@
+experiment:
+  id: class_multilabel_fashionclip_ft_v1
+  seed: 20260903
+  source_split: /home/user/onsesang/material_span_grounding/tactile_coldstart_qwen_v2_full/manifests/family_split_20260901.json
+  use_all_available_records: true
+
+inputs:
+  reviews: /home/user/onsesang/material_span_grounding/tactile_coldstart_qwen_v2_full/data/reviews_full_pool.jsonl
+  candidates: /home/user/onsesang/material_span_grounding/tactile_coldstart_qwen_v2_full/data/lexical_tactile_candidates_all.jsonl
+  products: /home/user/onsesang/material_span_grounding/tactile_coldstart_qwen_v2_full/data/product_master_full_pool.json
+  image_root: /home/user/onsesang/texture_project/images_train
+
+semantic_labeler:
+  model_id: Qwen/Qwen3-VL-32B-Instruct
+  revision: 0cfaf48183f594c314753d30a4c4974bc75f3ccb
+  quantization: bitsandbytes_nf4
+  compute_dtype: bfloat16
+  temperature: 0.0
+  batch_size: 16
+  max_new_tokens: 96
+  minimum_confidence: 0.55
+
+classes:
+  - soft
+  - firm
+  - smooth
+  - rough
+  - non_elastic
+  - elastic
+  - thin
+  - thick
+  - flexible
+  - stiff
+  - warm
+  - cool
+  - spongy
+  - crisp
+
+targets:
+  reviewer_first: true
+  unobserved_is_negative: false
+  preserve_open_vocabulary_claim: true
+
+fashionclip:
+  model_id: patrickjohncyh/fashion-clip
+  revision: 7e3ba62ce16b379a1ab479346b66f192e76f51b7
+  image_size: 224
+  batch_size: 64
+  epochs: 40
+  patience: 6
+  head_learning_rate: 0.0001
+  projection_learning_rate: 0.00002
+  encoder_learning_rate: 0.000005
+  weight_decay: 0.01
+  gradient_clip: 1.0
+  stages: [frozen, projection, last1, last2, full]
+

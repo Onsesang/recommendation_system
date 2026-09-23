@@ -1,0 +1,221 @@
+{
+  "schema_version": 1,
+  "experiment": "20_tactile_recommender_spec_completion",
+  "model_family": "generalized_smore_derived_scalable_recommender",
+  "claim": "Local scale adaptation on the pinned Amazon_Fashion protocol; not an official SMORE reproduction.",
+  "primary_seed": 20260904,
+  "robustness_seeds": [
+    20260905,
+    20260906
+  ],
+  "shared_training": {
+    "embedding_dimension": 64,
+    "learning_rate_grid": [
+      0.001,
+      0.0003
+    ],
+    "maximum_epochs": 20,
+    "validation_every_epochs": 5,
+    "checkpoint_selection": "full_validation_ndcg_at_10_then_hr_at_10_then_mrr_at_10_then_earlier_epoch_then_smaller_learning_rate",
+    "optimizer": "Adam",
+    "interaction_objective": "BPR_with_one_uniform_full_catalog_negative_rejecting_all_user_train_positives",
+    "regularization": 0.000001,
+    "gradient_clip_norm": 5.0,
+    "user_item_graph_layers": 3,
+    "modality_graph_layers": 1,
+    "dropout": 0.1,
+    "contrastive_loss_weight": 0.01,
+    "contrastive_temperature": 0.2,
+    "contrastive_in_batch_cap": 1024,
+    "test_selection_allowed": false,
+    "architecture_winner_selection_allowed": false
+  },
+  "modalities": {
+    "I": {
+      "meaning": "behavioral user-item interaction",
+      "input": "official_train_interactions_only"
+    },
+    "V": {
+      "meaning": "generic visual",
+      "input": "pinned_unfine_tuned_fashionclip_image_512d",
+      "feature_table_trainable_to_match_smore_adapter": true,
+      "graph_k": 40
+    },
+    "X": {
+      "meaning": "generic metadata text",
+      "input": "pinned_unfine_tuned_fashionclip_text_512d",
+      "feature_table_trainable_to_match_smore_adapter": true,
+      "graph_k": 10
+    },
+    "T": {
+      "meaning": "dedicated tactile modality",
+      "input": "frozen_fashionclip_last2_continuous_probability_14d",
+      "feature_table_trainable": false,
+      "projection_and_gate_trainable": true,
+      "graph_k": 40,
+      "missing_policy": "mask_branch_output_exactly_zero_and_keep_item_in_catalog",
+      "threshold_applied": false,
+      "class_order": [
+        "soft",
+        "firm",
+        "smooth",
+        "rough",
+        "non_elastic",
+        "elastic",
+        "thin",
+        "thick",
+        "flexible",
+        "stiff",
+        "warm",
+        "cool",
+        "spongy",
+        "crisp"
+      ]
+    }
+  },
+  "shared_architecture": {
+    "behavioral_view": "three_layer_symmetric_normalized_user_item_graph_convolution_mean_pool",
+    "generic_image_text_view": "existing_image_text_spectrum_convolution_graph_propagation_and_preference_gates",
+    "generic_side_formula": "mean(image_side,text_side,image_text_fusion_side)",
+    "tactile_view": "frozen_14d_input_to_trainable_linear_projection_then_dedicated_graph_propagation_gate_and_preference_module",
+    "tactile_residual_scale_when_added_to_generic_side": 0.3333333333333333,
+    "tactile_residual_scale_rationale": "One fixed branch-equivalent contribution relative to the existing three-view generic side average; never tuned.",
+    "last2_checkpoint_trainable": false,
+    "last2_feature_table_trainable": false,
+    "generic_replacement_by_tactile_allowed": false
+  },
+  "variants": [
+    {
+      "id": "I",
+      "display_name": "Interaction only",
+      "modalities": [
+        "I"
+      ],
+      "formula": "all_embedding = behavioral_content",
+      "tactile_used": false,
+      "generic_image_used": false,
+      "generic_text_used": false,
+      "role": "interaction_only_ablation_control",
+      "primary_contrast_member": false
+    },
+    {
+      "id": "I_T",
+      "display_name": "Interaction + tactile",
+      "modalities": [
+        "I",
+        "T"
+      ],
+      "formula": "all_embedding = behavioral_content + tactile_side",
+      "tactile_used": true,
+      "tactile_input": "unshuffled_frozen_14d",
+      "generic_image_used": false,
+      "generic_text_used": false,
+      "role": "interaction_tactile_ablation",
+      "primary_contrast_member": false,
+      "fixed_missing_mask_after_projection_and_gate": true
+    },
+    {
+      "id": "I_VX",
+      "display_name": "Interaction + generic image + text",
+      "modalities": [
+        "I",
+        "V",
+        "X"
+      ],
+      "formula": "all_embedding = behavioral_content + generic_side",
+      "tactile_used": false,
+      "generic_image_used": true,
+      "generic_text_used": true,
+      "role": "primary_control_generic_multimodal",
+      "primary_contrast_member": true
+    },
+    {
+      "id": "I_VX_T",
+      "display_name": "Interaction + generic image + text + tactile",
+      "modalities": [
+        "I",
+        "V",
+        "X",
+        "T"
+      ],
+      "formula": "all_embedding = behavioral_content + generic_side + (1/3) * tactile_side",
+      "tactile_used": true,
+      "tactile_input": "unshuffled_frozen_14d",
+      "generic_image_used": true,
+      "generic_text_used": true,
+      "role": "primary_proposed_true_in_model_tactile",
+      "primary_contrast_member": true,
+      "fixed_missing_mask_after_projection_and_gate": true
+    },
+    {
+      "id": "I_VX_T_SHUFFLE",
+      "display_name": "Interaction + generic image + text + shuffled tactile",
+      "modalities": [
+        "I",
+        "V",
+        "X",
+        "T"
+      ],
+      "formula": "all_embedding = behavioral_content + generic_side + (1/3) * shuffled_tactile_side",
+      "tactile_used": true,
+      "tactile_input": "deterministically_stratified_permuted_frozen_14d",
+      "generic_image_used": true,
+      "generic_text_used": true,
+      "role": "capacity_and_broad_structure_negative_control",
+      "primary_contrast_member": false,
+      "parameterization_identical_to": "I_VX_T",
+      "fixed_missing_mask_after_projection_and_gate": true
+    }
+  ],
+  "shuffle_control": {
+    "seed": 20260904,
+    "unit": "whole_14d_item_vector",
+    "availability_preserved": true,
+    "strata": [
+      "frozen_diagnostic_category",
+      "target_independent_train_count_bucket"
+    ],
+    "train_count_buckets": [
+      "0",
+      "1_to_5",
+      "6_to_10",
+      "11_plus"
+    ],
+    "within_stratum_algorithm": "Sort available iids ascending. Derive a PCG64 seed from the first 64 bits of SHA256('20260904|category|train_count_bucket'), interpreted as unsigned big-endian. Apply NumPy Generator.permutation once to whole-vector source positions.",
+    "single_item_stratum": "identity_permutation_and_report_fixed_point",
+    "missing_items": "remain_missing_and_zero",
+    "mapping_artifact": "artifacts/tactile_shuffle_mapping.parquet",
+    "mapping_hash_required_before_validation": true,
+    "test_target_or_metric_used": false
+  },
+  "feature_sensitivities": {
+    "primary_tactile_classes": 14,
+    "reliable_8_class_secondary_model": "I_VX_T_8_SENSITIVITY",
+    "reliable_8_classes": [
+      "smooth",
+      "rough",
+      "thin",
+      "thick",
+      "flexible",
+      "stiff",
+      "warm",
+      "cool"
+    ],
+    "can_replace_primary_after_test": false
+  },
+  "fairness_and_interpretation": {
+    "same_catalog": true,
+    "same_train_interactions": true,
+    "same_validation_and_test_users": true,
+    "same_seen_filter": true,
+    "same_negative_sampling_rule": true,
+    "same_primary_seed": true,
+    "same_score_tie_break": "parent_asin_ascending",
+    "generic_features_may_contain_implicit_tactile_cues": true,
+    "incremental_tactile_interpretation": "Dedicated Last2 incremental signal beyond generic image/text, not comparison against a cue-free baseline.",
+    "shuffle_control_purpose": "Separate item-aligned tactile information from parameter-count and broad stratum effects.",
+    "history_interaction_is_preference_proof": false
+  },
+  "report_all_variants": true,
+  "missing_or_failed_variant_policy": "Report N/A with error type and trace summary; never fabricate, replace, or silently drop a variant."
+}

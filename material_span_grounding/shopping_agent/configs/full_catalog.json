@@ -1,0 +1,30 @@
+{
+  "version": "full-catalog-last2-v1",
+  "data": {
+    "metadata_path": "experiments/16_strong_recommender_tactile/data/item_metadata.parquet",
+    "profiles_path": "experiments/16_strong_recommender_tactile/artifacts/product_tactile_profiles.parquet",
+    "image_root": "experiments/16_strong_recommender_tactile/data/amazon_fashion_images",
+    "image_feature_path": "experiments/16_strong_recommender_tactile/data/smore/image_feat.npy",
+    "checkpoint_provenance": "experiments/12_class_multilabel_fashionclip_ft/models/fashionclip_last2.pt"
+  },
+  "retrieval": {
+    "specific_category_min_candidates": 200,
+    "title_token_min_length": 3,
+    "max_candidate_scan": 825840,
+    "accessory_exclusion_pattern": "\\b(?:necklace|earring|bracelet|anklet|brooch|keychain|chain|pendant|charm|watch|sunglass|handbag|wallet|purse|backpack|sticker|patch|badge)\\b",
+    "accessory_exclusion_min_candidates": 200
+  },
+  "relevance": {
+    "tactile_match_weight": 0.5,
+    "title_match_weight": 0.35,
+    "popularity_weight": 0.15
+  },
+  "concept_fidelity": {
+    "direct_weight": 1.0,
+    "proxy_weight": 0.6
+  },
+  "class_weight_overrides": {},
+  "evidence": {
+    "expose_review_grounded_overlay": true
+  }
+}

@@ -1,0 +1,28 @@
+test_pairwise_accuracy_ignores_ties (test_external.ExternalMetricTest) ... ok
+test_perfect_order (test_model_metrics.ModelMetricTest) ... ok
+test_weights_are_generic_and_normalized (test_model_metrics.ModelMetricTest) ... ok
+test_axis_selection_excludes_every_evaluated_test (test_protocol.ProtocolLeakageTest) ... ok
+test_family_splits_are_disjoint (test_protocol.ProtocolLeakageTest) ... ok
+test_parent_families_are_disjoint_and_v1_seen_is_train_only (test_protocol.ProtocolLeakageTest) ... ok
+test_bootstrap_is_deterministic_and_contains_mean (test_reporting.ReportingTest) ... ok
+test_perfect_ranking (test_selective_and_retrieval.SelectiveAndRetrievalTest) ... ok
+test_relevance_uses_direction_and_strength_generically (test_selective_and_retrieval.SelectiveAndRetrievalTest) ... ok
+test_risk_coverage_rewards_correct_confidence_order (test_selective_and_retrieval.SelectiveAndRetrievalTest) ... ok
+test_threshold_is_fit_to_requested_coverage (test_selective_and_retrieval.SelectiveAndRetrievalTest) ... ok
+test_distribution_preserves_disagreement (test_targets.TargetAggregationTest) ... ok
+test_unanimous_is_full_agreement (test_targets.TargetAggregationTest) ... ok
+test_bounded_model_aliases_are_normalized_with_provenance (test_taxonomy_and_grounding.TaxonomyAndGroundingTest) ... ok
+test_generic_prompt_contains_dynamic_taxonomy (test_taxonomy_and_grounding.TaxonomyAndGroundingTest) ... ok
+test_invalid_numeric_axis_fails_closed_without_inventing_label (test_taxonomy_and_grounding.TaxonomyAndGroundingTest) ... ok
+test_medium_direction_is_neutral (test_taxonomy_and_grounding.TaxonomyAndGroundingTest) ... ok
+test_parse_and_numeric_conversion_are_separate (test_taxonomy_and_grounding.TaxonomyAndGroundingTest) ... ok
+test_taxonomy_is_valid_and_dynamic (test_taxonomy_and_grounding.TaxonomyAndGroundingTest) ... ok
+test_unambiguous_numeric_axis_direction_swap_is_recovered (test_taxonomy_and_grounding.TaxonomyAndGroundingTest) ... ok
+test_unmappable_is_preserved (test_taxonomy_and_grounding.TaxonomyAndGroundingTest) ... ok
+test_missing_axes_and_false_fields_fail_closed_to_abstention (test_vlm.VlmSchemaTest) ... ok
+test_prompt_and_parser_adapt_to_axis_list (test_vlm.VlmSchemaTest) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 0.071s
+
+OK

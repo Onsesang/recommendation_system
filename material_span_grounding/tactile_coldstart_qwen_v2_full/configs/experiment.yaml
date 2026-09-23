@@ -1,0 +1,120 @@
+experiment:
+  id: tactile_coldstart_qwen_v2_full
+  seed: 20260901
+  split_seeds: [20260901]
+  ratios: {train: 0.70, development: 0.15, test: 0.15}
+  human_validation_status: skipped_by_user_pending
+
+inputs:
+  source_product_split: /home/user/onsesang/seoyoung/data/splits/train.json
+  source_review_dataset: /home/user/onsesang/yoojeong/amazon_reviews_all/review_Amazon_Fashion
+  previous_v1_reviews: /home/user/onsesang/material_span_grounding/data/dense/reviews_product_dense.jsonl
+  reviews: /home/user/onsesang/material_span_grounding/tactile_coldstart_qwen_v2_full/data/reviews_full_pool.jsonl
+  semantic_verifications: /home/user/onsesang/material_span_grounding/tactile_coldstart_qwen_v2_full/data/lexical_tactile_candidates.jsonl
+  verification_manifest: /home/user/onsesang/material_span_grounding/tactile_coldstart_qwen_v2_full/manifests/phase0_full_pool.json
+  product_master: /home/user/onsesang/material_span_grounding/tactile_coldstart_qwen_v2_full/data/product_master_full_pool.json
+  fashionclip_embeddings: /home/user/onsesang/material_span_grounding/tactile_coldstart_qwen_v2_full/artifacts/fashionclip_image_embeddings.npz
+  open_review_targets: /home/user/onsesang/material_span_grounding/data/derived/multimodal_catalog_v1/family_review_targets.npz
+  image_root: /home/user/onsesang/texture_project/images_train
+
+full_pool:
+  min_unique_reviewers: 5
+  max_reviews_per_product: 10
+  min_review_chars: 40
+  max_review_chars: 2000
+  max_products: null
+  require_local_image: true
+  one_review_per_user: true
+  candidate_limit_per_product_axis: 2
+  second_reviewer_products_per_axis: 100
+  previous_family_policy: train_only
+
+semantic_labeler:
+  provider: qwen
+  backend: transformers_bnb4
+  model_id: Qwen/Qwen3-VL-8B-Instruct
+  snapshot: 0c351dd01ed87e9c1b53cbc748cba10e6187ff3b
+  mode: instruct
+  temperature: 0.0
+  seed: 42
+  prompt_version: tactile_axis_grounding_v2_conservative_numeric_local_context
+  schema_version: tactile_axis_mapping_v2_numeric6
+  max_model_len: 3072
+  max_tokens: 24
+  chunk_size: 16
+  max_attempts: 2
+
+diagnostics:
+  selection_splits: [train]
+  selection_seed_policy: primary_seed_only
+  min_mapped_spans: 30
+  min_unique_products: 20
+  min_products_per_pole: 5
+  min_multi_reviewer_products: 3
+  max_top_category_fraction: 0.90
+  min_mean_mapping_confidence: 0.70
+  accessible_external_sources: [mllm_fabric]
+  external_validation_required_for_selection: false
+  audit_sample_size: 600
+  audit_intensity_order: [none, slight, moderate, strong]
+
+targets:
+  minimum_mapping_confidence: 0.55
+  score_bins: [-1, 0, 1]
+  primary_coding: direction_only
+
+models:
+  ridge_alphas: [0.1, 1.0, 10.0, 100.0, 1000.0]
+  pairwise_margin: 0.5
+  pairwise_min_support: 1
+  pairwise_min_agreement: 0.0
+  pairwise_max_pairs: 200000
+  mlp_hidden_dim: 64
+  mlp_epochs: 180
+  mlp_patience: 25
+  mlp_learning_rate: 0.001
+  bootstrap_samples: 500
+
+image_encoders:
+  fashionclip: {model_id: patrickjohncyh/fashion-clip, revision: 7e3ba62ce16b379a1ab479346b66f192e76f51b7, frozen: true, batch_size: 64}
+  dino: {model_id: facebook/dinov2-small, revision: ed25f3a31f01632728cabb09d1542f84ab7b0056, frozen: true, batch_size: 48}
+
+open_vector_baseline:
+  text_encoder: {model_id: BAAI/bge-small-en-v1.5, revision: 5c38ec7c405ec4b44b94cc5a9bb96e735b38267a}
+
+vlm_zero_shot:
+  enabled: false
+  reason: full locked-test VLM inference is not required for the full-pool scaling question
+  batch_size: 2
+  max_image_side: 448
+  max_tokens: 512
+
+selective:
+  fixed_coverages: [1.0, 0.8, 0.6, 0.4]
+  ensemble_members: 20
+  correctness_tolerance: 0.75
+  primary_coverage: 0.8
+  calibration_bins: 10
+
+retrieval:
+  k: [5, 10, 20]
+  minimum_test_support: 1
+  query_strengths: [1.0]
+  unknown_penalties: [0.0, -0.1]
+  minimum_candidates: 30
+  minimum_relevant: 1
+  maximum_relevance: 2.0
+  multi_axis_max_constraints: 2
+  random_seed: 20260901
+  fashionclip_query_template: "a product made from {pole} material"
+
+external:
+  mllm_fabric_repo: EuniceF/MLLM-Fabric
+  leeds_status: access_not_publicly_verified
+  split_seed: 20260901
+  recoverability_calibration_fraction: 0.5
+
+reporting:
+  bootstrap_samples: 1000
+  confidence_level: 0.95
+  hypothesis_margin: 0.0

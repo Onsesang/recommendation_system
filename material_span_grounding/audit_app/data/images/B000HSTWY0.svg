@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-labelledby="title description">
+  <title id="title">Product image source unavailable</title>
+  <description id="description">The archived image URL for ASIN B000HSTWY0 is no longer available.</description>
+  <rect width="1200" height="1200" fill="#eef1ee"/>
+  <rect x="170" y="220" width="860" height="650" rx="28" fill="none" stroke="#9da8a2" stroke-width="10" stroke-dasharray="24 20"/>
+  <path d="M360 690l150-170 115 125 98-92 137 137" fill="none" stroke="#9da8a2" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="763" cy="420" r="54" fill="none" stroke="#9da8a2" stroke-width="18"/>
+  <text x="600" y="960" text-anchor="middle" font-family="system-ui, sans-serif" font-size="42" font-weight="700" fill="#445049">IMAGE SOURCE UNAVAILABLE</text>
+  <text x="600" y="1020" text-anchor="middle" font-family="ui-monospace, monospace" font-size="28" fill="#6a756f">ASIN B000HSTWY0</text>
+</svg>

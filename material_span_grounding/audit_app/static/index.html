@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Material Span Audit</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="eyebrow">HUMAN REVIEW</span>
+      <h1>Material Span Audit <span id="datasetBadge" class="dataset-badge">V1</span></h1>
+    </div>
+    <div class="progress-wrap" aria-label="검수 진행률">
+      <div class="progress-copy">
+        <span id="progressText">0 / 139 reviewed</span>
+        <span id="progressPercent">0%</span>
+      </div>
+      <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
+    </div>
+    <div class="header-actions">
+      <label class="annotator-field">
+        <span>Annotator</span>
+        <input id="annotatorInput" autocomplete="off" maxlength="80" placeholder="이름 입력">
+      </label>
+      <div class="export-links">
+        <a class="export-button" href="/api/export" download>Judgments CSV</a>
+        <a class="export-button secondary-export" href="/api/export-missing" download>Missing CSV</a>
+        <a class="export-button secondary-export" href="/api/export-recall-checks" download>Recall CSV</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <section class="toolbar" aria-label="검수 도구">
+      <div class="filter-tabs" id="filterTabs">
+        <button class="filter-tab active" data-filter="all">All <span id="allCount">139</span></button>
+        <button class="filter-tab" data-filter="unreviewed">Unreviewed <span id="unreviewedCount">139</span></button>
+        <button class="filter-tab" data-filter="good">Good <span id="goodCount">0</span></button>
+        <button class="filter-tab" data-filter="bad">Bad <span id="badCount">0</span></button>
+        <button class="filter-tab" data-filter="edit">Edited <span id="editCount">0</span></button>
+        <button class="filter-tab" data-filter="new_v2">New V2 <span id="newV2Count">0</span></button>
+      </div>
+      <div class="item-jump">
+        <label for="jumpInput">Item</label>
+        <input id="jumpInput" inputmode="numeric" min="1" type="number" value="1">
+        <span id="itemTotal">/ 139</span>
+      </div>
+    </section>
+
+    <section id="emptyState" class="empty-state hidden">
+      <h2>이 필터에 해당하는 항목이 없습니다.</h2>
+      <button id="showAllButton" class="secondary-button">Show all</button>
+    </section>
+
+    <article id="auditCard" class="audit-card">
+      <section class="image-panel">
+        <div class="image-topline">
+          <div>
+            <span id="productAsin" class="mono-label"></span>
+            <h2 id="productTitle">Product</h2>
+          </div>
+          <span id="imageQuality" class="quality-badge">ORIGINAL</span>
+        </div>
+        <button id="imageButton" class="image-stage" title="클릭해서 원본 크기로 보기">
+          <img id="productImage" alt="검수 상품 이미지">
+          <span class="zoom-hint">Click to inspect · Original resolution</span>
+        </button>
+      </section>
+
+      <section class="evidence-panel">
+        <div class="status-row">
+          <span id="positionLabel" class="position-label">ITEM 1 OF 139</span>
+          <span id="reviewStatus" class="review-status unreviewed">UNREVIEWED</span>
+        </div>
+
+        <div class="quote-block">
+          <span class="section-label">EXTRACTED SPAN</span>
+          <blockquote id="quoteText"></blockquote>
+        </div>
+
+        <div class="review-block">
+          <span class="section-label">FULL REVIEW</span>
+          <p id="reviewText"></p>
+        </div>
+
+        <div class="sibling-block">
+          <div class="section-label-row">
+            <div>
+              <span class="section-label">ALL EXTRACTED SPANS IN THIS REVIEW</span>
+              <p class="section-help">같은 리뷰에서 이미 수집된 다른 소재 표현입니다. 항목을 누르면 해당 Qwen 판정으로 이동합니다.</p>
+            </div>
+            <span id="siblingSummary" class="sibling-summary"></span>
+          </div>
+          <div id="siblingSpanList" class="sibling-span-list"></div>
+        </div>
+
+        <div class="missing-block">
+          <div class="section-label-row">
+            <div>
+              <span class="section-label">MISSING MATERIAL SPANS</span>
+              <p class="section-help">Qwen이 놓친 소재 표현은 기존 span을 바꾸지 말고 별도로 추가하세요.</p>
+            </div>
+            <button id="addMissingButton" class="add-missing-button" type="button">+ Add Missing Span</button>
+          </div>
+          <div id="missingSpanList" class="missing-span-list"></div>
+          <div class="recall-check-row">
+            <div>
+              <strong id="recallCheckStatus">FULL REVIEW NOT CHECKED</strong>
+              <span id="recallCheckDetail"></span>
+            </div>
+            <button id="toggleRecallCheck" class="secondary-button compact-button" type="button">Mark full review checked</button>
+          </div>
+        </div>
+
+        <div class="qwen-block">
+          <div class="section-label-row">
+            <span class="section-label">QWEN JUDGMENT</span>
+            <span id="qwenDecision" class="model-decision"></span>
+          </div>
+          <p id="qwenClaim" class="qwen-claim"></p>
+          <dl id="qwenMetadata" class="metadata-grid"></dl>
+          <p id="qwenReason" class="rejection-reason hidden"></p>
+        </div>
+
+        <div id="savedSummary" class="saved-summary hidden"></div>
+      </section>
+    </article>
+
+    <nav class="decision-bar" aria-label="검수 결정">
+      <button id="previousButton" class="nav-button"><kbd>←</kbd> Previous</button>
+      <div class="decision-actions">
+        <button id="resetButton" class="reset-button hidden">Reset</button>
+        <button id="badButton" class="bad-button"><kbd>B</kbd> Bad</button>
+        <button id="editButton" class="edit-button"><kbd>E</kbd> Edit</button>
+        <button id="goodButton" class="good-button"><kbd>G</kbd> Good</button>
+      </div>
+      <button id="nextButton" class="nav-button">Good &amp; Next <kbd>→</kbd></button>
+    </nav>
+
+    <footer class="shortcut-footer">
+      <span><kbd>←</kbd> Previous</span>
+      <span><kbd>→</kbd> Good &amp; Next</span>
+      <span><kbd>G</kbd> Good</span>
+      <span><kbd>B</kbd> Bad</span>
+      <span><kbd>E</kbd> Edit</span>
+      <label><input id="autoAdvance" type="checkbox" checked> 저장 후 자동 이동</label>
+      <span id="saveMessage" role="status"></span>
+    </footer>
+  </main>
+
+  <dialog id="editDialog" class="edit-dialog">
+    <form id="editForm" method="dialog">
+      <div class="dialog-heading">
+        <div><span class="eyebrow">HUMAN CORRECTION</span><h2>Edit annotation</h2></div>
+        <button id="closeDialog" type="button" class="icon-button" aria-label="닫기">×</button>
+      </div>
+      <label class="full-field">
+        <span>Decision</span>
+        <select id="editAccepted">
+          <option value="true">Accept — 소재 span이 맞음</option>
+          <option value="false">Reject — 소재 span이 아님</option>
+        </select>
+      </label>
+      <label class="full-field accepted-only">
+        <span>Normalized claim</span>
+        <textarea id="editClaim" rows="3"></textarea>
+      </label>
+      <div class="form-grid accepted-only">
+        <label><span>Scope</span><select id="editScope"></select></label>
+        <label><span>Property status</span><select id="editPropertyStatus"></select></label>
+        <label><span>Visual observability</span><select id="editObservability"></select></label>
+      </div>
+      <label class="full-field">
+        <span>Comment / rejection reason</span>
+        <textarea id="editComment" rows="3" placeholder="수정 이유나 판단 메모"></textarea>
+      </label>
+      <div class="dialog-actions">
+        <button id="cancelEdit" type="button" class="secondary-button">Cancel</button>
+        <button type="submit" class="good-button">Save edit</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="missingDialog" class="edit-dialog missing-dialog">
+    <form id="missingForm" method="dialog">
+      <div class="dialog-heading">
+        <div><span class="eyebrow">RECALL CORRECTION</span><h2 id="missingDialogTitle">Add missing span</h2></div>
+        <button id="closeMissingDialog" type="button" class="icon-button" aria-label="닫기">×</button>
+      </div>
+      <p class="dialog-help">Full review에 실제로 존재하는 문장을 그대로 복사하세요. 서버가 exact quote 여부를 다시 검사합니다.</p>
+      <label class="full-field">
+        <span>Exact quote</span>
+        <textarea id="missingQuote" rows="3" required placeholder="원문에서 누락된 소재 표현을 그대로 붙여넣기"></textarea>
+      </label>
+      <button id="useSelectedText" type="button" class="selection-button">Use text selected in full review</button>
+      <label class="full-field">
+        <span>Normalized claim</span>
+        <textarea id="missingClaim" rows="3" required placeholder="예: The fabric is unusually thick."></textarea>
+      </label>
+      <div class="form-grid">
+        <label><span>Scope</span><select id="missingScope"></select></label>
+        <label><span>Property status</span><select id="missingPropertyStatus"></select></label>
+        <label><span>Intensity</span><select id="missingIntensity"></select></label>
+        <label><span>Sentiment</span><select id="missingSentiment"></select></label>
+        <label><span>Evidence basis</span><select id="missingEvidence"></select></label>
+        <label><span>Visual observability</span><select id="missingObservability"></select></label>
+      </div>
+      <label class="full-field">
+        <span>Comment</span>
+        <textarea id="missingComment" rows="2" placeholder="추가 판단 메모 (선택)"></textarea>
+      </label>
+      <div class="dialog-actions">
+        <button id="cancelMissing" type="button" class="secondary-button">Cancel</button>
+        <button type="submit" class="good-button">Save missing span</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="imageDialog" class="image-dialog">
+    <button id="closeImageDialog" class="image-close" aria-label="이미지 닫기">×</button>
+    <img id="zoomedImage" alt="고해상도 상품 이미지">
+  </dialog>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script src="/static/app.js" defer></script>
+</body>
+</html>

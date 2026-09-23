@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tactile Fashion Finder</title>
+  <link rel="stylesheet" href="/tactile-static/app.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/tactile-demo" aria-label="상품 목록으로 이동">
+      <span class="brand-mark">TF</span>
+      <span>Tactile Fashion</span>
+    </a>
+    <div class="health" id="health">데이터 연결 중…</div>
+  </header>
+
+  <section class="prompt-bar" aria-label="자연어 상품 검색">
+    <form id="promptForm" class="prompt-form">
+      <label class="sr-only" for="promptInput">원하는 상품을 자연어로 입력</label>
+      <input id="promptInput" autocomplete="off" placeholder="예: 세탁 후 잘 늘어나지 않는 치마를 찾아줘." required>
+      <button type="submit">상품 찾기</button>
+      <button type="button" class="ghost" id="clearSearch" hidden>전체 상품</button>
+    </form>
+  </section>
+
+  <main>
+    <section id="catalogScreen">
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow" id="catalogEyebrow">ALL PRODUCTS</p>
+          <h1 id="catalogTitle">모든 상품</h1>
+          <p class="muted" id="catalogMessage">리뷰 소재 근거가 연결된 상품을 둘러보세요.</p>
+        </div>
+        <div class="result-count" id="resultCount"></div>
+      </div>
+      <div class="catalog-grid" id="catalogGrid" aria-live="polite"></div>
+      <nav class="pagination" id="pagination" aria-label="상품 페이지"></nav>
+    </section>
+
+    <section id="detailScreen" hidden>
+      <button class="back-button" id="backToCatalog">← 상품 목록으로</button>
+      <article class="detail-hero">
+        <div class="detail-image"><img id="productImage" alt="선택한 상품"></div>
+        <div class="detail-copy">
+          <p class="eyebrow">PRODUCT DETAIL</p>
+          <span class="pill" id="productCategory"></span>
+          <h1 id="productTitle"></h1>
+          <p class="asin" id="productAsin"></p>
+          <p class="muted" id="productStats"></p>
+          <div id="productTargetInfo" class="target-info"></div>
+        </div>
+      </article>
+
+      <section class="detail-section">
+        <div class="section-heading">
+          <div><p class="eyebrow">DESCRIBE</p><h2>구매자들이 말하는 소재</h2></div>
+          <p>실제 리뷰에서 확인된 표현만 보여줍니다.</p>
+        </div>
+        <div id="summary" class="evidence-grid"></div>
+      </section>
+
+      <section class="detail-section concern-section">
+        <div class="section-heading">
+          <div><p class="eyebrow">DIAGNOSE</p><h2>소재 관련 의견</h2></div>
+          <p>서로 다른 구매자의 반복적인 부정 의견을 우선합니다.</p>
+        </div>
+        <div id="concerns" class="evidence-grid"></div>
+      </section>
+
+      <section class="detail-section">
+        <div class="section-heading">
+          <div><p class="eyebrow">RELATED · DESIGN</p><h2>디자인이 비슷한 상품</h2></div>
+          <p id="designMethod"></p>
+        </div>
+        <div id="designRelated" class="related-grid"></div>
+      </section>
+
+      <section class="detail-section">
+        <div class="section-heading">
+          <div><p class="eyebrow">RELATED · TACTILE</p><h2>촉감이 비슷한 상품</h2></div>
+          <p id="tactileMethod"></p>
+        </div>
+        <div id="tactileRelated" class="related-grid"></div>
+      </section>
+
+      <section class="detail-section" id="alternativeSection" hidden>
+        <div class="section-heading">
+          <div><p class="eyebrow">ALTERNATIVES</p><h2 id="alternativeTitle">촉감 대안</h2></div>
+        </div>
+        <div id="alternatives" class="related-grid"></div>
+      </section>
+    </section>
+  </main>
+
+  <dialog id="evidenceDialog">
+    <button class="dialog-close" id="closeDialog" aria-label="닫기">×</button>
+    <h2>실제 리뷰 근거</h2>
+    <div id="dialogEvidence"></div>
+  </dialog>
+  <div id="loading" hidden>상품을 불러오는 중…</div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script src="/tactile-static/app.js" defer></script>
+</body>
+</html>

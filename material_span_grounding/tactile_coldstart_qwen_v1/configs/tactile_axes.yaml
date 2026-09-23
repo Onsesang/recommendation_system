@@ -1,0 +1,76 @@
+version: tactile_axes_v1
+ordinal_coding:
+  negative_pole: -1.0
+  positive_pole: 1.0
+  neutral: 0.0
+  intensity_multiplier:
+    strong: 2.0
+    moderate: 1.0
+    slight: 1.0
+    none: 1.0
+    unknown: 1.0
+
+axes:
+  - id: softness
+    display_name: Softness
+    type: bipolar_ordinal
+    negative_pole: soft
+    positive_pole: firm
+    definition: Perceived yielding softness versus resistant firmness of the textile or garment material.
+    external_sources: [leeds, mllm_fabric]
+    external_mapping:
+      mllm_fabric: {column: Softness, values: {0: 1.0, 1: 0.0, 2: -1.0}}
+
+  - id: surface_texture
+    display_name: Surface texture
+    type: bipolar_ordinal
+    negative_pole: smooth
+    positive_pole: rough
+    definition: Smooth versus rough, scratchy, or coarse character of the textile surface.
+    external_sources: [leeds, mllm_fabric]
+    external_mapping:
+      mllm_fabric: {column: Texture, values: {0: -1.0, 1: 0.0, 2: 1.0}}
+
+  - id: elasticity
+    display_name: Elasticity
+    type: bipolar_ordinal
+    negative_pole: non_elastic
+    positive_pole: elastic
+    definition: Resistance to stretch versus ability to stretch and recover as a material property.
+    external_sources: [mllm_fabric]
+    external_mapping:
+      mllm_fabric: {column: Elasticity, values: {0: -1.0, 1: 0.0, 2: 1.0}}
+
+  - id: thickness
+    display_name: Thickness
+    type: bipolar_ordinal
+    negative_pole: thin
+    positive_pole: thick
+    definition: Low versus high perceived textile thickness, including explicit thinness or thickness.
+    external_sources: [mllm_fabric]
+    external_mapping:
+      mllm_fabric: {column: Thickness, values: {0: -1.0, 1: 0.0, 2: 1.0}}
+
+  - id: flexibility
+    display_name: Flexibility
+    type: bipolar_ordinal
+    negative_pole: flexible
+    positive_pole: stiff
+    definition: Ease of bending and draping versus stiffness or rigidity of the textile.
+    external_sources: [leeds]
+
+  - id: warmth
+    display_name: Warmth
+    type: bipolar_ordinal
+    negative_pole: warm
+    positive_pole: cool
+    definition: Perceived thermal warmth versus coolness attributable to the textile.
+    external_sources: [leeds]
+
+  - id: sponginess
+    display_name: Sponginess
+    type: bipolar_ordinal
+    negative_pole: spongy
+    positive_pole: crisp
+    definition: Compressible spongy hand versus crisp, sharply structured textile hand.
+    external_sources: [leeds]

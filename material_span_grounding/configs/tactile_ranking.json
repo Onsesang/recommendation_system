@@ -1,0 +1,53 @@
+{
+  "version": "1.0",
+  "feature_flags": {
+    "tactile_summary": true,
+    "tactile_concern": true,
+    "tactile_alternative": true,
+    "tactile_comparison": true,
+    "tactile_reranking": true,
+    "tactile_agent": true
+  },
+  "profile": {
+    "representative_claims": 12,
+    "public_evidence_per_concept": 5
+  },
+  "related": {
+    "design_image_weight": 0.85,
+    "design_title_weight": 0.15,
+    "tactile_similarity_weight": 0.85,
+    "tactile_confidence_weight": 0.15
+  },
+  "hybrid_target": {
+    "max_review_weight": 0.9,
+    "default_image_confidence": 0.5
+  },
+  "concern": {
+    "min_reviewers": 2,
+    "min_negative_ratio": 0.5,
+    "minimum_score": 0.18,
+    "reviewer_saturation": 4.0,
+    "verified_purchase_bonus": 0.05,
+    "human_verified_bonus": 0.1
+  },
+  "ranking": {
+    "base_weight": 0.55,
+    "tactile_weight": 0.3,
+    "confidence_weight": 0.1,
+    "constraint_weight": 0.05,
+    "conflict_weight": 0.2,
+    "diversity_weight": 0.08,
+    "explicit_gate": 1.0,
+    "same_category_gate": 0.3,
+    "global_history_gate": 0.1,
+    "cross_category_gate": 0.02,
+    "mmr_relevance": 0.9
+  },
+  "alternative": {
+    "anchor_weight": 0.45,
+    "direction_weight": 0.35,
+    "confidence_weight": 0.15,
+    "constraint_weight": 0.05,
+    "minimum_directional_support": 0.05
+  }
+}

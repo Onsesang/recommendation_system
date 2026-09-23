@@ -1,0 +1,93 @@
+{
+  "version": "1.1",
+  "api_version": "v1",
+  "auth": {
+    "password_min_length": 8,
+    "pbkdf2_iterations": 310000,
+    "session_days": 30
+  },
+  "events": {
+    "allowed": [
+      "product_impression",
+      "product_click",
+      "product_dwell",
+      "image_zoom",
+      "similar_product_click",
+      "favorite_add",
+      "favorite_remove",
+      "cart_add",
+      "cart_remove",
+      "explicit_like",
+      "explicit_dislike",
+      "recommendation_skip"
+    ],
+    "weights": {
+      "product_impression": 0.01,
+      "product_click": 0.10,
+      "product_dwell": 0.20,
+      "image_zoom": 0.12,
+      "similar_product_click": 0.18,
+      "favorite_add": 0.60,
+      "favorite_remove": -0.20,
+      "cart_add": 0.80,
+      "cart_remove": -0.25,
+      "explicit_like": 1.00,
+      "explicit_dislike": -1.00,
+      "recommendation_skip": -0.03
+    },
+    "behavior_half_life_days": 30,
+    "max_dwell_ms": 90000
+  },
+  "ranking": {
+    "query_relevance_weight": 0.46,
+    "explicit_tactile_weight": 0.16,
+    "explicit_attribute_weight": 0.08,
+    "behavior_design_weight": 0.08,
+    "behavior_tactile_weight": 0.08,
+    "cart_context_weight": 0.07,
+    "category_affinity_weight": 0.03,
+    "exploration_weight": 0.04,
+    "cross_category_behavior_gate": 0.02,
+    "candidate_pool_size": 100,
+    "default_result_size": 30,
+    "max_result_size": 50
+  },
+  "memory": {
+    "chat_preferences_auto_save": true,
+    "category_scoped_tactile": true,
+    "store_raw_chat": true,
+    "raw_chat_retention_days": 30
+  },
+  "llm": {
+    "timeout_seconds": 30,
+    "response_language": "ko",
+    "max_output_tokens": 700
+  },
+  "conversation_tools": {
+    "responses": {
+      "respond_greeting": "안녕하세요! 원하는 스타일이나 옷, 중요하게 생각하는 소재와 촉감을 입력해주세요.",
+      "respond_out_of_scope": "죄송하지만 패션 쇼핑과 관련 없는 요청에는 답변할 수 없습니다. 원하는 스타일이나 찾고 있는 옷을 입력해주세요."
+    }
+  },
+  "conversation_routing": {
+    "fallback_model": "char_ngram_logistic_v1",
+    "fallback_classifier_c": 8.0,
+    "training_examples": {
+      "respond_greeting": [
+        "안녕", "안녕하세요", "반가워", "좋은 아침이야", "잘 지냈어", "고마워", "감사합니다",
+        "hello", "hi there", "nice to meet you", "thanks"
+      ],
+      "respond_out_of_scope": [
+        "오늘 날씨 알려줘", "오늘 날씨 어때", "내일 비가 와", "서울 기온이 몇 도야", "뉴스를 요약해줘", "영어로 번역해줘",
+        "파이썬 코드를 작성해줘", "저녁 메뉴 추천해줘", "환율을 알려줘", "주식 가격이 얼마야",
+        "수학 문제를 풀어줘", "1 더하기 1은 뭐야", "계산해줘", "내일 일정 알려줘", "노래를 틀어줘"
+      ],
+      "search_products": [
+        "부드러운 바지를 추천해줘", "비치지 않는 치마를 찾아줘", "검정색 원피스를 보여줘",
+        "이 옷과 디자인이 비슷한 상품", "촉감이 비슷한 옷을 비교해줘", "여름에 입을 셔츠",
+        "세탁 후 늘어나지 않는 옷", "캐주얼한 코디를 찾고 있어", "장바구니 상품과 비슷한 옷",
+        "어떤 소재가 덜 까슬거려", "옷 추천해줘", "안녕 부드러운 치마를 찾아줘"
+      ]
+    }
+  }
+}

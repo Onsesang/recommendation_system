@@ -1,0 +1,23 @@
+{
+  "seed": 20260904,
+  "history_min": 3,
+  "dim": 64,
+  "learning_rates": [0.001, 0.0003],
+  "maximum_epochs": 50,
+  "validation_every_epochs": 5,
+  "patience": 5,
+  "batch_size": 256,
+  "evaluation_batch_size": 128,
+  "maxlen": 50,
+  "layers": 2,
+  "heads": 2,
+  "dropout": 0.2,
+  "negative_samples": 64,
+  "mask_probability": 0.15,
+  "candidate_k_grid": [100, 300, 500, 1000, 3000],
+  "candidate_recall_threshold": 0.8,
+  "alpha_grid": [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1.0],
+  "reliable_classes": ["smooth", "rough", "thin", "thick", "flexible", "stiff", "warm", "cool"],
+  "bootstrap_replicates": 1000
+}
+

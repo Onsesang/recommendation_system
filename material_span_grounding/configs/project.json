@@ -1,0 +1,14 @@
+{
+  "project_name": "material_span_grounding",
+  "seed": 42,
+  "model_id": "Qwen/Qwen3-VL-8B-Instruct",
+  "product_split": "/home/user/onsesang/seoyoung/data/splits/train.json",
+  "review_dataset": "/home/user/onsesang/yoojeong/amazon_reviews_all/review_Amazon_Fashion",
+  "pilot_reviews": 1000,
+  "max_reviews_per_product": 2,
+  "min_review_chars": 40,
+  "max_review_chars": 2000,
+  "prompt_version": "span_extraction_v1.0",
+  "verification_prompt_version": "semantic_verification_v1.2_audit_rules",
+  "protected_test_used": false
+}

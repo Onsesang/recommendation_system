@@ -12,3 +12,19 @@ venv/
 
 # Secrets
 .env
+
+# 모델 체크포인트는 GitHub Releases로 배포 (checkpoints/README.md 참고)
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+
+# 대용량 작업 디렉터리 (실수로 커밋되는 것 방지)
+outgoing/
+incoming/
+.cache/
+miniconda3/
+.conda/
+.anaconda/
+.rustup/
+.claude/

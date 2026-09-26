@@ -275,6 +275,12 @@ def check_answer(result: dict[str, Any], shown: list[str]) -> list[str]:
     foreign = FOREIGN_SCRIPT.findall(message)
     if foreign:
         failures.append(f"다른 언어 문자 섞임: {foreign}")
+    number = re.search(r"\d*\.\d+|\d+\s*%", message)
+    if number:
+        failures.append(f"수치 노출: “{number.group(0)}”")
+    grade = re.search(r"(높음|낮음)", message)
+    if grade:
+        failures.append(f"등급어 사용: “{grade.group(0)}”")
     grounded = any(row.get("tactile_target_source") == "review_grounded_overlay" for row in result.get("products", []))
     if not grounded:
         for match in re.finditer(r"리뷰", message):
@@ -300,6 +306,8 @@ def sentence_count(text: str) -> int:
 def mentioned_numbers(message: str) -> list[int]:
     """Product numbers in the order the answer first mentions them."""
     seen: list[int] = []
+    # "1번부터 3번까지" is a range, not an introduction order.
+    message = re.sub(r"\d+번\s*(?:부터|~|-)\s*\d+번(?:까지)?", " ", message)
     for value in re.findall(r"(\d+)번", message):
         if int(value) not in seen:
             seen.append(int(value))
@@ -308,6 +316,13 @@ def mentioned_numbers(message: str) -> list[int]:
 
 def answer_warnings(message: str, searched: bool = False) -> list[str]:
     warnings = []
+    # The instructions allow "~편" once per answer and "매우" once per sentence; repeats sound mechanical.
+    hedges = len(re.findall(r"편(?:이|입|으로|인|이라)", message))
+    if hedges >= 2:
+        warnings.append(f"'~편' {hedges}회 반복")
+    intensifiers = message.count("매우")
+    if intensifiers >= 3:
+        warnings.append(f"'매우' {intensifiers}회 반복")
     if searched:
         # A search answer should read the list from 1번 in order; skipped numbers confuse a listener.
         numbers = mentioned_numbers(message)
@@ -381,11 +396,14 @@ def run_config(app: Any, scenarios: list[dict[str, Any]], *, model: str, effort:
                             "number": number,
                             "product_id": row["product_id"],
                             "title": row.get("title", ""),
+                            "category": row.get("category"),
                             "evidence_source": row.get("tactile_target_source"),
                             "remote_image_url": row.get("remote_image_url"),
                             "tactile_terms": row.get("score_breakdown", {}).get("tactile_terms", []),
                         }
-                        for number, row in enumerate(result.get("products", [])[:3], 1)
+                        # Ten covers every number the agent can refer to (shown_products_memory);
+                        # the reports still show the first three.
+                        for number, row in enumerate(result.get("products", [])[:10], 1)
                     ],
                 }
             )
@@ -434,7 +452,9 @@ def instability(results: list[dict[str, Any]]) -> list[dict[str, Any]]:
         if len(rows) < 2:
             continue
         searches = {
-            json.dumps({k: v for k, v in (_search_args(row) or {}).items() if k != "query_text"}, sort_keys=True)
+            # English keywords vary freely between runs; only category and tactile conditions count.
+            json.dumps({k: v for k, v in (_search_args(row) or {}).items() if k in {"category", "want", "avoid"}},
+                       sort_keys=True)
             for row in rows
         }
         passed = {row["passed"] for row in rows}
@@ -526,12 +546,12 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
             if row["top_products"]:
                 images = " ".join(
                     f'<img src="{item["remote_image_url"]}" width="80" alt="{item["number"]}번">'
-                    for item in row["top_products"]
+                    for item in row["top_products"][:3]
                     if item["remote_image_url"]
                 )
                 if images:
                     lines.append(f"- {images}")
-                for item in row["top_products"]:
+                for item in row["top_products"][:3]:
                     lines.append(
                         f"- {item['number']}번 {item['title'][:80]} · 근거 {item['evidence_source']} · "
                         f"촉감 {terms_text(item['tactile_terms'])}"
@@ -556,7 +576,7 @@ def write_csv(path: Path, report: dict[str, Any]) -> None:
         writer.writerow(header)
         for result in report["results"]:
             for row in result["rows"]:
-                products = row["top_products"] + [{}] * (3 - len(row["top_products"]))
+                products = row["top_products"][:3] + [{}] * (3 - len(row["top_products"][:3]))
                 product_cells = []
                 for item in products[:3]:
                     product_cells += [

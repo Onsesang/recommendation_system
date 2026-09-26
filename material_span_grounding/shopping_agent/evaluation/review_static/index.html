@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>시나리오 검수</title>
+<style>
+:root {
+  --bg: #f6f7f9; --panel: #ffffff; --text: #1d2330; --muted: #5f6b7a; --line: #dde2e8;
+  --accent: #2f5bd3; --accent-soft: #e6ecfb; --ok: #1f8a4c; --ok-soft: #e3f4ea;
+  --bad: #c2362f; --bad-soft: #fbe6e4; --warn: #9a6400; --warn-soft: #fdf1d8; --na: #6b7280; --na-soft: #eceef1;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14171c; --panel: #1d2128; --text: #e7ebf0; --muted: #9aa4b2; --line: #2f353f;
+    --accent: #7ea2ff; --accent-soft: #24304d; --ok: #5cc98a; --ok-soft: #1c3527;
+    --bad: #ff7b72; --bad-soft: #3d2221; --warn: #e3b453; --warn-soft: #3a3020; --na: #a3aab5; --na-soft: #2b3038;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.55 -apple-system, "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+button, select, input, textarea { font: inherit; color: inherit; }
+header { position: sticky; top: 0; z-index: 5; background: var(--panel); border-bottom: 1px solid var(--line); padding: 10px 16px; }
+.bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; max-width: 1400px; margin: 0 auto; }
+.bar h1 { font-size: 17px; margin: 0 4px 0 0; }
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+.tabs { display: inline-flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.tabs button { border: 0; background: var(--panel); padding: 7px 14px; cursor: pointer; font-weight: 600; }
+.tabs button[aria-selected="true"] { background: var(--accent); color: #fff; }
+.progress { flex: 1 1 180px; min-width: 160px; }
+.progress-track { height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--ok); width: 0; transition: width .2s; }
+.ctl { border: 1px solid var(--line); background: var(--panel); border-radius: 8px; padding: 6px 10px; }
+button.ctl { cursor: pointer; }
+a.ctl { text-decoration: none; }
+button.ctl:hover, a.ctl:hover { border-color: var(--accent); }
+main { max-width: 1400px; margin: 0 auto; padding: 16px; }
+.nav { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.arrow { font-size: 26px; width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--line); background: var(--panel); cursor: pointer; flex: none; }
+.arrow:hover:not(:disabled) { background: var(--accent-soft); border-color: var(--accent); }
+.arrow:disabled { opacity: .35; cursor: default; }
+.turn-head { flex: 1; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; min-width: 0; }
+.turn-id { font-size: 13px; color: var(--muted); }
+.turn-msg { font-size: 20px; font-weight: 650; margin: 2px 0; word-break: keep-all; }
+.turn-note { font-size: 14px; }
+.turn-note b { color: var(--accent); }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; margin-bottom: 14px; }
+.panel h2 { font-size: 15px; margin: 0 0 8px; }
+.cond-wrap { overflow-x: auto; }
+.cond { width: 100%; border-collapse: collapse; font-size: 14px; }
+.cond th, .cond td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.cond th { color: var(--muted); font-weight: 600; white-space: nowrap; }
+.chip { display: inline-block; padding: 1px 8px; border-radius: 99px; margin: 1px 3px 1px 0; font-size: 13px; background: var(--na-soft); }
+.chip.want { background: var(--ok-soft); color: var(--ok); }
+.chip.avoid { background: var(--bad-soft); color: var(--bad); }
+.chip.unsup { background: var(--warn-soft); color: var(--warn); }
+.pgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
+.pcard { background: var(--panel); border: 2px solid var(--line); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.pcard.j-O { border-color: var(--ok); }
+.pcard.j-PARTIAL { border-color: var(--warn); }
+.pcard.j-X { border-color: var(--bad); }
+.pcard img { width: 100%; aspect-ratio: 1; object-fit: contain; background: #fff; border-radius: 8px; border: 1px solid var(--line); cursor: zoom-in; }
+.noimg { width: 100%; aspect-ratio: 1; display: grid; place-items: center; background: var(--na-soft); border-radius: 8px; color: var(--muted); }
+.ptitle { font-weight: 600; font-size: 14px; overflow-wrap: anywhere; }
+.pmeta { font-size: 13px; color: var(--muted); }
+.ranks { display: flex; flex-wrap: wrap; gap: 4px; }
+.rank { font-size: 12px; padding: 1px 7px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); }
+.terms { font-size: 13px; display: flex; flex-direction: column; gap: 2px; }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg button { min-height: 40px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); cursor: pointer; font-weight: 650; padding: 0 12px; }
+.seg.rel button { flex: 1; }
+.seg button:hover { border-color: var(--accent); }
+.seg button[aria-pressed="true"].o { background: var(--ok); border-color: var(--ok); color: #fff; }
+.seg button[aria-pressed="true"].partial { background: var(--warn); border-color: var(--warn); color: #fff; }
+.seg button[aria-pressed="true"].x { background: var(--bad); border-color: var(--bad); color: #fff; }
+.seg button[aria-pressed="true"].na { background: var(--na); border-color: var(--na); color: #fff; }
+textarea { width: 100%; min-height: 44px; resize: vertical; border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; background: var(--panel); }
+.save-state { font-size: 12px; color: var(--muted); min-height: 16px; }
+.answers { display: grid; gap: 8px; margin-top: 8px; }
+.answers .who { font-weight: 700; font-size: 13px; }
+.answer { font-size: 15px; white-space: pre-wrap; background: var(--bg); border-radius: 8px; padding: 10px 12px; word-break: keep-all; overflow-wrap: anywhere; }
+details summary { cursor: pointer; color: var(--muted); font-size: 14px; }
+.bulk { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px 64px; }
+.bulk button { font-size: 13px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 14px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.card.done { border-color: var(--ok); }
+.card-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.card-head .name { font-weight: 700; }
+.badge { font-size: 12px; padding: 2px 8px; border-radius: 99px; background: var(--na-soft); color: var(--na); }
+.badge.ok { background: var(--ok-soft); color: var(--ok); }
+.badge.bad { background: var(--bad-soft); color: var(--bad); }
+.badge.warn { background: var(--warn-soft); color: var(--warn); }
+.history { border-left: 3px solid var(--line); padding-left: 10px; margin-top: 6px; font-size: 13px; }
+.history .h-user { font-weight: 600; margin-top: 6px; }
+.tool { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12.5px; background: var(--bg); border-radius: 6px; padding: 6px 8px; overflow-wrap: anywhere; }
+.tool .target { font-family: inherit; display: block; margin-top: 3px; }
+.target.ok { color: var(--ok); }
+.target.bad { color: var(--bad); }
+.issues { font-size: 13px; margin: 0; padding-left: 18px; }
+.issues .f { color: var(--bad); }
+.issues .w { color: var(--warn); }
+.judge { border-top: 1px dashed var(--line); padding-top: 10px; display: grid; grid-template-columns: 96px 1fr; gap: 8px 10px; align-items: center; }
+.judge .lbl { font-size: 14px; font-weight: 600; }
+.judge .save-state { grid-column: 2; }
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; z-index: 10; overflow: auto; }
+.overlay.open { display: flex; }
+.sheet { background: var(--panel); border-radius: 12px; max-width: 1000px; width: 100%; padding: 18px 20px; }
+.sheet h2 { margin: 0 0 10px; font-size: 18px; }
+.sheet h3 { margin: 16px 0 6px; font-size: 15px; }
+.sheet table { border-collapse: collapse; width: 100%; font-size: 14px; margin-bottom: 12px; }
+.sheet th, .sheet td { border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+.sheet .close { float: right; }
+.xlist a { color: var(--accent); cursor: pointer; }
+.zoom img { max-width: min(90vw, 900px); max-height: 85vh; background: #fff; border-radius: 12px; }
+.empty { padding: 40px; text-align: center; color: var(--muted); }
+@media (max-width: 640px) {
+  .cards { grid-template-columns: 1fr; }
+  .pgrid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .bulk { margin-left: 0; }
+  .arrow { width: 44px; height: 44px; font-size: 22px; }
+  .turn-msg { font-size: 17px; }
+  .judge { grid-template-columns: 1fr; }
+  .judge .save-state { grid-column: 1; }
+  .cond { font-size: 13px; }
+}
+@media (max-width: 420px) { .pgrid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <h1>시나리오 검수</h1>
+    <div class="tabs" role="tablist" aria-label="검수 종류">
+      <button role="tab" data-mode="reco" aria-selected="true">추천 검수</button>
+      <button role="tab" data-mode="conv" aria-selected="false">대화 검수</button>
+    </div>
+    <span class="muted small" id="runName"></span>
+    <div class="progress">
+      <div class="small"><span id="progressText">-</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+    <input class="ctl" id="reviewer" placeholder="검수자 이름" size="10" aria-label="검수자 이름">
+    <select class="ctl" id="filter" aria-label="페이지 필터"></select>
+    <select class="ctl" id="jump" aria-label="턴으로 이동"></select>
+    <label class="small"><input type="checkbox" id="blind"> 블라인드(모델 이름 숨김)</label>
+    <button class="ctl" id="guideBtn">판정 기준</button>
+    <button class="ctl" id="summaryBtn">요약</button>
+    <a class="ctl" id="exportBtn" href="/api/export_products.csv">CSV 내보내기</a>
+  </div>
+</header>
+<main>
+  <div class="nav">
+    <button class="arrow" id="prev" aria-label="이전 페이지 (←)">←</button>
+    <div class="turn-head">
+      <div class="turn-id" id="turnId"></div>
+      <div class="turn-msg" id="turnMsg"></div>
+      <div class="turn-note" id="turnNote"></div>
+    </div>
+    <button class="arrow" id="next" aria-label="다음 페이지 (→)">→</button>
+  </div>
+  <div id="body"></div>
+</main>
+
+<div class="overlay" id="guide" role="dialog" aria-modal="true" aria-label="판정 기준">
+  <div class="sheet">
+    <button class="ctl close" data-close>닫기</button>
+    <h2>추천 검수 기준</h2>
+    <p class="small muted">사용자 요청과 비교해 <b>이미지와 상품명</b>으로 판단합니다. 촉감 수치는 이미지로 예측한 참고값이라 판정 근거로 쓰지 않아도 됩니다.</p>
+    <table>
+      <tr><th>맞음</th><td>요청한 옷 종류이고, 요청한 조건(촉감·색·계절 등)과 어긋나지 않는다. 사용자에게 그대로 보여줘도 괜찮다.
+        <div class="small muted">예: "따뜻한 코트" → 두툼한 울 코트</div></td></tr>
+      <tr><th>애매</th><td>옷 종류는 비슷하지만 조건 일부가 약하거나 확인할 수 없다. 보여줘도 되지만 1순위로는 아쉽다.
+        <div class="small muted">예: "바지" → 레깅스, "겨울 코트" → 얇은 트렌치코트, 성인 요청에 아동복인지 불분명</div></td></tr>
+      <tr><th>안 맞음</th><td>옷 종류가 다르거나, 요청과 반대 조건이거나, 명백히 엉뚱하다.
+        <div class="small muted">예: "원피스" → 수영복, "안 비치는 티셔츠" → 망사 티셔츠, "시원한 셔츠" → 기모 셔츠</div></td></tr>
+    </table>
+    <p class="small muted">같은 턴에서 여러 설정이 추천한 상품은 한 번만 판정합니다. 상품 카드의 "순위" 표시는 어떤 설정이 몇 번째로 추천했는지입니다. 이미지를 누르면 크게 볼 수 있습니다.</p>
+    <h2>대화 검수 기준</h2>
+    <table>
+      <tr><th>조건 해석</th><td>검색 도구의 옷 종류·want·avoid가 요청 의미와 맞는가. 말하지 않은 촉감을 추측해 넣거나 반대로 해석하면 X. 검색이 없는 턴은 해당 없음.</td></tr>
+      <tr><th>지칭</th><td>"2번", "그거", "방금 담은 거"가 화면 목록 번호 기준으로 맞는 상품을 가리키는가. 모호할 때 되묻거나 없는 번호를 거절하면 O.</td></tr>
+      <tr><th>근거 정직성</th><td>가격·사이즈·재고·리뷰를 지어내지 않는가. 이미지 예측을 리뷰처럼 말하거나, 하지 않은 일·할 수 없는 일을 말하면 X.</td></tr>
+    </table>
+    <p class="small muted">판정은 누를 때마다 바로 저장됩니다. 키보드 ← → 로 페이지를 넘길 수 있습니다(메모 입력 중 제외).</p>
+  </div>
+</div>
+
+<div class="overlay" id="summary" role="dialog" aria-modal="true" aria-label="요약">
+  <div class="sheet">
+    <button class="ctl close" data-close>닫기</button>
+    <div id="summaryBody"></div>
+  </div>
+</div>
+
+<div class="overlay zoom" id="zoom" role="dialog" aria-modal="true" aria-label="이미지 크게 보기">
+  <img id="zoomImg" alt="">
+</div>
+
+<script>
+const CRITERIA = [["condition", "조건 해석"], ["reference", "지칭"], ["honesty", "근거 정직성"]];
+const RELEVANCE = [["O", "맞음", "o"], ["PARTIAL", "애매", "partial"], ["X", "안 맞음", "x"]];
+const TACTILE_KO = {
+  soft: "부드러움", firm: "탄탄함", smooth: "매끄러움", rough: "까끌함", non_elastic: "안 늘어남", elastic: "신축성",
+  thin: "얇음", thick: "두꺼움", flexible: "하늘하늘함", stiff: "뻣뻣함", warm: "따뜻함", cool: "시원함",
+  spongy: "폭신함", crisp: "각 잡힘",
+};
+const CATEGORY_KO = {
+  shirt: "셔츠", tshirt: "티셔츠", sweater: "스웨터·니트", jacket: "재킷", coat: "코트", pants: "바지", jeans: "청바지",
+  dress: "원피스", skirt: "치마", hoodie: "후드티", cardigan: "가디건", top: "상의", outerwear: "아우터",
+  underwear: "속옷", sleepwear: "잠옷", swimwear: "수영복", accessory: "액세서리",
+};
+const FILTERS = {
+  reco: [["all", "전체 추천 턴"], ["todo", "미판정 상품 있는 턴"], ["x", "안 맞음 있는 턴"]],
+  conv: [["all", "전체 페이지"], ["todo", "미완료 페이지"], ["auto", "자동 실패·경고 있는 페이지"], ["x", "X 판정 있는 페이지"]],
+};
+const state = { pages: [], judgments: {}, index: 0, visible: [], blindNames: {}, mode: "reco", run: "", topK: 5 };
+const $ = (id) => document.getElementById(id);
+
+function el(tag, attrs = {}, ...children) {
+  const node = document.createElement(tag);
+  for (const [key, value] of Object.entries(attrs)) {
+    if (key === "class") node.className = value;
+    else if (key.startsWith("on")) node.addEventListener(key.slice(2), value);
+    else if (value !== null && value !== undefined) node.setAttribute(key, value);
+  }
+  for (const child of children.flat(Infinity)) {
+    if (child === null || child === undefined || child === false) continue;
+    node.append(child instanceof Node ? child : document.createTextNode(String(child)));
+  }
+  return node;
+}
+function storageGet(key, fallback) {
+  try { const value = localStorage.getItem(key); return value === null ? fallback : value; } catch { return fallback; }
+}
+function storageSet(key, value) { try { localStorage.setItem(key, value); } catch {} }
+const judgment = (key) => state.judgments[key] || {};
+
+// ---------------------------------------------------------------- status helpers
+function entryDone(entry) { return CRITERIA.every(([field]) => judgment(entry.key)[field]); }
+function convPageDone(page) { return page.entries.every(entryDone); }
+function recoPageDone(page) { return page.products.every((product) => judgment(product.key).relevance); }
+function pageDone(page) { return state.mode === "reco" ? recoPageDone(page) : convPageDone(page); }
+function inMode(page) { return state.mode === "conv" || page.products.length > 0; }
+
+function displayName(config) { return $("blind").checked ? state.blindNames[config] : config; }
+function assignBlindNames(configs) {
+  // Stable shuffle so the same setting keeps its letter across pages and reloads.
+  const hashed = configs.map((config) => {
+    let hash = 0;
+    for (const char of config + state.run) hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
+    return [hash, config];
+  }).sort((a, b) => a[0] - b[0]);
+  hashed.forEach(([, config], index) => { state.blindNames[config] = "설정 " + String.fromCharCode(65 + index); });
+}
+
+function matchesFilter(page) {
+  const mode = $("filter").value;
+  if (!inMode(page)) return false;
+  if (mode === "todo") return !pageDone(page);
+  if (state.mode === "reco") {
+    if (mode === "x") return page.products.some((product) => judgment(product.key).relevance === "X");
+    return true;
+  }
+  if (mode === "auto") return page.entries.some((entry) => !entry.passed || entry.warnings.length);
+  if (mode === "x") return page.entries.some((entry) => CRITERIA.some(([field]) => judgment(entry.key)[field] === "X"));
+  return true;
+}
+function applyFilter(keepPage) {
+  const current = state.visible[state.index];
+  state.visible = state.pages.map((_, index) => index).filter((index) => matchesFilter(state.pages[index]));
+  const kept = keepPage && current !== undefined ? state.visible.indexOf(current) : -1;
+  state.index = kept >= 0 ? kept : Math.min(state.index, Math.max(0, state.visible.length - 1));
+}
+function setFilterOptions() {
+  const previous = storageGet(`review.filter.${state.mode}`, "all");
+  $("filter").replaceChildren(...FILTERS[state.mode].map(([value, text]) => el("option", { value }, text)));
+  $("filter").value = FILTERS[state.mode].some(([value]) => value === previous) ? previous : "all";
+}
+
+function renderJump() {
+  const jump = $("jump");
+  jump.replaceChildren(...state.pages.map((page, index) => [page, index]).filter(([page]) => inMode(page)).map(([page, index]) =>
+    el("option", { value: index }, `${pageDone(page) ? "✓ " : ""}${page.id} ${page.message.slice(0, 22)}`)));
+  const current = state.visible[state.index];
+  if (current !== undefined) jump.value = current;
+}
+
+function renderProgress() {
+  let done = 0, total = 0, pagesDone = 0, pages = 0;
+  for (const page of state.pages) {
+    if (!inMode(page)) continue;
+    pages += 1;
+    pagesDone += pageDone(page) ? 1 : 0;
+    if (state.mode === "reco") {
+      total += page.products.length;
+      done += page.products.filter((product) => judgment(product.key).relevance).length;
+    } else {
+      total += page.entries.length;
+      done += page.entries.filter(entryDone).length;
+    }
+  }
+  const unit = state.mode === "reco" ? "상품" : "답변";
+  $("progressText").textContent = `${unit} ${done} / ${total} 판정 · 페이지 ${pagesDone} / ${pages} 완료`;
+  $("progressFill").style.width = `${total ? (done / total) * 100 : 0}%`;
+}
+
+// ---------------------------------------------------------------- shared pieces
+function level(probability) { return probability >= 0.7 ? "높음" : probability >= 0.4 ? "보통" : "낮음"; }
+function termLines(terms) {
+  if (!terms || !terms.length) return [el("span", { class: "muted" }, "요청한 촉감 없음")];
+  return terms.map((term) => {
+    if (typeof term === "string") return el("span", {}, term);
+    const name = TACTILE_KO[term.class] || term.class;
+    const probability = Number(term.raw_probability || 0);
+    const wanted = term.direction !== "negative";
+    const good = wanted ? probability >= 0.4 : probability < 0.4;
+    return el("span", {}, `${wanted ? "원함" : "피함"} · ${name} ${level(probability)} (${probability.toFixed(2)}) `,
+      el("span", { style: `color: var(--${good ? "ok" : "bad"})` }, good ? "✓" : "✗"));
+  });
+}
+function chips(values, cls, map) {
+  if (!values || !values.length) return el("span", { class: "muted" }, "-");
+  return values.map((value) => el("span", { class: `chip ${cls}` }, map ? (map[value] || value) : value));
+}
+function segButton(key, field, value, text, cls) {
+  const current = judgment(key)[field];
+  return el("button", {
+    class: cls, type: "button", "aria-pressed": String(current === value),
+    onclick: () => save(key, { [field]: current === value ? null : value }),
+  }, text);
+}
+function memoBox(key, label) {
+  const status = el("div", { class: "save-state", id: `state-${key}` }, judgment(key).updated_at ? "저장됨" : "");
+  const memo = el("textarea", { placeholder: "메모 (자동 저장)", "aria-label": label });
+  memo.value = judgment(key).memo || "";
+  let timer = null;
+  memo.addEventListener("input", () => {
+    clearTimeout(timer);
+    status.textContent = "입력 중…";
+    timer = setTimeout(() => save(key, { memo: memo.value }, false), 600);
+  });
+  return [memo, status];
+}
+
+// ---------------------------------------------------------------- 추천 검수
+function renderConditions(page) {
+  const searches = page.entries.filter((entry) => entry.search);
+  const same = searches.every((entry) =>
+    JSON.stringify([entry.search.category, entry.search.want, entry.search.avoid]) ===
+    JSON.stringify([searches[0].search.category, searches[0].search.want, searches[0].search.avoid]));
+  const rows = (same ? [searches[0]] : searches).map((entry) => el("tr", {},
+    el("th", {}, same && searches.length > 1 ? "모든 설정" : displayName(entry.config)),
+    el("td", {}, entry.search.category ? CATEGORY_KO[entry.search.category] || entry.search.category : el("span", { class: "muted" }, "지정 안 함")),
+    el("td", {}, chips(entry.search.want, "want", TACTILE_KO)),
+    el("td", {}, chips(entry.search.avoid, "avoid", TACTILE_KO)),
+    el("td", {}, chips(entry.search.keywords, "")),
+    el("td", {}, chips(entry.search.unsupported_concepts, "unsup"))));
+  const missing = page.entries.filter((entry) => !entry.search).map((entry) => displayName(entry.config));
+  return el("section", { class: "panel" },
+    el("h2", {}, "에이전트가 만든 검색 조건"),
+    el("div", { class: "cond-wrap" }, el("table", { class: "cond" },
+      el("tr", {}, ["설정", "옷 종류", "원함", "피함", "키워드", "반영 못 한 조건"].map((text) => el("th", {}, text))),
+      rows)),
+    missing.length ? el("div", { class: "small muted" }, `검색하지 않은 설정: ${missing.join(", ")}`) : null);
+}
+
+function renderProduct(product) {
+  const key = product.key;
+  const current = judgment(key).relevance;
+  const ranks = Object.entries(product.ranks)
+    .map(([config, rank]) => [displayName(config), rank])
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([name, rank]) => el("span", { class: "rank" }, `${name} ${rank}위`));
+  const image = product.remote_image_url
+    ? el("img", { src: product.remote_image_url, alt: product.title, loading: "lazy",
+        onclick: () => { $("zoomImg").src = product.remote_image_url; $("zoom").classList.add("open"); } })
+    : el("div", { class: "noimg" }, "이미지 없음");
+  return el("article", { class: `pcard ${current ? "j-" + current : ""}`, "aria-label": product.title },
+    image,
+    el("div", { class: "ranks" }, ranks),
+    el("div", { class: "ptitle" }, product.title),
+    el("div", { class: "pmeta" },
+      `${product.category ? (CATEGORY_KO[product.category] || product.category) + " · " : ""}` +
+      `${product.evidence_source === "review_grounded_overlay" ? "리뷰 근거" : "이미지 예측 촉감"}`),
+    el("div", { class: "terms" }, termLines(product.tactile_terms)),
+    el("div", { class: "seg rel", role: "group", "aria-label": "요청에 맞는가" },
+      RELEVANCE.map(([value, text, cls]) => segButton(key, "relevance", value, text, cls))),
+    memoBox(key, `${product.title} 메모`));
+}
+
+function renderReco(page) {
+  const answers = page.entries.map((entry) => el("div", {},
+    el("div", { class: "who" }, displayName(entry.config)), el("div", { class: "answer" }, entry.answer || "(응답 없음)")));
+  return [
+    renderConditions(page),
+    el("div", { class: "pgrid" }, page.products.map(renderProduct)),
+    el("section", { class: "panel", style: "margin-top: 14px" },
+      el("details", {}, el("summary", {}, "에이전트 답변 보기"), el("div", { class: "answers" }, answers))),
+  ];
+}
+
+// ---------------------------------------------------------------- 대화 검수
+function productLookup(entry) {
+  const lookup = {};
+  const searches = entry.history.filter((turn) => turn.top_products && turn.top_products.length);
+  const last = searches[searches.length - 1];
+  if (last) for (const item of last.top_products) lookup[item.product_id] = item;
+  for (const item of entry.top_products) lookup[item.product_id] = lookup[item.product_id] || item;
+  return lookup;
+}
+function renderToolCall(call, lookup) {
+  const args = { ...call.arguments };
+  const ids = args.product_ids || (args.product_id ? [args.product_id] : []);
+  const targets = ids.map((id) => lookup[id]
+    ? el("span", { class: "target ok" }, `→ 화면 ${lookup[id].number}번 · ${lookup[id].title.slice(0, 60)}`)
+    : el("span", { class: "target bad" }, `→ ${id}: 직전 화면 목록에서 찾을 수 없는 상품`));
+  return el("div", { class: "tool" }, `${call.name}${call.ok === false ? " (실패)" : ""} ${JSON.stringify(args)}`, targets);
+}
+function renderHistory(entry) {
+  if (!entry.history.length) return null;
+  return el("details", {},
+    el("summary", {}, `이전 대화 ${entry.history.length}턴 보기`),
+    el("div", { class: "history" }, entry.history.map((turn) => [
+      el("div", { class: "h-user" }, `사용자: ${turn.message}`),
+      el("div", {}, `에이전트: ${turn.answer}`),
+      turn.top_products.length ? el("div", { class: "muted" },
+        "화면 목록: " + turn.top_products.slice(0, 5).map((item) => `${item.number}번 ${item.title.slice(0, 40)}`).join(" / ")) : null,
+    ])));
+}
+function renderCard(entry) {
+  const lookup = productLookup(entry);
+  const issues = [...entry.failures.map((text) => ["f", "❌ " + text]), ...entry.warnings.map((text) => ["w", "⚠️ " + text])];
+  return el("section", { class: `card ${entryDone(entry) ? "done" : ""}`, "aria-label": displayName(entry.config) },
+    el("div", { class: "card-head" }, el("span", { class: "name" }, displayName(entry.config)),
+      el("span", { class: `badge ${entry.passed ? "ok" : "bad"}` }, entry.passed ? "자동 통과" : "자동 실패"),
+      el("span", { class: "badge" }, `${entry.latency_seconds}초`),
+      el("span", { class: `badge ${entry.warnings.length ? "warn" : ""}` }, `${entry.chars}자 · ${entry.sentences}문장`)),
+    renderHistory(entry),
+    el("div", { class: "answer" }, entry.answer || "(응답 없음)"),
+    entry.tool_calls.length ? entry.tool_calls.map((call) => renderToolCall(call, lookup)) : el("div", { class: "small muted" }, "도구 호출 없음"),
+    issues.length ? el("ul", { class: "issues" }, issues.map(([cls, text]) => el("li", { class: cls }, text))) : null,
+    el("div", { class: "judge" },
+      CRITERIA.map(([field, name]) => [
+        el("div", { class: "lbl" }, name),
+        el("div", { class: "seg", role: "group", "aria-label": name },
+          segButton(entry.key, field, "O", "O", "o"), segButton(entry.key, field, "X", "X", "x"),
+          segButton(entry.key, field, "NA", "해당 없음", "na")),
+      ]),
+      el("div", { class: "lbl" }, "메모"), memoBox(entry.key, `${displayName(entry.config)} 메모`)));
+}
+function renderConv(page) {
+  let entries = page.entries;
+  if ($("blind").checked) entries = [...entries].sort((a, b) => displayName(a.config).localeCompare(displayName(b.config)));
+  return [
+    el("div", { class: "bulk" }, el("span", { class: "small muted" }, "이 페이지 전체:"),
+      el("button", { class: "ctl", onclick: () => bulk(page, "condition") }, "조건 해석 해당 없음"),
+      el("button", { class: "ctl", onclick: () => bulk(page, "reference") }, "지칭 해당 없음")),
+    el("div", { class: "cards" }, entries.map(renderCard)),
+  ];
+}
+async function bulk(page, field) {
+  for (const entry of page.entries) await save(entry.key, { [field]: "NA" }, false);
+  render();
+}
+
+// ---------------------------------------------------------------- page
+function render() {
+  document.querySelectorAll("[data-mode]").forEach((tab) => tab.setAttribute("aria-selected", String(tab.dataset.mode === state.mode)));
+  $("exportBtn").href = state.mode === "reco" ? "/api/export_products.csv" : "/api/export.csv";
+  renderProgress();
+  renderJump();
+  const body = $("body");
+  if (!state.visible.length) {
+    $("turnId").textContent = "";
+    $("turnMsg").textContent = "조건에 맞는 페이지가 없습니다";
+    $("turnNote").textContent = "";
+    body.replaceChildren(el("div", { class: "empty" }, "필터를 바꿔 보세요."));
+    $("prev").disabled = $("next").disabled = true;
+    return;
+  }
+  const page = state.pages[state.visible[state.index]];
+  $("turnId").textContent = `${page.id} · ${page.title} · ${state.index + 1} / ${state.visible.length}${pageDone(page) ? " · ✓ 완료" : ""}`;
+  $("turnMsg").textContent = `“${page.message}”`;
+  $("turnNote").replaceChildren(el("b", {}, "기대 "), page.note || "-");
+  body.replaceChildren(...(state.mode === "reco" ? renderReco(page) : renderConv(page)));
+  $("prev").disabled = state.index === 0;
+  $("next").disabled = state.index >= state.visible.length - 1;
+  storageSet(`review.page.${state.run}.${state.mode}`, String(state.visible[state.index]));
+}
+
+async function save(key, values, rerender = true) {
+  const status = document.getElementById(`state-${key}`);
+  try {
+    const response = await fetch("/api/judgments", {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key, values }),
+    });
+    const payload = await response.json();
+    if (!response.ok) throw new Error(payload.error || response.status);
+    state.judgments[key] = payload.item;
+    if (rerender) render();
+    else { if (status) status.textContent = "저장됨"; renderProgress(); }
+  } catch (error) {
+    if (status) status.textContent = "저장 실패: " + error.message;
+    else alert("저장 실패: " + error.message);
+  }
+}
+
+function go(delta) {
+  const target = state.index + delta;
+  if (target < 0 || target >= state.visible.length) return;
+  state.index = target;
+  render();
+  window.scrollTo({ top: 0 });
+}
+
+function setMode(mode) {
+  state.mode = mode;
+  storageSet("review.mode", mode);
+  setFilterOptions();
+  applyFilter(false);
+  const saved = Number(storageGet(`review.page.${state.run}.${mode}`, "-1"));
+  const position = state.visible.indexOf(saved);
+  state.index = position >= 0 ? position : 0;
+  render();
+}
+
+// ---------------------------------------------------------------- summary
+function jumpTo(pageIndex, mode) {
+  if (mode !== state.mode) setMode(mode);
+  $("filter").value = "all";
+  applyFilter(false);
+  state.index = Math.max(0, state.visible.indexOf(pageIndex));
+  closeOverlays();
+  render();
+}
+function precisionCell(scores) {
+  if (!scores.length) return "-";
+  const strict = scores.filter((value) => value === 1).length / scores.length;
+  const lenient = scores.reduce((sum, value) => sum + value, 0) / scores.length;
+  return `${Math.round(strict * 100)}% · ${Math.round(lenient * 100)}%`;
+}
+function recoSummary() {
+  const score = { O: 1, PARTIAL: 0.5, X: 0 };
+  const groups = {};
+  const bad = [];
+  const totals = { O: 0, PARTIAL: 0, X: 0, none: 0 };
+  state.pages.forEach((page, pageIndex) => {
+    for (const product of page.products) {
+      const value = judgment(product.key).relevance;
+      totals[value || "none"] += 1;
+      if (value === "X") bad.push({ pageIndex, text: `${page.id} “${page.message}” — ${product.title.slice(0, 60)}${judgment(product.key).memo ? " · " + judgment(product.key).memo : ""}` });
+      for (const [config, rank] of Object.entries(product.ranks)) {
+        const names = $("blind").checked ? [displayName(config)] : [config, `${config.split("/")[0]} (합계)`];
+        for (const name of names) {
+          const group = (groups[name] = groups[name] || { at3: [], at5: [], judged: 0, total: 0 });
+          group.total += 1;
+          if (!value) continue;
+          group.judged += 1;
+          if (rank <= 3) group.at3.push(score[value]);
+          if (rank <= state.topK) group.at5.push(score[value]);
+        }
+      }
+    }
+  });
+  const rows = Object.entries(groups).sort((a, b) => a[0].localeCompare(b[0])).map(([name, group]) =>
+    el("tr", {}, el("td", {}, name), el("td", {}, `${group.judged}/${group.total}`),
+      el("td", {}, precisionCell(group.at3)), el("td", {}, precisionCell(group.at5))));
+  return [
+    el("h2", {}, "추천 검수 요약"),
+    el("p", { class: "small muted" }, `상품 ${totals.O + totals.PARTIAL + totals.X + totals.none}개 중 맞음 ${totals.O} · 애매 ${totals.PARTIAL} · 안 맞음 ${totals.X} · 미판정 ${totals.none}. ` +
+      "정확도는 '엄격(맞음만) · 관대(애매 0.5점)' 순서입니다."),
+    el("table", {}, el("tr", {}, ["설정", "판정한 추천", "상위 3개 정확도", `상위 ${state.topK}개 정확도`].map((text) => el("th", {}, text))), rows),
+    el("h3", {}, `안 맞음 ${bad.length}개`),
+    bad.length ? el("ul", { class: "xlist" }, bad.map((row) => el("li", {}, el("a", { onclick: () => jumpTo(row.pageIndex, "reco") }, row.text))))
+      : el("p", { class: "muted" }, "아직 없습니다."),
+  ];
+}
+function rate(items, field) {
+  const judged = items.filter((item) => item[field] === "O" || item[field] === "X");
+  if (!judged.length) return "-";
+  const ok = judged.filter((item) => item[field] === "O").length;
+  return `${Math.round((ok / judged.length) * 100)}% (${ok}/${judged.length})`;
+}
+function convSummary() {
+  const groups = {};
+  const xItems = [];
+  state.pages.forEach((page, pageIndex) => {
+    for (const entry of page.entries) {
+      const item = judgment(entry.key);
+      const name = displayName(entry.config);
+      const names = $("blind").checked ? [name] : [name, `${entry.model} (합계)`];
+      for (const group of names) {
+        (groups[group] = groups[group] || { items: [], auto: 0, total: 0 });
+        groups[group].items.push(item);
+        groups[group].total += 1;
+        groups[group].auto += entry.passed ? 1 : 0;
+      }
+      for (const [field, text] of CRITERIA) {
+        if (item[field] === "X") xItems.push({ pageIndex, text: `${page.id} ${name} · ${text}${item.memo ? " — " + item.memo : ""}` });
+      }
+    }
+  });
+  const rows = Object.entries(groups).sort((a, b) => a[0].localeCompare(b[0])).map(([name, group]) => el("tr", {},
+    el("td", {}, name),
+    el("td", {}, `${group.items.filter((item) => CRITERIA.every(([field]) => item[field])).length}/${group.total}`),
+    el("td", {}, `${group.auto}/${group.total}`),
+    CRITERIA.map(([field]) => el("td", {}, rate(group.items, field)))));
+  return [
+    el("h2", {}, "대화 검수 요약"),
+    el("table", {}, el("tr", {}, ["설정", "판정 완료", "자동 통과", "조건 해석 O", "지칭 O", "근거 정직성 O"].map((text) => el("th", {}, text))), rows),
+    el("h3", {}, `X 판정 ${xItems.length}건`),
+    xItems.length ? el("ul", { class: "xlist" }, xItems.map((row) => el("li", {}, el("a", { onclick: () => jumpTo(row.pageIndex, "conv") }, row.text))))
+      : el("p", { class: "muted" }, "아직 없습니다."),
+  ];
+}
+
+function closeOverlays() { document.querySelectorAll(".overlay").forEach((node) => node.classList.remove("open")); }
+
+async function load() {
+  const response = await fetch("/api/data");
+  const data = await response.json();
+  state.pages = data.pages;
+  state.judgments = data.judgments || {};
+  state.run = data.meta.run;
+  state.topK = data.meta.top_k || 5;
+  $("runName").textContent = data.meta.run;
+  document.title = `검수 · ${data.meta.run}`;
+  $("reviewer").value = data.reviewer || "";
+  assignBlindNames(data.meta.configs);
+  $("blind").checked = storageGet("review.blind", "0") === "1";
+  setMode(storageGet("review.mode", "reco") === "conv" ? "conv" : "reco");
+}
+
+$("prev").addEventListener("click", () => go(-1));
+$("next").addEventListener("click", () => go(1));
+document.querySelectorAll("[data-mode]").forEach((tab) => tab.addEventListener("click", () => setMode(tab.dataset.mode)));
+$("filter").addEventListener("change", () => { storageSet(`review.filter.${state.mode}`, $("filter").value); applyFilter(true); render(); });
+$("jump").addEventListener("change", (event) => {
+  $("filter").value = "all";
+  applyFilter(false);
+  state.index = Math.max(0, state.visible.indexOf(Number(event.target.value)));
+  render();
+});
+$("blind").addEventListener("change", () => { storageSet("review.blind", $("blind").checked ? "1" : "0"); render(); });
+$("reviewer").addEventListener("change", (event) => fetch("/api/reviewer", {
+  method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ reviewer: event.target.value }),
+}));
+$("guideBtn").addEventListener("click", () => $("guide").classList.add("open"));
+$("summaryBtn").addEventListener("click", () => {
+  $("summaryBody").replaceChildren(...(state.mode === "reco" ? recoSummary() : convSummary()));
+  $("summary").classList.add("open");
+});
+document.querySelectorAll("[data-close]").forEach((button) => button.addEventListener("click", closeOverlays));
+document.querySelectorAll(".overlay").forEach((node) => node.addEventListener("click", (event) => {
+  if (event.target === node || node.id === "zoom") closeOverlays();
+}));
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") return closeOverlays();
+  if (["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement.tagName)) return;
+  if (document.querySelector(".overlay.open")) return;
+  if (event.key === "ArrowLeft") go(-1);
+  if (event.key === "ArrowRight") go(1);
+});
+load().catch((error) => { $("turnMsg").textContent = "불러오기 실패: " + error.message; });
+</script>
+</body>
+</html>

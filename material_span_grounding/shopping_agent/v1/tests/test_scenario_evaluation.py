@@ -123,6 +123,18 @@ class CheckTests(unittest.TestCase):
         self.assertEqual(answer_warnings(skipped, searched=True), ["번호를 순서대로 소개하지 않음: [1, 4, 8]"])
         self.assertEqual(answer_warnings(skipped), [])
         self.assertEqual(answer_warnings("1번, 원피스. 2번, 셔츠. 3번, 치마.", searched=True), [])
+        self.assertEqual(answer_warnings("1번부터 3번까지 비슷해요. 1번은 원피스, 2번은 셔츠, 3번은 치마예요.", searched=True), [])
+
+    def test_numbers_and_grade_words_fail(self) -> None:
+        self.assertIn("수치 노출: “0.81”", check_answer(_result(message="부드러움이 0.81이에요."), []))
+        self.assertIn("수치 노출: “80%”", check_answer(_result(message="80% 확률로 얇아요."), []))
+        self.assertIn("등급어 사용: “높음”", check_answer(_result(message="얇음이 높음이에요."), []))
+        self.assertEqual(check_answer(_result(message="1번은 매우 얇고 까끌하지 않은 편이에요. 2개 담았어요."), []), [])
+
+    def test_repetition_warnings(self) -> None:
+        repeated = "1번은 매우 부드러운 편이에요. 2번도 매우 부드러운 편입니다. 3번도 매우 부드러운 편이에요."
+        self.assertEqual(answer_warnings(repeated), ["'~편' 3회 반복", "'매우' 3회 반복"])
+        self.assertEqual(answer_warnings("세 상품 모두 매우 부드러워요. 1번이 가장 얇은 편이에요."), [])
 
     def test_length_warnings(self) -> None:
         self.assertEqual(sentence_count("첫째예요. 둘째죠? 셋째!"), 3)

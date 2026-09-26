@@ -1,0 +1,4489 @@
+{
+  "generated_at": "2026-09-26T09:02:55+00:00",
+  "scenario_file": "shopping_agent/evaluation/demo_scenarios.json",
+  "scenario_count": 3,
+  "turn_count": 15,
+  "instability": [],
+  "results": [
+    {
+      "model": "gpt-5.4-mini",
+      "reasoning_effort": "low",
+      "run": 1,
+      "turns": 15,
+      "passed": 15,
+      "latency_median": 2.87,
+      "latency_p90": 4.14,
+      "latency_max": 4.3,
+      "mean_chars": 89.2,
+      "mean_sentences": 3.2,
+      "length_warnings": 0,
+      "fallbacks": 0,
+      "rows": [
+        {
+          "scenario": "F1",
+          "title": "기본 흐름: 촉감 검색 → 조건 수정 → 상세 → 비교 → 담기",
+          "turn": 1,
+          "message": "안 까끌하고 얇은 여름 원피스 찾아줘",
+          "note": "dress, want=thin, avoid=rough. 이미지로 예측한 촉감이라고 밝힌다.",
+          "answer": "세 상품 모두 얇고 시원하고 까끌하지 않아요. 이 촉감은 이미지로 예측한 촉감이에요.  \n1번은 여아용 민소매 여름 원피스예요.  \n2번은 화이트 계열의 짧은 소매 레이스 원피스예요.  \n3번은 화이트색 민소매 백리스 여름 원피스예요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "안 까끌하고 얇은 여름 원피스",
+                "category": "dress",
+                "want": [
+                  "thin",
+                  "cool"
+                ],
+                "avoid": [
+                  "rough"
+                ],
+                "keywords": [
+                  "summer",
+                  "dress"
+                ],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 4.12,
+          "llm_requests": 2,
+          "chars": 131,
+          "sentences": 5,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B076QD9NP1",
+              "title": "Jxstar Girls Summer Dress Sleeveless Printing Casual/Party 3-13Years",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71PbXLvm3cL._AC_UL1024_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.8300437331199646,
+                  "match_component": 0.8300437331199646,
+                  "weight": 1.0,
+                  "weighted_component": 0.8300437331199646
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8278281688690186,
+                  "match_component": 0.8278281688690186,
+                  "weight": 1.0,
+                  "weighted_component": 0.8278281688690186
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.3293917179107666,
+                  "match_component": 0.6706082820892334,
+                  "weight": 1.0,
+                  "weighted_component": 0.6706082820892334
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B01F53H2LG",
+              "title": "Romwe Women's Plain Short Sleeve Floral Summer Floral Lace Prom Party Shift Dress White L",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71M+ReJOnLL._AC_UL1465_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.8606036305427551,
+                  "match_component": 0.8606036305427551,
+                  "weight": 1.0,
+                  "weighted_component": 0.8606036305427551
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.815232515335083,
+                  "match_component": 0.815232515335083,
+                  "weight": 1.0,
+                  "weighted_component": 0.815232515335083
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.34953272342681885,
+                  "match_component": 0.6504672765731812,
+                  "weight": 1.0,
+                  "weighted_component": 0.6504672765731812
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B01FQ8IEI0",
+              "title": "Franterd Women Mini Dress Summer Evening Party Beach Backless Skirts Sundress (M) White",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61+-DQ6j8OL._AC_UL1024_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.8791467547416687,
+                  "match_component": 0.8791467547416687,
+                  "weight": 1.0,
+                  "weighted_component": 0.8791467547416687
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8092759251594543,
+                  "match_component": 0.8092759251594543,
+                  "weight": 1.0,
+                  "weighted_component": 0.8092759251594543
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.37570643424987793,
+                  "match_component": 0.6242935657501221,
+                  "weight": 1.0,
+                  "weighted_component": 0.6242935657501221
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B01KTJA9LQ",
+              "title": "Aimur Women Bohemian V Neck Retro Printed Ethnic Style Summer Shift Dress Black",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71fSabqCAML._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.8679338097572327,
+                  "match_component": 0.8679338097572327,
+                  "weight": 1.0,
+                  "weighted_component": 0.8679338097572327
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8499711751937866,
+                  "match_component": 0.8499711751937866,
+                  "weight": 1.0,
+                  "weighted_component": 0.8499711751937866
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.33982762694358826,
+                  "match_component": 0.6601723730564117,
+                  "weight": 1.0,
+                  "weighted_component": 0.6601723730564117
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B081VM5WH7",
+              "title": "Moyabo Dress for Women Summer Holiday Dress Short Sleeve Ruffle Trim Hem Sundress Rose Red Medium",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61yUhClyEaL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.837619960308075,
+                  "match_component": 0.837619960308075,
+                  "weight": 1.0,
+                  "weighted_component": 0.837619960308075
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8210441470146179,
+                  "match_component": 0.8210441470146179,
+                  "weight": 1.0,
+                  "weighted_component": 0.8210441470146179
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.35309353470802307,
+                  "match_component": 0.6469064652919769,
+                  "weight": 1.0,
+                  "weighted_component": 0.6469064652919769
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B01F593U6Q",
+              "title": "LXS Women Summer Dresses Backless Printing One-Piece Sleeveless Loose Style (XL, Black)",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81Vw6uvktWL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.842863142490387,
+                  "match_component": 0.842863142490387,
+                  "weight": 1.0,
+                  "weighted_component": 0.842863142490387
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8116759657859802,
+                  "match_component": 0.8116759657859802,
+                  "weight": 1.0,
+                  "weighted_component": 0.8116759657859802
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.33982762694358826,
+                  "match_component": 0.6601723730564117,
+                  "weight": 1.0,
+                  "weighted_component": 0.6601723730564117
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B072DW6PC2",
+              "title": "ELLAZHU Women Summer Crew Neck Pencil Sketch Printed Dress GA691 Blue, One Size",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61t-eG15J1L._AC_UL1200_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.8652240633964539,
+                  "match_component": 0.8652240633964539,
+                  "weight": 1.0,
+                  "weighted_component": 0.8652240633964539
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8606036305427551,
+                  "match_component": 0.8606036305427551,
+                  "weight": 1.0,
+                  "weighted_component": 0.8606036305427551
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.351311057806015,
+                  "match_component": 0.648688942193985,
+                  "weight": 1.0,
+                  "weighted_component": 0.648688942193985
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B01CXZ47EO",
+              "title": "Mordenmiss Women's Summer Two Layers Maxi Dresses L Short Sleeve Black",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/41BEK+QrA-L._AC_UL1002_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.869714617729187,
+                  "match_component": 0.869714617729187,
+                  "weight": 1.0,
+                  "weighted_component": 0.869714617729187
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8438951373100281,
+                  "match_component": 0.8438951373100281,
+                  "weight": 1.0,
+                  "weighted_component": 0.8438951373100281
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.36931508779525757,
+                  "match_component": 0.6306849122047424,
+                  "weight": 1.0,
+                  "weighted_component": 0.6306849122047424
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B081VJ66HG",
+              "title": "Moyabo Women's Short Sleeve Round Neck Ruffle Trim Hem Party Summer Beach Vacation Dress Rose Red X-Large",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61yUhClyEaL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.837619960308075,
+                  "match_component": 0.837619960308075,
+                  "weight": 1.0,
+                  "weighted_component": 0.837619960308075
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8210441470146179,
+                  "match_component": 0.8210441470146179,
+                  "weight": 1.0,
+                  "weighted_component": 0.8210441470146179
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.35309353470802307,
+                  "match_component": 0.6469064652919769,
+                  "weight": 1.0,
+                  "weighted_component": 0.6469064652919769
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B087R7J6W5",
+              "title": "Amazhiyu Womens Linen Sleeveless V-Neck Summer Back Cross Midi Dresses with Pockets (Green, Large)",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61kescu4aUL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.8740772008895874,
+                  "match_component": 0.8740772008895874,
+                  "weight": 1.0,
+                  "weighted_component": 0.8740772008895874
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8407825827598572,
+                  "match_component": 0.8407825827598572,
+                  "weight": 1.0,
+                  "weighted_component": 0.8407825827598572
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.34775856137275696,
+                  "match_component": 0.652241438627243,
+                  "weight": 1.0,
+                  "weighted_component": 0.652241438627243
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "F1",
+          "title": "기본 흐름: 촉감 검색 → 조건 수정 → 상세 → 비교 → 담기",
+          "turn": 2,
+          "message": "조금 더 두꺼운 걸로 보여줘",
+          "note": "원피스 조건을 이어받고 thin을 thick으로 바꾼다. rough 회피는 유지하는 것이 바람직.",
+          "answer": "조금 더 도톰한 쪽으로 다시 찾았어요. 이미지로 예측한 촉감이에요.  \n1번은 조금 도톰하고 조금 시원한 민소매 A라인 원피스예요.  \n2번은 조금 도톰하고 시원한 레몬 프린트 원피스예요.  \n3번은 두껍지 않고 시원한 스파게티 스트랩 원피스예요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "조금 더 두꺼운 여름 원피스",
+                "category": "dress",
+                "want": [
+                  "thick",
+                  "cool"
+                ],
+                "avoid": [
+                  "rough"
+                ],
+                "keywords": [
+                  "summer",
+                  "dress"
+                ],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.78,
+          "llm_requests": 2,
+          "chars": 138,
+          "sentences": 5,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B01CGE8M6Q",
+              "title": "Zeagoo Women Chiffon Summer Sleeveless A-line Pleated Party Cocktail Dress, Orange Red, Medium",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71lQwcNug6L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.6706082820892334,
+                  "match_component": 0.6706082820892334,
+                  "weight": 1.0,
+                  "weighted_component": 0.6706082820892334
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.6020615696907043,
+                  "match_component": 0.6020615696907043,
+                  "weight": 1.0,
+                  "weighted_component": 0.6020615696907043
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.44770172238349915,
+                  "match_component": 0.5522982776165009,
+                  "weight": 1.0,
+                  "weighted_component": 0.5522982776165009
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B01GJNXJM2",
+              "title": "KIMILILY Women's Summer Square Neckline Lemon Printed Swing Dresses Sundresses(S)",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71Be9rNDRVL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.5090932250022888,
+                  "match_component": 0.5090932250022888,
+                  "weight": 1.0,
+                  "weighted_component": 0.5090932250022888
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.7386690378189087,
+                  "match_component": 0.7386690378189087,
+                  "weight": 1.0,
+                  "weighted_component": 0.7386690378189087
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.3886180520057678,
+                  "match_component": 0.6113819479942322,
+                  "weight": 1.0,
+                  "weighted_component": 0.6113819479942322
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B01CE57XQ2",
+              "title": "ROMWE Women's Summer Spaghetti Strap Sundress Sleeveless Beach Slip Dress Navy L",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/51Wz00UTzQL._AC_UL1300_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.36116471886634827,
+                  "match_component": 0.36116471886634827,
+                  "weight": 1.0,
+                  "weighted_component": 0.36116471886634827
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.729519784450531,
+                  "match_component": 0.729519784450531,
+                  "weight": 1.0,
+                  "weighted_component": 0.729519784450531
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.3584653437137604,
+                  "match_component": 0.6415346562862396,
+                  "weight": 1.0,
+                  "weighted_component": 0.6415346562862396
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B07316YLW5",
+              "title": "Fantaist Women's Summer Sleeveless Business Party Casual Office Work Tank Dress (L, FT611-Blue)",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61z+QeQOKdL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.7162185907363892,
+                  "match_component": 0.7162185907363892,
+                  "weight": 1.0,
+                  "weighted_component": 0.7162185907363892
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.5460120439529419,
+                  "match_component": 0.5460120439529419,
+                  "weight": 1.0,
+                  "weighted_component": 0.5460120439529419
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.4639299511909485,
+                  "match_component": 0.5360700488090515,
+                  "weight": 1.0,
+                  "weighted_component": 0.5360700488090515
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B072LJF9GB",
+              "title": "MISSKY Women Sleeveless Round Neck A-line Knee-Length Casual Retro Fit and Flare Swing Summer Dress Dark Blue L",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61nbWJ8J87L._AC_UL1300_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.35042136907577515,
+                  "match_component": 0.35042136907577515,
+                  "weight": 1.0,
+                  "weighted_component": 0.35042136907577515
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.7732163667678833,
+                  "match_component": 0.7732163667678833,
+                  "weight": 1.0,
+                  "weighted_component": 0.7732163667678833
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.34953272342681885,
+                  "match_component": 0.6504672765731812,
+                  "weight": 1.0,
+                  "weighted_component": 0.6504672765731812
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B07RTWXR89",
+              "title": "MIJIRUSHI Womens Summer V Neck Adjustable Spaghetti Strap Polka Dot Backless Skater Dress",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81OuQ3fuoSL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.4063906967639923,
+                  "match_component": 0.4063906967639923,
+                  "weight": 1.0,
+                  "weighted_component": 0.4063906967639923
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.7866228222846985,
+                  "match_component": 0.7866228222846985,
+                  "weight": 1.0,
+                  "weighted_component": 0.7866228222846985
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.37983831763267517,
+                  "match_component": 0.6201616823673248,
+                  "weight": 1.0,
+                  "weighted_component": 0.6201616823673248
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B01FSBNRUA",
+              "title": "Asvivid Women's Summer Classic Scoop Neck Sleeveless Bodycon Mini Tank Dress Large Black",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/51ClVj1gPYL._AC_UL1024_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.7476159334182739,
+                  "match_component": 0.7476159334182739,
+                  "weight": 1.0,
+                  "weighted_component": 0.7476159334182739
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.4639299511909485,
+                  "match_component": 0.4639299511909485,
+                  "weight": 1.0,
+                  "weighted_component": 0.4639299511909485
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.49554455280303955,
+                  "match_component": 0.5044554471969604,
+                  "weight": 1.0,
+                  "weighted_component": 0.5044554471969604
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B076QD9NP1",
+              "title": "Jxstar Girls Summer Dress Sleeveless Printing Casual/Party 3-13Years",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71PbXLvm3cL._AC_UL1024_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.13477590680122375,
+                  "match_component": 0.13477590680122375,
+                  "weight": 1.0,
+                  "weighted_component": 0.13477590680122375
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8278281688690186,
+                  "match_component": 0.8278281688690186,
+                  "weight": 1.0,
+                  "weighted_component": 0.8278281688690186
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.3293917179107666,
+                  "match_component": 0.6706082820892334,
+                  "weight": 1.0,
+                  "weighted_component": 0.6706082820892334
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B07SSKDG17",
+              "title": "Bibowa Womans Vacation Clothing Summers Dresses for Women Cute Green Dresses Green m",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61HabWmmHXL._AC_UL1370_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.32082128524780273,
+                  "match_component": 0.32082128524780273,
+                  "weight": 1.0,
+                  "weighted_component": 0.32082128524780273
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.837619960308075,
+                  "match_component": 0.837619960308075,
+                  "weight": 1.0,
+                  "weighted_component": 0.837619960308075
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.3747906982898712,
+                  "match_component": 0.6252093017101288,
+                  "weight": 1.0,
+                  "weighted_component": 0.6252093017101288
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B07QQJQW2R",
+              "title": "Play Tailor Cotton Dresses for Girls Sleeveless Tiered Casual Swing Summer Dress, Orange, Size 130",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/51s+ELB4VyL._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.4719533324241638,
+                  "match_component": 0.4719533324241638,
+                  "weight": 1.0,
+                  "weighted_component": 0.4719533324241638
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.730289876461029,
+                  "match_component": 0.730289876461029,
+                  "weight": 1.0,
+                  "weighted_component": 0.730289876461029
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.3937346339225769,
+                  "match_component": 0.6062653660774231,
+                  "weight": 1.0,
+                  "weighted_component": 0.6062653660774231
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "F1",
+          "title": "기본 흐름: 촉감 검색 → 조건 수정 → 상세 → 비교 → 담기",
+          "turn": 3,
+          "message": "1번 촉감 자세히 알려줘",
+          "note": "직전 검색 1번 상세. 확률을 숫자 대신 높음·보통·낮음으로 말한다.",
+          "answer": "1번은 부드럽고 조금 늘어나고 조금 도톰해요. 시원한 편이고 조금 매끄러워요.  \n이 촉감은 이미지로 예측한 촉감이에요.  \n원하시면 비슷한 느낌에서 더 얇은 쪽이나 더 탄탄한 쪽도 골라드릴게요.",
+          "action": "get_product_detail",
+          "tool_calls": [
+            {
+              "name": "get_product_detail",
+              "arguments": {
+                "product_id": "B01CGE8M6Q"
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.82,
+          "llm_requests": 2,
+          "chars": 109,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "F1",
+          "title": "기본 흐름: 촉감 검색 → 조건 수정 → 상세 → 비교 → 담기",
+          "turn": 4,
+          "message": "1번이랑 2번 중에 뭐가 더 부드러워?",
+          "note": "1·2번 비교 후 어느 쪽인지 한 문장으로 답한다. 차이가 작으면 작다고 말한다.",
+          "answer": "둘 다 부드럽지만, 1번과 2번은 부드러움 차이가 거의 없어요. 비교 기준은 이미지로 예측한 촉감이에요.  \n다만 2번이 조금 더 얇고 더 시원하게 느껴지고, 1번은 조금 더 도톰해요.",
+          "action": "compare_products",
+          "tool_calls": [
+            {
+              "name": "compare_products",
+              "arguments": {
+                "product_ids": [
+                  "B01CGE8M6Q",
+                  "B01GJNXJM2"
+                ]
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.87,
+          "llm_requests": 2,
+          "chars": 103,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "F1",
+          "title": "기본 흐름: 촉감 검색 → 조건 수정 → 상세 → 비교 → 담기",
+          "turn": 5,
+          "message": "2번 장바구니에 담아줘",
+          "note": "직전 검색 2번을 1개 담고 무엇을 담았는지 짧게 확인한다.",
+          "answer": "2번을 장바구니에 담았어요. 원하시면 장바구니도 바로 확인해드릴게요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B01GJNXJM2",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.8,
+          "llm_requests": 2,
+          "chars": 38,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 1,
+          "message": "부드러운 가디건 보여줘",
+          "note": "cardigan(또는 sweater), want=soft.",
+          "answer": "세 상품 모두 부드러워요. 이미지로 예측한 촉감 기준이에요.\n\n1번은 크로셰 볼레로 가디건이고, 가볍게 걸치기 좋은 느낌이에요.  \n2번은 버튼다운 니트 가디건이라 기본형에 가깝고, 3번은 숄처럼 두르는 긴 가디건 느낌이에요.  \n원하시면 제가 여기서 더 얇은 쪽, 더 따뜻한 쪽으로 다시 골라드릴게요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "부드러운 가디건",
+                "category": "cardigan",
+                "want": [
+                  "soft"
+                ],
+                "avoid": [],
+                "keywords": [],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.3,
+          "llm_requests": 2,
+          "chars": 169,
+          "sentences": 5,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B00MJ0RVI8",
+              "title": "Ladies Knitted Bolero Crochet Cardigan Shrug",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/714OE7OtrWL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8333246111869812,
+                  "match_component": 0.8333246111869812,
+                  "weight": 1.0,
+                  "weighted_component": 0.8333246111869812
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B014EFUYPW",
+              "title": "BIADANI Women Round Neck Button Down Soft Classic Knit Cardigan Sweater Black Medium",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71+2hrzJJSL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8322367072105408,
+                  "match_component": 0.8322367072105408,
+                  "weight": 1.0,
+                  "weighted_component": 0.8322367072105408
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B08BFQ7ZH8",
+              "title": "QBSM Women's Shawl Wrap Poncho Ruana Capes Open Front Cardigan Blanket Wraps for Fall and Winter",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/617N3FhiPtL._AC_UL1000_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8116759657859802,
+                  "match_component": 0.8116759657859802,
+                  "weight": 1.0,
+                  "weighted_component": 0.8116759657859802
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B01NCJV3QR",
+              "title": "JayJay Women Open Front Casual Knit Long Sleeve Sweater Classic Cover Up Cardigan,Black,L",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71EwYZfRKKL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8187368512153625,
+                  "match_component": 0.8187368512153625,
+                  "weight": 1.0,
+                  "weighted_component": 0.8187368512153625
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B073HZRYRF",
+              "title": "Women's Blazer Notched Lapel Casual Striped Cardigan Jacket Long Sleeve Spring Outwear",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61nPRQXLPzL._AC_UL1111_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8233283758163452,
+                  "match_component": 0.8233283758163452,
+                  "weight": 1.0,
+                  "weighted_component": 0.8233283758163452
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B01N8TDLWM",
+              "title": "ZIKKER Women's Aztec Print Drape Open Front Knit Cardigan Sweaters Green X-Large",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61eS88qO6fL._AC_UL1024_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8104788661003113,
+                  "match_component": 0.8104788661003113,
+                  "weight": 1.0,
+                  "weighted_component": 0.8104788661003113
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B01AZM3IS8",
+              "title": "Merona Women's Favorite Cardigan Sweater Red Crew Neck (Large)",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61KBbzbSRPL._AC_UL1024_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8255897164344788,
+                  "match_component": 0.8255897164344788,
+                  "weight": 1.0,
+                  "weighted_component": 0.8255897164344788
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B012ZND0JM",
+              "title": "Meaneor Women's Long Sleeves Floral Lace Back Boyfriend Pocket Cardigan Black XXL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71o1aO4-8VL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8344069123268127,
+                  "match_component": 0.8344069123268127,
+                  "weight": 1.0,
+                  "weighted_component": 0.8344069123268127
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B08ZKSQSJB",
+              "title": "Women's Long Sleeve Tie Dye Knit Cardigan V Neck Button Down Cropped Shrug Sweater Blue 2XL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71ufCcqqNwL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8386797308921814,
+                  "match_component": 0.8386797308921814,
+                  "weight": 1.0,
+                  "weighted_component": 0.8386797308921814
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B01M1HC8N5",
+              "title": "KNITBEST Women's Knitwear Striped Checked Wool Long Sleeve Cardigan (X-Large, Checked)",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/91u4WUZOudL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8311430811882019,
+                  "match_component": 0.8311430811882019,
+                  "weight": 1.0,
+                  "weighted_component": 0.8311430811882019
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 2,
+          "message": "두 번째 거 자세히 알려줘",
+          "note": "직전 검색 2번 상세.",
+          "answer": "2번은 검은색 버튼다운 라운드넥 니트 가디건이에요. 부드럽고 조금 늘어나고, 조금 따뜻한 편이라 기본 가디건으로 무난해 보여요. 조금 각이 잡혀 있고 조금 폭신한 느낌도 있어요. 이미지로 예측한 촉감 기준이고, 구매자 리뷰 근거는 아니에요.",
+          "action": "get_product_detail",
+          "tool_calls": [
+            {
+              "name": "get_product_detail",
+              "arguments": {
+                "product_id": "B014EFUYPW"
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 4.3,
+          "llm_requests": 2,
+          "chars": 134,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 3,
+          "message": "그거랑 첫 번째 비교해줘",
+          "note": "'그거'는 방금 본 2번. 2번과 1번을 비교한다.",
+          "answer": "둘 다 부드럽고 조금 매끄럽고, 조금 늘어나는 느낌이라 전반적으로 비슷해요. 이미지로 예측한 촉감 기준이에요.  \n차이는 1번이 조금 더 얇고, 2번이 조금 더 도톰해요.  \n그래서 가볍게 걸치려면 1번이 더 맞고, 기본형으로 무난하게 입기엔 2번이 더 좋아 보여요.",
+          "action": "compare_products",
+          "tool_calls": [
+            {
+              "name": "compare_products",
+              "arguments": {
+                "product_ids": [
+                  "B014EFUYPW",
+                  "B00MJ0RVI8"
+                ]
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.95,
+          "llm_requests": 2,
+          "chars": 149,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 4,
+          "message": "첫 번째 거 두 개 담아줘",
+          "note": "1번을 수량 2로 담는다.",
+          "answer": "1번 상품 두 개 담았어요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B00MJ0RVI8",
+                "quantity": 2
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.38,
+          "llm_requests": 2,
+          "chars": 15,
+          "sentences": 1,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 5,
+          "message": "방금 담은 거 하나만 빼줘",
+          "note": "1번 가디건 2개 중 1개만 뺀다(quantity=1). 1개 남았다고 말한다.",
+          "answer": "하나만 뺐어요. 지금 1번 상품은 1개 남아 있어요.",
+          "action": "remove_from_cart",
+          "tool_calls": [
+            {
+              "name": "view_cart",
+              "arguments": {},
+              "ok": true
+            },
+            {
+              "name": "remove_from_cart",
+              "arguments": {
+                "product_id": "B00MJ0RVI8",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 4.14,
+          "llm_requests": 3,
+          "chars": 29,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 1,
+          "message": "따뜻한 코트 보여줘",
+          "note": "coat 계열, want=warm.",
+          "answer": "세 상품 모두 따뜻해요.  \n1번은 짧은 퍼 코트 느낌의 아우터예요. 이미지로 예측한 촉감 기준이라 실제 입어본 느낌과 다를 수 있어요.  \n2번은 가벼운 겨울 코트 쪽이고, 3번은 망토처럼 걸치는 니트 코트 느낌이에요.  \n원하시면 더 긴 코트나 더 두꺼운 코트로도 골라드릴게요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "따뜻한 코트",
+                "category": "coat",
+                "want": [
+                  "warm"
+                ],
+                "avoid": [],
+                "keywords": [],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.22,
+          "llm_requests": 2,
+          "chars": 157,
+          "sentences": 5,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B08KZQRLFL",
+              "title": "TECREW Women's Fleece Coat Lapel Fuzzy Faux Zip Up Short Pocket Jacket Outwear",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71+9zgOU6vL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8714748620986938,
+                  "match_component": 0.8714748620986938,
+                  "weight": 1.0,
+                  "weighted_component": 0.8714748620986938
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B07YJHTM3Q",
+              "title": "Charis Allure Women's Hooded Ultra Lightweight Short Winter Jacket Warm Short Outwear Coat, Navy Blue, Large",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71Cxn8njCDL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8679338097572327,
+                  "match_component": 0.8679338097572327,
+                  "weight": 1.0,
+                  "weighted_component": 0.8679338097572327
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B0150YIXFO",
+              "title": "Womens Cape Batwing Tassels Poncho Jacket Lady Cloak Coat Knitwear",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81Vf-ocUd5L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8577680587768555,
+                  "match_component": 0.8577680587768555,
+                  "weight": 1.0,
+                  "weighted_component": 0.8577680587768555
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B07W417V43",
+              "title": "Charis Allure Women's Casual Long Coat with Pockets M",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81LGshYmh8L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8469578623771667,
+                  "match_component": 0.8469578623771667,
+                  "weight": 1.0,
+                  "weighted_component": 0.8469578623771667
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B07GSDC16Y",
+              "title": "Orchid Row Women's Fashion Faux fake Fur Cowl Scarf for Winter Coat Neck Warmer",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/91OS8TIEU5L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.842863142490387,
+                  "match_component": 0.842863142490387,
+                  "weight": 1.0,
+                  "weighted_component": 0.842863142490387
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B00NU9T49Q",
+              "title": "Jessie G. Women's Alicia Waterproof Down Coat Black Small",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61Bp89IrsPL._AC_UL1400_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8577680587768555,
+                  "match_component": 0.8577680587768555,
+                  "weight": 1.0,
+                  "weighted_component": 0.8577680587768555
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B081G7SBLK",
+              "title": "Charis Allure Women's Double-Faced Long Trench Coat Lapel Wool-Blend Outwear with Removable Belt, Black, Medium",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/613w0stjzHL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8558511734008789,
+                  "match_component": 0.8558511734008789,
+                  "weight": 1.0,
+                  "weighted_component": 0.8558511734008789
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B07XSWYRRH",
+              "title": "Aiboria Womens Thickened Parka Coat Outwear Jacket with Removable Hooded (Navy,M)",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/710b51a5HLL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8438951373100281,
+                  "match_component": 0.8438951373100281,
+                  "weight": 1.0,
+                  "weighted_component": 0.8438951373100281
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B07JLBCKQ4",
+              "title": "Women's Classic Horns Buttons Hooded Jacket Outwear Warm Zipper Plus-Size Coat (3X-Large, Black)",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61PPovxCzuL._AC_UL1448_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8499711751937866,
+                  "match_component": 0.8499711751937866,
+                  "weight": 1.0,
+                  "weighted_component": 0.8499711751937866
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B098X2KZQS",
+              "title": "Venustas Heated Jacket with Battery Pack 7.4V (Unisex), 6 heat zones, Heated Coat for Women and Men with Detachable hood",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61FvCtjIsEL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8652240633964539,
+                  "match_component": 0.8652240633964539,
+                  "weight": 1.0,
+                  "weighted_component": 0.8652240633964539
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 2,
+          "message": "3번 담아줘",
+          "note": "직전 검색 3번을 담는다.",
+          "answer": "3번을 장바구니에 담았어요.  \n망토처럼 걸치는 니트 코트가 1개 추가됐어요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B0150YIXFO",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.44,
+          "llm_requests": 2,
+          "chars": 43,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 3,
+          "message": "지금 장바구니에 뭐가 있어?",
+          "note": "view_cart로 방금 담은 코트 1개를 말한다.",
+          "answer": "장바구니에는 1개가 있어요.  \n망토처럼 걸치는 니트 코트 1개가 담겨 있어요.",
+          "action": "view_cart",
+          "tool_calls": [
+            {
+              "name": "view_cart",
+              "arguments": {},
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.77,
+          "llm_requests": 2,
+          "chars": 44,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 4,
+          "message": "방금 담은 거 장바구니에서 빼줘",
+          "note": "remove_from_cart로 방금 담은 3번 코트를 뺀다. 무엇을 뺐는지 짧게 확인한다.",
+          "answer": "방금 담은 상품을 장바구니에서 뺐어요.  \n이제 장바구니는 비어 있어요.",
+          "action": "remove_from_cart",
+          "tool_calls": [
+            {
+              "name": "remove_from_cart",
+              "arguments": {
+                "product_id": "B0150YIXFO",
+                "quantity": null
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.77,
+          "llm_requests": 2,
+          "chars": 40,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 5,
+          "message": "알겠어, 고마워요",
+          "note": "도구 없이 짧게 마무리 인사.",
+          "answer": "천만에요. 필요하시면 언제든 원하는 옷의 촉감이나 종류를 말해 주세요.",
+          "action": "respond",
+          "tool_calls": [],
+          "latency_seconds": 1.41,
+          "llm_requests": 1,
+          "chars": 39,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.4-mini",
+      "reasoning_effort": "low",
+      "run": 2,
+      "turns": 15,
+      "passed": 15,
+      "latency_median": 3.07,
+      "latency_p90": 3.29,
+      "latency_max": 4.14,
+      "mean_chars": 85.5,
+      "mean_sentences": 2.8,
+      "length_warnings": 0,
+      "fallbacks": 0,
+      "rows": [
+        {
+          "scenario": "F1",
+          "title": "기본 흐름: 촉감 검색 → 조건 수정 → 상세 → 비교 → 담기",
+          "turn": 1,
+          "message": "안 까끌하고 얇은 여름 원피스 찾아줘",
+          "note": "dress, want=thin, avoid=rough. 이미지로 예측한 촉감이라고 밝힌다.",
+          "answer": "세 상품 모두 얇고 시원하고 까끌하지 않아요.  \n1번은 검은색 맥시 원피스예요.  \n2번은 흰색 레이스 느낌의 여름 원피스예요.  \n3번은 흰색 미니 원피스예요.  \n\n원하시면 제가 이 중에서 더 자연스러운 핏이나 더 가벼워 보이는 쪽으로 2개만 추려드릴게요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "안 까끌하고 얇은 여름 원피스",
+                "category": "dress",
+                "want": [
+                  "thin",
+                  "cool"
+                ],
+                "avoid": [
+                  "rough"
+                ],
+                "keywords": [
+                  "summer",
+                  "dress"
+                ],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.2,
+          "llm_requests": 2,
+          "chars": 146,
+          "sentences": 5,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B01CXZ47EO",
+              "title": "Mordenmiss Women's Summer Two Layers Maxi Dresses L Short Sleeve Black",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/41BEK+QrA-L._AC_UL1002_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.869714617729187,
+                  "match_component": 0.869714617729187,
+                  "weight": 1.0,
+                  "weighted_component": 0.869714617729187
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8438951373100281,
+                  "match_component": 0.8438951373100281,
+                  "weight": 1.0,
+                  "weighted_component": 0.8438951373100281
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.36931508779525757,
+                  "match_component": 0.6306849122047424,
+                  "weight": 1.0,
+                  "weighted_component": 0.6306849122047424
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B01F53H2LG",
+              "title": "Romwe Women's Plain Short Sleeve Floral Summer Floral Lace Prom Party Shift Dress White L",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71M+ReJOnLL._AC_UL1465_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.8606036305427551,
+                  "match_component": 0.8606036305427551,
+                  "weight": 1.0,
+                  "weighted_component": 0.8606036305427551
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.815232515335083,
+                  "match_component": 0.815232515335083,
+                  "weight": 1.0,
+                  "weighted_component": 0.815232515335083
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.34953272342681885,
+                  "match_component": 0.6504672765731812,
+                  "weight": 1.0,
+                  "weighted_component": 0.6504672765731812
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B01FQ8IEI0",
+              "title": "Franterd Women Mini Dress Summer Evening Party Beach Backless Skirts Sundress (M) White",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61+-DQ6j8OL._AC_UL1024_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.8791467547416687,
+                  "match_component": 0.8791467547416687,
+                  "weight": 1.0,
+                  "weighted_component": 0.8791467547416687
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8092759251594543,
+                  "match_component": 0.8092759251594543,
+                  "weight": 1.0,
+                  "weighted_component": 0.8092759251594543
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.37570643424987793,
+                  "match_component": 0.6242935657501221,
+                  "weight": 1.0,
+                  "weighted_component": 0.6242935657501221
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B01FZAI1LE",
+              "title": "Romwe Women's Summer Casual Half Sleeve Vintage Print Split Maxi Dress Black M",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71LP-ILgBPL._AC_UL1465_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.8774768114089966,
+                  "match_component": 0.8774768114089966,
+                  "weight": 1.0,
+                  "weighted_component": 0.8774768114089966
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.815232515335083,
+                  "match_component": 0.815232515335083,
+                  "weight": 1.0,
+                  "weighted_component": 0.815232515335083
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.3557748794555664,
+                  "match_component": 0.6442251205444336,
+                  "weight": 1.0,
+                  "weighted_component": 0.6442251205444336
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B01HL1TWEK",
+              "title": "Babyonlinedress women's Long summer dress floral printed casual dress,Picturecolor,size:Medium",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71oztnPwr0L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.8407825827598572,
+                  "match_component": 0.8407825827598572,
+                  "weight": 1.0,
+                  "weighted_component": 0.8407825827598572
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8449215292930603,
+                  "match_component": 0.8449215292930603,
+                  "weight": 1.0,
+                  "weighted_component": 0.8449215292930603
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.3345894515514374,
+                  "match_component": 0.6654105484485626,
+                  "weight": 1.0,
+                  "weighted_component": 0.6654105484485626
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B076QD9NP1",
+              "title": "Jxstar Girls Summer Dress Sleeveless Printing Casual/Party 3-13Years",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71PbXLvm3cL._AC_UL1024_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.8300437331199646,
+                  "match_component": 0.8300437331199646,
+                  "weight": 1.0,
+                  "weighted_component": 0.8300437331199646
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8278281688690186,
+                  "match_component": 0.8278281688690186,
+                  "weight": 1.0,
+                  "weighted_component": 0.8278281688690186
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.3293917179107666,
+                  "match_component": 0.6706082820892334,
+                  "weight": 1.0,
+                  "weighted_component": 0.6706082820892334
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B07143JQ65",
+              "title": "Romwe Sun Dress Women's Plus Size Summer Casual Sleeveless Tunic Tie Dye Swing Ombre T-Shirt Dress Green_3 XX-Large",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/4129-Ve+gnL._AC_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.8615382313728333,
+                  "match_component": 0.8615382313728333,
+                  "weight": 1.0,
+                  "weighted_component": 0.8615382313728333
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8322367072105408,
+                  "match_component": 0.8322367072105408,
+                  "weight": 1.0,
+                  "weighted_component": 0.8322367072105408
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.3407045006752014,
+                  "match_component": 0.6592954993247986,
+                  "weight": 1.0,
+                  "weighted_component": 0.6592954993247986
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B07LCGPY6W",
+              "title": "HOYMN Women's Midi Summer Dress Off Shoulder Ruffle Button Casual Cocktail Bowknot Dresses with Pocket Apricot",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61SmeS8FWVL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.859663724899292,
+                  "match_component": 0.859663724899292,
+                  "weight": 1.0,
+                  "weighted_component": 0.859663724899292
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8354835510253906,
+                  "match_component": 0.8354835510253906,
+                  "weight": 1.0,
+                  "weighted_component": 0.8354835510253906
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.35756751894950867,
+                  "match_component": 0.6424324810504913,
+                  "weight": 1.0,
+                  "weighted_component": 0.6424324810504913
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B072DW6PC2",
+              "title": "ELLAZHU Women Summer Crew Neck Pencil Sketch Printed Dress GA691 Blue, One Size",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61t-eG15J1L._AC_UL1200_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.8652240633964539,
+                  "match_component": 0.8652240633964539,
+                  "weight": 1.0,
+                  "weighted_component": 0.8652240633964539
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8606036305427551,
+                  "match_component": 0.8606036305427551,
+                  "weight": 1.0,
+                  "weighted_component": 0.8606036305427551
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.351311057806015,
+                  "match_component": 0.648688942193985,
+                  "weight": 1.0,
+                  "weighted_component": 0.648688942193985
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B0711F44YR",
+              "title": "Monique Women Floral Elephant Print Bohemian Long Maxi Skirt Summer Casual Party Beach Dress Dark Blue XL",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/711OCkPN7IL._AC_UL1380_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.873214840888977,
+                  "match_component": 0.873214840888977,
+                  "weight": 1.0,
+                  "weighted_component": 0.873214840888977
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8311430811882019,
+                  "match_component": 0.8311430811882019,
+                  "weight": 1.0,
+                  "weighted_component": 0.8311430811882019
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.3442229926586151,
+                  "match_component": 0.6557770073413849,
+                  "weight": 1.0,
+                  "weighted_component": 0.6557770073413849
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "F1",
+          "title": "기본 흐름: 촉감 검색 → 조건 수정 → 상세 → 비교 → 담기",
+          "turn": 2,
+          "message": "조금 더 두꺼운 걸로 보여줘",
+          "note": "원피스 조건을 이어받고 thin을 thick으로 바꾼다. rough 회피는 유지하는 것이 바람직.",
+          "answer": "이미지로 예측한 촉감 기준으로, 1번은 조금 도톰하고 조금 시원한 편인데 약간 까끌할 수 있어요.  \n2번은 조금 도톰하면서 시원하고 까끌하지 않아요.  \n3번은 두껍지 않고 시원하며 까끌하지 않아요.  \n\n원하시면 제가 이 중에서 더 무난한 촉감 쪽으로 한 번 더 좁혀드릴게요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "안 까끌하고 조금 더 두꺼운 여름 원피스",
+                "category": "dress",
+                "want": [
+                  "thick",
+                  "cool"
+                ],
+                "avoid": [
+                  "rough"
+                ],
+                "keywords": [
+                  "summer",
+                  "dress"
+                ],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.29,
+          "llm_requests": 2,
+          "chars": 156,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B01CGE8M6Q",
+              "title": "Zeagoo Women Chiffon Summer Sleeveless A-line Pleated Party Cocktail Dress, Orange Red, Medium",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71lQwcNug6L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.6706082820892334,
+                  "match_component": 0.6706082820892334,
+                  "weight": 1.0,
+                  "weighted_component": 0.6706082820892334
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.6020615696907043,
+                  "match_component": 0.6020615696907043,
+                  "weight": 1.0,
+                  "weighted_component": 0.6020615696907043
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.44770172238349915,
+                  "match_component": 0.5522982776165009,
+                  "weight": 1.0,
+                  "weighted_component": 0.5522982776165009
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B01G0L9GGG",
+              "title": "Liseaforu Women Summer Sleeveless Emoji Print Skater Dress",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61kFGfIbXPL._AC_UL1010_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.49139487743377686,
+                  "match_component": 0.49139487743377686,
+                  "weight": 1.0,
+                  "weighted_component": 0.49139487743377686
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8006919622421265,
+                  "match_component": 0.8006919622421265,
+                  "weight": 1.0,
+                  "weighted_component": 0.8006919622421265
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.36931508779525757,
+                  "match_component": 0.6306849122047424,
+                  "weight": 1.0,
+                  "weighted_component": 0.6306849122047424
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B07PRR7PDP",
+              "title": "Girls' 2T-12 Cotton Floral Dress Summer Backless Casual Sundress (6-7, Red)",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61V-F43JuML._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.35488009452819824,
+                  "match_component": 0.35488009452819824,
+                  "weight": 1.0,
+                  "weighted_component": 0.35488009452819824
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8606036305427551,
+                  "match_component": 0.8606036305427551,
+                  "weight": 1.0,
+                  "weighted_component": 0.8606036305427551
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.31658050417900085,
+                  "match_component": 0.6834194958209991,
+                  "weight": 1.0,
+                  "weighted_component": 0.6834194958209991
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B01CXZ47EO",
+              "title": "Mordenmiss Women's Summer Two Layers Maxi Dresses L Short Sleeve Black",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/41BEK+QrA-L._AC_UL1002_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.10818895697593689,
+                  "match_component": 0.10818895697593689,
+                  "weight": 1.0,
+                  "weighted_component": 0.10818895697593689
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8438951373100281,
+                  "match_component": 0.8438951373100281,
+                  "weight": 1.0,
+                  "weighted_component": 0.8438951373100281
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.36931508779525757,
+                  "match_component": 0.6306849122047424,
+                  "weight": 1.0,
+                  "weighted_component": 0.6306849122047424
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B01CE57XQ2",
+              "title": "ROMWE Women's Summer Spaghetti Strap Sundress Sleeveless Beach Slip Dress Navy L",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/51Wz00UTzQL._AC_UL1300_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.36116471886634827,
+                  "match_component": 0.36116471886634827,
+                  "weight": 1.0,
+                  "weighted_component": 0.36116471886634827
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.729519784450531,
+                  "match_component": 0.729519784450531,
+                  "weight": 1.0,
+                  "weighted_component": 0.729519784450531
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.3584653437137604,
+                  "match_component": 0.6415346562862396,
+                  "weight": 1.0,
+                  "weighted_component": 0.6415346562862396
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B01FSBNRUA",
+              "title": "Asvivid Women's Summer Classic Scoop Neck Sleeveless Bodycon Mini Tank Dress Large Black",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/51ClVj1gPYL._AC_UL1024_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.7476159334182739,
+                  "match_component": 0.7476159334182739,
+                  "weight": 1.0,
+                  "weighted_component": 0.7476159334182739
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.4639299511909485,
+                  "match_component": 0.4639299511909485,
+                  "weight": 1.0,
+                  "weighted_component": 0.4639299511909485
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.49554455280303955,
+                  "match_component": 0.5044554471969604,
+                  "weight": 1.0,
+                  "weighted_component": 0.5044554471969604
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B01F53H2LG",
+              "title": "Romwe Women's Plain Short Sleeve Floral Summer Floral Lace Prom Party Shift Dress White L",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71M+ReJOnLL._AC_UL1465_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.10970578342676163,
+                  "match_component": 0.10970578342676163,
+                  "weight": 1.0,
+                  "weighted_component": 0.10970578342676163
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.815232515335083,
+                  "match_component": 0.815232515335083,
+                  "weight": 1.0,
+                  "weighted_component": 0.815232515335083
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.34953272342681885,
+                  "match_component": 0.6504672765731812,
+                  "weight": 1.0,
+                  "weighted_component": 0.6504672765731812
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B01K4JAG0U",
+              "title": "Verdusa Women's Polka Dot Casual Summer Short Sleeve Pocket Long Maxi Dress Black White L",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81HqeS4rTvL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.23231014609336853,
+                  "match_component": 0.23231014609336853,
+                  "weight": 1.0,
+                  "weighted_component": 0.23231014609336853
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.7114308476448059,
+                  "match_component": 0.7114308476448059,
+                  "weight": 1.0,
+                  "weighted_component": 0.7114308476448059
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.37387579679489136,
+                  "match_component": 0.6261242032051086,
+                  "weight": 1.0,
+                  "weighted_component": 0.6261242032051086
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B071VN8L6T",
+              "title": "MISSKY Women's Sleeveless Round Neck A-line Casual Swing Summer Dress,Navy XL",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61nbWJ8J87L._AC_UL1300_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.35042136907577515,
+                  "match_component": 0.35042136907577515,
+                  "weight": 1.0,
+                  "weighted_component": 0.35042136907577515
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.7732163667678833,
+                  "match_component": 0.7732163667678833,
+                  "weight": 1.0,
+                  "weighted_component": 0.7732163667678833
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.34953272342681885,
+                  "match_component": 0.6504672765731812,
+                  "weight": 1.0,
+                  "weighted_component": 0.6504672765731812
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B074DSCD79",
+              "title": "Set of 3 Women's Genuine Cowhide Leather Stylish Thin Dress Belt Fashion Vintage Casual Skinny Belts for Jeans Shorts Pants Summer for Women With Alloy Pin Buckle By ANDY GRADE (Style B)",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/41L27krjBQL._AC_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.601593554019928,
+                  "match_component": 0.601593554019928,
+                  "weight": 1.0,
+                  "weighted_component": 0.601593554019928
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.6210813522338867,
+                  "match_component": 0.6210813522338867,
+                  "weight": 1.0,
+                  "weighted_component": 0.6210813522338867
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.4392662048339844,
+                  "match_component": 0.5607337951660156,
+                  "weight": 1.0,
+                  "weighted_component": 0.5607337951660156
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "F1",
+          "title": "기본 흐름: 촉감 검색 → 조건 수정 → 상세 → 비교 → 담기",
+          "turn": 3,
+          "message": "1번 촉감 자세히 알려줘",
+          "note": "직전 검색 1번 상세. 확률을 숫자 대신 높음·보통·낮음으로 말한다.",
+          "answer": "1번은 쉬폰 느낌의 민소매 A라인 원피스예요.  \n이미지로 예측한 촉감으로는 부드럽고, 조금 늘어나고, 조금 도톰하며, 조금 시원하고, 조금 매끄러워요.  \n구매자 리뷰 근거는 없어서, 촉감은 이미지로 예측한 촉감이라고 보면 돼요.",
+          "action": "get_product_detail",
+          "tool_calls": [
+            {
+              "name": "get_product_detail",
+              "arguments": {
+                "product_id": "B01CGE8M6Q"
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.65,
+          "llm_requests": 2,
+          "chars": 129,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "F1",
+          "title": "기본 흐름: 촉감 검색 → 조건 수정 → 상세 → 비교 → 담기",
+          "turn": 4,
+          "message": "1번이랑 2번 중에 뭐가 더 부드러워?",
+          "note": "1·2번 비교 후 어느 쪽인지 한 문장으로 답한다. 차이가 작으면 작다고 말한다.",
+          "answer": "2번이 조금 더 부드러워요. 1번은 부드럽긴 하지만 2번보다 살짝 덜 부드럽게 나와요.",
+          "action": "compare_products",
+          "tool_calls": [
+            {
+              "name": "compare_products",
+              "arguments": {
+                "product_ids": [
+                  "B01CGE8M6Q",
+                  "B01G0L9GGG"
+                ]
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.76,
+          "llm_requests": 2,
+          "chars": 48,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "F1",
+          "title": "기본 흐름: 촉감 검색 → 조건 수정 → 상세 → 비교 → 담기",
+          "turn": 5,
+          "message": "2번 장바구니에 담아줘",
+          "note": "직전 검색 2번을 1개 담고 무엇을 담았는지 짧게 확인한다.",
+          "answer": "2번을 장바구니에 담았어요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B01G0L9GGG",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.64,
+          "llm_requests": 2,
+          "chars": 15,
+          "sentences": 1,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 1,
+          "message": "부드러운 가디건 보여줘",
+          "note": "cardigan(또는 sweater), want=soft.",
+          "answer": "세 상품 모두 부드러워요. 1번은 검은색 클래식 니트 가디건이고, 이미지로 예측한 촉감 기준으로 부드러운 느낌이에요. 2번은 연한 회색의 긴 가디건, 3번은 줄무늬 느낌의 가디건 자켓인데 둘 다 비슷하게 부드러운 편이에요. 더 골라드릴까요?",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "부드러운 가디건",
+                "category": "cardigan",
+                "want": [
+                  "soft"
+                ],
+                "avoid": [],
+                "keywords": [],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.07,
+          "llm_requests": 2,
+          "chars": 134,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B014EFUYPW",
+              "title": "BIADANI Women Round Neck Button Down Soft Classic Knit Cardigan Sweater Black Medium",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71+2hrzJJSL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8322367072105408,
+                  "match_component": 0.8322367072105408,
+                  "weight": 1.0,
+                  "weighted_component": 0.8322367072105408
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B015E5PXYI",
+              "title": "DJT Womens allover Casual Tie Dyed Long Sleeve Cascading Cardigan Large #C11 Light Grey",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81uKn9DamlL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8128673434257507,
+                  "match_component": 0.8128673434257507,
+                  "weight": 1.0,
+                  "weighted_component": 0.8128673434257507
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B073HZRYRF",
+              "title": "Women's Blazer Notched Lapel Casual Striped Cardigan Jacket Long Sleeve Spring Outwear",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61nPRQXLPzL._AC_UL1111_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8233283758163452,
+                  "match_component": 0.8233283758163452,
+                  "weight": 1.0,
+                  "weighted_component": 0.8233283758163452
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B078PSVGG1",
+              "title": "Orchid Row Women's Oxford Plaid Wool Effect Blanket Wrap Ruana Cardigan Shawl",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/01RmK+J4pJL._AC_.gif",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8116759657859802,
+                  "match_component": 0.8116759657859802,
+                  "weight": 1.0,
+                  "weighted_component": 0.8116759657859802
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B01468TR2S",
+              "title": "Women's Vintage Owl Print Color Block Pashmina Shawl Scarf Cape Thin Cardigan (One Size, Rice&Red)",
+              "category": "sweater",
+              "evidence_source": "review_grounded_overlay",
+              "remote_image_url": "https://m.media-amazon.com/images/I/51BclOOxHFL._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8056321740150452,
+                  "match_component": 0.8056321740150452,
+                  "weight": 1.0,
+                  "weighted_component": 0.8056321740150452
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B0176I30LO",
+              "title": "Women Black and White Striped Long Cardigan Loose Sweater Jacket (Medium, #2 Gray)",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/01RmK+J4pJL._AC_.gif",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8116759657859802,
+                  "match_component": 0.8116759657859802,
+                  "weight": 1.0,
+                  "weighted_component": 0.8116759657859802
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B01NCJV3QR",
+              "title": "JayJay Women Open Front Casual Knit Long Sleeve Sweater Classic Cover Up Cardigan,Black,L",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71EwYZfRKKL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8187368512153625,
+                  "match_component": 0.8187368512153625,
+                  "weight": 1.0,
+                  "weighted_component": 0.8187368512153625
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B07D6MGMVZ",
+              "title": "Womens Long Sleeve Jacket Open Front Cardigan + Pants 2 Piece Outfit Blue XL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61fc-0wGO8L._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.804405927658081,
+                  "match_component": 0.804405927658081,
+                  "weight": 1.0,
+                  "weighted_component": 0.804405927658081
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B076F6VRHH",
+              "title": "iliad USA 7027 Womens Button Down Crew Neck Long Sleeve Soft Knit Cardigan Sweater Black 3X-Large",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71PjCJUlf4L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8354835510253906,
+                  "match_component": 0.8354835510253906,
+                  "weight": 1.0,
+                  "weighted_component": 0.8354835510253906
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B07GL4JX7W",
+              "title": "Lands' End Women's Petite Supima Cotton Cardigan Sweater, XL, Atlas Yellow",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61+1aJ-eb8L._AC_UL1275_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8344069123268127,
+                  "match_component": 0.8344069123268127,
+                  "weight": 1.0,
+                  "weighted_component": 0.8344069123268127
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 2,
+          "message": "두 번째 거 자세히 알려줘",
+          "note": "직전 검색 2번 상세.",
+          "answer": "2번은 연한 회색의 타이다이 긴 가디건이에요. 이미지로 예측한 촉감 기준으로 부드럽고 얇으며 조금 하늘하늘하고, 약간 매끄러운 느낌도 있어요. 구매자 리뷰 근거는 없고 이미지로 예측한 촉감이에요. 더 궁금하면 소재감이나 비슷한 가디건도 같이 골라드릴게요.",
+          "action": "get_product_detail",
+          "tool_calls": [
+            {
+              "name": "get_product_detail",
+              "arguments": {
+                "product_id": "B015E5PXYI"
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.07,
+          "llm_requests": 2,
+          "chars": 142,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 3,
+          "message": "그거랑 첫 번째 비교해줘",
+          "note": "'그거'는 방금 본 2번. 2번과 1번을 비교한다.",
+          "answer": "두 상품은 부드러운 느낌은 비슷해요. 2번은 1번보다 더 얇고 조금 더 시원한 쪽이고, 1번은 2번보다 조금 더 도톰하고 약간 따뜻한 쪽이에요. 둘 다 매끄럽고 하늘하늘한 느낌은 비슷합니다. 이미지로 예측한 촉감 기준이에요.",
+          "action": "compare_products",
+          "tool_calls": [
+            {
+              "name": "compare_products",
+              "arguments": {
+                "product_ids": [
+                  "B015E5PXYI",
+                  "B014EFUYPW"
+                ]
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 4.14,
+          "llm_requests": 2,
+          "chars": 125,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 4,
+          "message": "첫 번째 거 두 개 담아줘",
+          "note": "1번을 수량 2로 담는다.",
+          "answer": "1번 상품 두 개 담아드렸어요. 검은색 클래식 니트 가디건이 장바구니에 2개 추가됐습니다.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B014EFUYPW",
+                "quantity": 2
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.74,
+          "llm_requests": 2,
+          "chars": 50,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 5,
+          "message": "방금 담은 거 하나만 빼줘",
+          "note": "1번 가디건 2개 중 1개만 뺀다(quantity=1). 1개 남았다고 말한다.",
+          "answer": "하나 빼드렸어요. 1번 검은색 클래식 니트 가디건이 장바구니에 1개 남아 있어요.",
+          "action": "remove_from_cart",
+          "tool_calls": [
+            {
+              "name": "remove_from_cart",
+              "arguments": {
+                "product_id": "B014EFUYPW",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.21,
+          "llm_requests": 2,
+          "chars": 45,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 1,
+          "message": "따뜻한 코트 보여줘",
+          "note": "coat 계열, want=warm.",
+          "answer": "세 상품 모두 따뜻해요. 1번은 캐주얼한 긴 코트, 2번은 울 느낌의 루즈한 코트, 3번은 퍼 느낌의 짧은 코트예요. 1번, 2번, 3번 모두 이미지로 예측한 촉감이라 실제 착용감은 다를 수 있어요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "따뜻한 코트",
+                "category": "coat",
+                "want": [
+                  "warm"
+                ],
+                "avoid": [],
+                "keywords": [],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.38,
+          "llm_requests": 2,
+          "chars": 111,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B07W417V43",
+              "title": "Charis Allure Women's Casual Long Coat with Pockets M",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81LGshYmh8L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8469578623771667,
+                  "match_component": 0.8469578623771667,
+                  "weight": 1.0,
+                  "weighted_component": 0.8469578623771667
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B014S66DFC",
+              "title": "Mordenmiss Women Loose One-Chinese Frog Button Wool Coat XL Blackish Green",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81F3Uo6R-0L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8529354333877563,
+                  "match_component": 0.8529354333877563,
+                  "weight": 1.0,
+                  "weighted_component": 0.8529354333877563
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B08KZQRLFL",
+              "title": "TECREW Women's Fleece Coat Lapel Fuzzy Faux Zip Up Short Pocket Jacket Outwear",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71+9zgOU6vL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8714748620986938,
+                  "match_component": 0.8714748620986938,
+                  "weight": 1.0,
+                  "weighted_component": 0.8714748620986938
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B0150YIXFO",
+              "title": "Womens Cape Batwing Tassels Poncho Jacket Lady Cloak Coat Knitwear",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81Vf-ocUd5L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8577680587768555,
+                  "match_component": 0.8577680587768555,
+                  "weight": 1.0,
+                  "weighted_component": 0.8577680587768555
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B0982YNLJH",
+              "title": "Men's Warm Padded Jacket Puffer Winter Coat Windproof Trucker Jacket with Hood (Black, L)",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71QDce0m-TL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8652240633964539,
+                  "match_component": 0.8652240633964539,
+                  "weight": 1.0,
+                  "weighted_component": 0.8652240633964539
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B098X2KZQS",
+              "title": "Venustas Heated Jacket with Battery Pack 7.4V (Unisex), 6 heat zones, Heated Coat for Women and Men with Detachable hood",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61FvCtjIsEL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8652240633964539,
+                  "match_component": 0.8652240633964539,
+                  "weight": 1.0,
+                  "weighted_component": 0.8652240633964539
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B081G7SBLK",
+              "title": "Charis Allure Women's Double-Faced Long Trench Coat Lapel Wool-Blend Outwear with Removable Belt, Black, Medium",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/613w0stjzHL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8558511734008789,
+                  "match_component": 0.8558511734008789,
+                  "weight": 1.0,
+                  "weighted_component": 0.8558511734008789
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B07GSDC16Y",
+              "title": "Orchid Row Women's Fashion Faux fake Fur Cowl Scarf for Winter Coat Neck Warmer",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/91OS8TIEU5L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.842863142490387,
+                  "match_component": 0.842863142490387,
+                  "weight": 1.0,
+                  "weighted_component": 0.842863142490387
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B09C7RXJYL",
+              "title": "Men's Quilted Flannel Lined Active Jacket Waterproof Cotton Duck Hooded Workwear Winter Coat",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71uV29aJ-rS._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8679338097572327,
+                  "match_component": 0.8679338097572327,
+                  "weight": 1.0,
+                  "weighted_component": 0.8679338097572327
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B01JZK1EZU",
+              "title": "Allegra K Mandarin Collar Princess Style Coat with Buckle Fastening Blue / XL",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61J3hWuONKL._AC_UL1447_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8198933005332947,
+                  "match_component": 0.8198933005332947,
+                  "weight": 1.0,
+                  "weighted_component": 0.8198933005332947
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 2,
+          "message": "3번 담아줘",
+          "note": "직전 검색 3번을 담는다.",
+          "answer": "3번 담아드렸어요. 장바구니에 TECREW 짧은 퍼 느낌 재킷이 1개 들어갔어요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B08KZQRLFL",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.68,
+          "llm_requests": 2,
+          "chars": 45,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 3,
+          "message": "지금 장바구니에 뭐가 있어?",
+          "note": "view_cart로 방금 담은 코트 1개를 말한다.",
+          "answer": "장바구니에는 1개 있어요. TECREW 퍼 느낌의 짧은 재킷이 1개 담겨 있어요.",
+          "action": "view_cart",
+          "tool_calls": [
+            {
+              "name": "view_cart",
+              "arguments": {},
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.08,
+          "llm_requests": 2,
+          "chars": 45,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 4,
+          "message": "방금 담은 거 장바구니에서 빼줘",
+          "note": "remove_from_cart로 방금 담은 3번 코트를 뺀다. 무엇을 뺐는지 짧게 확인한다.",
+          "answer": "빼드렸어요. 방금 담은 TECREW 짧은 퍼 느낌 재킷이 장바구니에서 전부 삭제됐어요.",
+          "action": "remove_from_cart",
+          "tool_calls": [
+            {
+              "name": "remove_from_cart",
+              "arguments": {
+                "product_id": "B08KZQRLFL",
+                "quantity": null
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.14,
+          "llm_requests": 2,
+          "chars": 48,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 5,
+          "message": "알겠어, 고마워요",
+          "note": "도구 없이 짧게 마무리 인사.",
+          "answer": "천만에요. 필요하시면 또 따뜻한 코트나 다른 옷도 촉감 중심으로 골라드릴게요.",
+          "action": "respond",
+          "tool_calls": [],
+          "latency_seconds": 1.11,
+          "llm_requests": 1,
+          "chars": 43,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.4-mini",
+      "reasoning_effort": "low",
+      "run": 3,
+      "turns": 15,
+      "passed": 15,
+      "latency_median": 2.68,
+      "latency_p90": 3.66,
+      "latency_max": 3.74,
+      "mean_chars": 74.1,
+      "mean_sentences": 2.8,
+      "length_warnings": 1,
+      "fallbacks": 0,
+      "rows": [
+        {
+          "scenario": "F1",
+          "title": "기본 흐름: 촉감 검색 → 조건 수정 → 상세 → 비교 → 담기",
+          "turn": 1,
+          "message": "안 까끌하고 얇은 여름 원피스 찾아줘",
+          "note": "dress, want=thin, avoid=rough. 이미지로 예측한 촉감이라고 밝힌다.",
+          "answer": "세 상품 모두 얇고 시원하고 까끌하지 않아요. 1번은 아동용 민소매 프린트 원피스예요. 2번은 검은색 두 겹 맥시 원피스예요. 3번은 보헤미안 느낌의 브이넥 프린트 여름 원피스예요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "안 까끌하고 얇은 여름 원피스",
+                "category": "dress",
+                "want": [
+                  "thin",
+                  "cool"
+                ],
+                "avoid": [
+                  "rough"
+                ],
+                "keywords": [
+                  "summer",
+                  "dress"
+                ],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.11,
+          "llm_requests": 2,
+          "chars": 101,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B076QD9NP1",
+              "title": "Jxstar Girls Summer Dress Sleeveless Printing Casual/Party 3-13Years",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71PbXLvm3cL._AC_UL1024_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.8300437331199646,
+                  "match_component": 0.8300437331199646,
+                  "weight": 1.0,
+                  "weighted_component": 0.8300437331199646
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8278281688690186,
+                  "match_component": 0.8278281688690186,
+                  "weight": 1.0,
+                  "weighted_component": 0.8278281688690186
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.3293917179107666,
+                  "match_component": 0.6706082820892334,
+                  "weight": 1.0,
+                  "weighted_component": 0.6706082820892334
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B01CXZ47EO",
+              "title": "Mordenmiss Women's Summer Two Layers Maxi Dresses L Short Sleeve Black",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/41BEK+QrA-L._AC_UL1002_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.869714617729187,
+                  "match_component": 0.869714617729187,
+                  "weight": 1.0,
+                  "weighted_component": 0.869714617729187
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8438951373100281,
+                  "match_component": 0.8438951373100281,
+                  "weight": 1.0,
+                  "weighted_component": 0.8438951373100281
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.36931508779525757,
+                  "match_component": 0.6306849122047424,
+                  "weight": 1.0,
+                  "weighted_component": 0.6306849122047424
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B01KTJA9LQ",
+              "title": "Aimur Women Bohemian V Neck Retro Printed Ethnic Style Summer Shift Dress Black",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71fSabqCAML._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.8679338097572327,
+                  "match_component": 0.8679338097572327,
+                  "weight": 1.0,
+                  "weighted_component": 0.8679338097572327
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8499711751937866,
+                  "match_component": 0.8499711751937866,
+                  "weight": 1.0,
+                  "weighted_component": 0.8499711751937866
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.33982762694358826,
+                  "match_component": 0.6601723730564117,
+                  "weight": 1.0,
+                  "weighted_component": 0.6601723730564117
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B0722K7JS8",
+              "title": "Romwe Women's Summer Sundress Floral Printed Sleeveless Casual A Line Dress Black XL",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61VIRpl5VwL._AC_UL1200_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.8300437331199646,
+                  "match_component": 0.8300437331199646,
+                  "weight": 1.0,
+                  "weighted_component": 0.8300437331199646
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8322367072105408,
+                  "match_component": 0.8322367072105408,
+                  "weight": 1.0,
+                  "weighted_component": 0.8322367072105408
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.33895185589790344,
+                  "match_component": 0.6610481441020966,
+                  "weight": 1.0,
+                  "weighted_component": 0.6610481441020966
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B01IEXH8AY",
+              "title": "Floerns Women's Loose Floral Tank Dress Summer Sleeveless Dresses Red M",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71sW59JRTrL._AC_UL1465_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.8469578623771667,
+                  "match_component": 0.8469578623771667,
+                  "weight": 1.0,
+                  "weighted_component": 0.8469578623771667
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8221890926361084,
+                  "match_component": 0.8221890926361084,
+                  "weight": 1.0,
+                  "weighted_component": 0.8221890926361084
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.3407045006752014,
+                  "match_component": 0.6592954993247986,
+                  "weight": 1.0,
+                  "weighted_component": 0.6592954993247986
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B06XFGH962",
+              "title": "R.Vivimos Women 3/4 Sleeve Print Summer Long Dresses Large",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71kueMT-W4L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.8723474144935608,
+                  "match_component": 0.8723474144935608,
+                  "weight": 1.0,
+                  "weighted_component": 0.8723474144935608
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8289388418197632,
+                  "match_component": 0.8289388418197632,
+                  "weight": 1.0,
+                  "weighted_component": 0.8289388418197632
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.34246158599853516,
+                  "match_component": 0.6575384140014648,
+                  "weight": 1.0,
+                  "weighted_component": 0.6575384140014648
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B01CEC78VA",
+              "title": "ROMWE Women's Summer Cute Birds Print Short Sleeve Loose Tunic Top Dress White L",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71CTzQVPFDL._AC_UL1465_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.837619960308075,
+                  "match_component": 0.837619960308075,
+                  "weight": 1.0,
+                  "weighted_component": 0.837619960308075
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8233283758163452,
+                  "match_component": 0.8233283758163452,
+                  "weight": 1.0,
+                  "weighted_component": 0.8233283758163452
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.332852303981781,
+                  "match_component": 0.667147696018219,
+                  "weight": 1.0,
+                  "weighted_component": 0.667147696018219
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B08NHSPPDY",
+              "title": "Paitluc Blue Dress V Neck Sleeveless Polka Dot Maxi Dress Summer Sun Dresses Women Size M",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61gNTcVZ5IL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.8568122982978821,
+                  "match_component": 0.8568122982978821,
+                  "weight": 1.0,
+                  "weighted_component": 0.8568122982978821
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8056321740150452,
+                  "match_component": 0.8056321740150452,
+                  "weight": 1.0,
+                  "weighted_component": 0.8056321740150452
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.3459886312484741,
+                  "match_component": 0.6540113687515259,
+                  "weight": 1.0,
+                  "weighted_component": 0.6540113687515259
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B01EWRPKW4",
+              "title": "Romwe Women's Summer Party Bohemian Embroidered Straps Dress White L",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71pmFRtH4uL._AC_UL1465_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.8322367072105408,
+                  "match_component": 0.8322367072105408,
+                  "weight": 1.0,
+                  "weighted_component": 0.8322367072105408
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.7905303239822388,
+                  "match_component": 0.7905303239822388,
+                  "weight": 1.0,
+                  "weighted_component": 0.7905303239822388
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.36296918988227844,
+                  "match_component": 0.6370308101177216,
+                  "weight": 1.0,
+                  "weighted_component": 0.6370308101177216
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B072MSC4Q2",
+              "title": "Hslieey Women's Summer Casual V Neck Short Sleeve Midi Shirt Dress",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/51S8z5fogQL._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thin",
+                  "raw_probability": 0.8587185740470886,
+                  "match_component": 0.8587185740470886,
+                  "weight": 1.0,
+                  "weighted_component": 0.8587185740470886
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8255897164344788,
+                  "match_component": 0.8255897164344788,
+                  "weight": 1.0,
+                  "weighted_component": 0.8255897164344788
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.35488009452819824,
+                  "match_component": 0.6451199054718018,
+                  "weight": 1.0,
+                  "weighted_component": 0.6451199054718018
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "F1",
+          "title": "기본 흐름: 촉감 검색 → 조건 수정 → 상세 → 비교 → 담기",
+          "turn": 2,
+          "message": "조금 더 두꺼운 걸로 보여줘",
+          "note": "원피스 조건을 이어받고 thin을 thick으로 바꾼다. rough 회피는 유지하는 것이 바람직.",
+          "answer": "세 상품 모두 두껍지 않고 시원하고 까끌하지 않아요. 4번은 무릎 길이의 A라인 원피스예요. 5번은 폴카도트 맥시 원피스예요. 7번은 조금 도톰하고 시원한 편이라, 이 중에서는 가장 원하신 쪽에 가까워요. 이미지로 예측한 촉감이에요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "안 까끌하고 얇은 여름 원피스에서 조금 더 두꺼운 걸로",
+                "category": "dress",
+                "want": [
+                  "thick",
+                  "cool"
+                ],
+                "avoid": [
+                  "rough"
+                ],
+                "keywords": [
+                  "summer",
+                  "dress"
+                ],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.66,
+          "llm_requests": 2,
+          "chars": 130,
+          "sentences": 5,
+          "passed": true,
+          "failures": [],
+          "warnings": [
+            "번호를 순서대로 소개하지 않음: [4, 5, 7]"
+          ],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B076QD9NP1",
+              "title": "Jxstar Girls Summer Dress Sleeveless Printing Casual/Party 3-13Years",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71PbXLvm3cL._AC_UL1024_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.13477590680122375,
+                  "match_component": 0.13477590680122375,
+                  "weight": 1.0,
+                  "weighted_component": 0.13477590680122375
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8278281688690186,
+                  "match_component": 0.8278281688690186,
+                  "weight": 1.0,
+                  "weighted_component": 0.8278281688690186
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.3293917179107666,
+                  "match_component": 0.6706082820892334,
+                  "weight": 1.0,
+                  "weighted_component": 0.6706082820892334
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B07PRR7PDP",
+              "title": "Girls' 2T-12 Cotton Floral Dress Summer Backless Casual Sundress (6-7, Red)",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61V-F43JuML._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.35488009452819824,
+                  "match_component": 0.35488009452819824,
+                  "weight": 1.0,
+                  "weighted_component": 0.35488009452819824
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8606036305427551,
+                  "match_component": 0.8606036305427551,
+                  "weight": 1.0,
+                  "weighted_component": 0.8606036305427551
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.31658050417900085,
+                  "match_component": 0.6834194958209991,
+                  "weight": 1.0,
+                  "weighted_component": 0.6834194958209991
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B01EFH308C",
+              "title": "Laksmi Summer Dress, Fashion Classical Graduation Dress Gown Garden Lady Dress 2016,X-Large Blue",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61Tt0ri6vsL._AC_UL1450_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.1755380779504776,
+                  "match_component": 0.1755380779504776,
+                  "weight": 1.0,
+                  "weighted_component": 0.1755380779504776
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8128673434257507,
+                  "match_component": 0.8128673434257507,
+                  "weight": 1.0,
+                  "weighted_component": 0.8128673434257507
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.3293917179107666,
+                  "match_component": 0.6706082820892334,
+                  "weight": 1.0,
+                  "weighted_component": 0.6706082820892334
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B072LJF9GB",
+              "title": "MISSKY Women Sleeveless Round Neck A-line Knee-Length Casual Retro Fit and Flare Swing Summer Dress Dark Blue L",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61nbWJ8J87L._AC_UL1300_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.35042136907577515,
+                  "match_component": 0.35042136907577515,
+                  "weight": 1.0,
+                  "weighted_component": 0.35042136907577515
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.7732163667678833,
+                  "match_component": 0.7732163667678833,
+                  "weight": 1.0,
+                  "weighted_component": 0.7732163667678833
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.34953272342681885,
+                  "match_component": 0.6504672765731812,
+                  "weight": 1.0,
+                  "weighted_component": 0.6504672765731812
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B01K4JAG0U",
+              "title": "Verdusa Women's Polka Dot Casual Summer Short Sleeve Pocket Long Maxi Dress Black White L",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81HqeS4rTvL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.23231014609336853,
+                  "match_component": 0.23231014609336853,
+                  "weight": 1.0,
+                  "weighted_component": 0.23231014609336853
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.7114308476448059,
+                  "match_component": 0.7114308476448059,
+                  "weight": 1.0,
+                  "weighted_component": 0.7114308476448059
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.37387579679489136,
+                  "match_component": 0.6261242032051086,
+                  "weight": 1.0,
+                  "weighted_component": 0.6261242032051086
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B01M7VD34B",
+              "title": "Jescakoo Women's Rainbow Galaxy Printed Sleeveless Tank Skater Dress for Summer",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/614jT9vHICL._AC_UL1000_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.2901756167411804,
+                  "match_component": 0.2901756167411804,
+                  "weight": 1.0,
+                  "weighted_component": 0.2901756167411804
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.793105959892273,
+                  "match_component": 0.793105959892273,
+                  "weight": 1.0,
+                  "weighted_component": 0.793105959892273
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.34953272342681885,
+                  "match_component": 0.6504672765731812,
+                  "weight": 1.0,
+                  "weighted_component": 0.6504672765731812
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B073FFTL3L",
+              "title": "Dokotoo Womens Ladies Summer One Off Shoulder Short Sleeve Midi Bodycon Pencil Party Evening Dresses White X-Large",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61L4iByIO-L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.4248892068862915,
+                  "match_component": 0.4248892068862915,
+                  "weight": 1.0,
+                  "weighted_component": 0.4248892068862915
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.7732163667678833,
+                  "match_component": 0.7732163667678833,
+                  "weight": 1.0,
+                  "weighted_component": 0.7732163667678833
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.3747906982898712,
+                  "match_component": 0.6252093017101288,
+                  "weight": 1.0,
+                  "weighted_component": 0.6252093017101288
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B01N5LMP2O",
+              "title": "Romwe Women's Summer Beach Cotton Sleeveless Flared A Line Swing Tank Dress Black M",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/512yCYtuKhL._AC_UL1200_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.5481898188591003,
+                  "match_component": 0.5481898188591003,
+                  "weight": 1.0,
+                  "weighted_component": 0.5481898188591003
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.6959583163261414,
+                  "match_component": 0.6959583163261414,
+                  "weight": 1.0,
+                  "weighted_component": 0.6959583163261414
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.411583811044693,
+                  "match_component": 0.588416188955307,
+                  "weight": 1.0,
+                  "weighted_component": 0.588416188955307
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B01G0L9GGG",
+              "title": "Liseaforu Women Summer Sleeveless Emoji Print Skater Dress",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61kFGfIbXPL._AC_UL1010_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.49139487743377686,
+                  "match_component": 0.49139487743377686,
+                  "weight": 1.0,
+                  "weighted_component": 0.49139487743377686
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8006919622421265,
+                  "match_component": 0.8006919622421265,
+                  "weight": 1.0,
+                  "weighted_component": 0.8006919622421265
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.36931508779525757,
+                  "match_component": 0.6306849122047424,
+                  "weight": 1.0,
+                  "weighted_component": 0.6306849122047424
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B0722K7JS8",
+              "title": "Romwe Women's Summer Sundress Floral Printed Sleeveless Casual A Line Dress Black XL",
+              "category": "dress",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61VIRpl5VwL._AC_UL1200_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "thick",
+                  "raw_probability": 0.13568955659866333,
+                  "match_component": 0.13568955659866333,
+                  "weight": 1.0,
+                  "weighted_component": 0.13568955659866333
+                },
+                {
+                  "direction": "positive",
+                  "class": "cool",
+                  "raw_probability": 0.8322367072105408,
+                  "match_component": 0.8322367072105408,
+                  "weight": 1.0,
+                  "weighted_component": 0.8322367072105408
+                },
+                {
+                  "direction": "negative",
+                  "class": "rough",
+                  "raw_probability": 0.33895185589790344,
+                  "match_component": 0.6610481441020966,
+                  "weight": 1.0,
+                  "weighted_component": 0.6610481441020966
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "F1",
+          "title": "기본 흐름: 촉감 검색 → 조건 수정 → 상세 → 비교 → 담기",
+          "turn": 3,
+          "message": "1번 촉감 자세히 알려줘",
+          "note": "직전 검색 1번 상세. 확률을 숫자 대신 높음·보통·낮음으로 말한다.",
+          "answer": "1번은 아동용 민소매 프린트 여름 원피스예요. 얇고 시원하고 부드럽고, 조금 하늘하늘하면서 조금 매끄럽게 보여요. 이미지로 예측한 촉감이에요.",
+          "action": "get_product_detail",
+          "tool_calls": [
+            {
+              "name": "get_product_detail",
+              "arguments": {
+                "product_id": "B076QD9NP1"
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.96,
+          "llm_requests": 2,
+          "chars": 79,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "F1",
+          "title": "기본 흐름: 촉감 검색 → 조건 수정 → 상세 → 비교 → 담기",
+          "turn": 4,
+          "message": "1번이랑 2번 중에 뭐가 더 부드러워?",
+          "note": "1·2번 비교 후 어느 쪽인지 한 문장으로 답한다. 차이가 작으면 작다고 말한다.",
+          "answer": "1번이 더 부드러워요. 2번은 조금 부드러운 편이고, 둘 다 이미지로 예측한 촉감이에요.",
+          "action": "compare_products",
+          "tool_calls": [
+            {
+              "name": "compare_products",
+              "arguments": {
+                "product_ids": [
+                  "B076QD9NP1",
+                  "B07PRR7PDP"
+                ]
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.33,
+          "llm_requests": 2,
+          "chars": 49,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "F1",
+          "title": "기본 흐름: 촉감 검색 → 조건 수정 → 상세 → 비교 → 담기",
+          "turn": 5,
+          "message": "2번 장바구니에 담아줘",
+          "note": "직전 검색 2번을 1개 담고 무엇을 담았는지 짧게 확인한다.",
+          "answer": "2번을 장바구니에 담았어요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B07PRR7PDP",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.58,
+          "llm_requests": 2,
+          "chars": 15,
+          "sentences": 1,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 1,
+          "message": "부드러운 가디건 보여줘",
+          "note": "cardigan(또는 sweater), want=soft.",
+          "answer": "세 상품 모두 부드러워요.  \n1번은 검은색 라운드넥 버튼 가디건이고, 이미지로 예측한 촉감이라 부드럽게 보여요.  \n2번은 오픈형 가디건, 3번은 숄처럼 두르는 가디건이라 형태가 조금 달라요.  \n원하시면 더 얇은 쪽, 더 포근한 쪽으로도 골라드릴게요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "부드러운 가디건",
+                "category": "cardigan",
+                "want": [
+                  "soft"
+                ],
+                "avoid": [],
+                "keywords": [],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.94,
+          "llm_requests": 2,
+          "chars": 142,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B014EFUYPW",
+              "title": "BIADANI Women Round Neck Button Down Soft Classic Knit Cardigan Sweater Black Medium",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71+2hrzJJSL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8322367072105408,
+                  "match_component": 0.8322367072105408,
+                  "weight": 1.0,
+                  "weighted_component": 0.8322367072105408
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B07D6LWPLR",
+              "title": "Womens Open Front Cardigan Outerwear Jacket and Pants 2 Piece Outfit Blue 2XL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61fc-0wGO8L._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.804405927658081,
+                  "match_component": 0.804405927658081,
+                  "weight": 1.0,
+                  "weighted_component": 0.804405927658081
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B08BFQ7ZH8",
+              "title": "QBSM Women's Shawl Wrap Poncho Ruana Capes Open Front Cardigan Blanket Wraps for Fall and Winter",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/617N3FhiPtL._AC_UL1000_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8116759657859802,
+                  "match_component": 0.8116759657859802,
+                  "weight": 1.0,
+                  "weighted_component": 0.8116759657859802
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B01AZM3IS8",
+              "title": "Merona Women's Favorite Cardigan Sweater Red Crew Neck (Large)",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61KBbzbSRPL._AC_UL1024_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8255897164344788,
+                  "match_component": 0.8255897164344788,
+                  "weight": 1.0,
+                  "weighted_component": 0.8255897164344788
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B00MJ0RVI8",
+              "title": "Ladies Knitted Bolero Crochet Cardigan Shrug",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/714OE7OtrWL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8333246111869812,
+                  "match_component": 0.8333246111869812,
+                  "weight": 1.0,
+                  "weighted_component": 0.8333246111869812
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B01H0TIS0M",
+              "title": "JJ Perfection Women's Solid 3/4 Sleeve Crew Neck Basic Button Down Cardigan Black M",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/717tdxqW45L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8244618773460388,
+                  "match_component": 0.8244618773460388,
+                  "weight": 1.0,
+                  "weighted_component": 0.8244618773460388
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B08P38KZYS",
+              "title": "GRACE KARIN Women's Soft Knitwear Ribbed Sleeve Cuffs Button Cardigan Sweater Light Blue M",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81D5MHkQuYL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8333246111869812,
+                  "match_component": 0.8333246111869812,
+                  "weight": 1.0,
+                  "weighted_component": 0.8333246111869812
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B0176I30LO",
+              "title": "Women Black and White Striped Long Cardigan Loose Sweater Jacket (Medium, #2 Gray)",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/01RmK+J4pJL._AC_.gif",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8116759657859802,
+                  "match_component": 0.8116759657859802,
+                  "weight": 1.0,
+                  "weighted_component": 0.8116759657859802
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B07D6MGMVZ",
+              "title": "Womens Long Sleeve Jacket Open Front Cardigan + Pants 2 Piece Outfit Blue XL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61fc-0wGO8L._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.804405927658081,
+                  "match_component": 0.804405927658081,
+                  "weight": 1.0,
+                  "weighted_component": 0.804405927658081
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B014EFWQ3U",
+              "title": "BIADANI Women Button Down Long Sleeve Crewneck Soft Knit Cardigan Sweater Brown Medium",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71bdlxw0K5L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8354835510253906,
+                  "match_component": 0.8354835510253906,
+                  "weight": 1.0,
+                  "weighted_component": 0.8354835510253906
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 2,
+          "message": "두 번째 거 자세히 알려줘",
+          "note": "직전 검색 2번 상세.",
+          "answer": "2번은 파란색 오픈형 가디건이고, 이미지로 예측한 촉감이라 부드럽고 조금 하늘하늘해 보여요.  \n조금 얇은 편이고, 약간 까끌할 수 있고, 살짝 따뜻한 느낌도 있어요.  \n구매자 리뷰 근거는 아니고 이미지 기준이에요.",
+          "action": "get_product_detail",
+          "tool_calls": [
+            {
+              "name": "get_product_detail",
+              "arguments": {
+                "product_id": "B07D6LWPLR"
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.44,
+          "llm_requests": 2,
+          "chars": 121,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 3,
+          "message": "그거랑 첫 번째 비교해줘",
+          "note": "'그거'는 방금 본 2번. 2번과 1번을 비교한다.",
+          "answer": "두 상품은 부드럽고 조금 매끄럽고, 약간 까끌할 수 있는 느낌은 비슷해요.  \n1번은 조금 더 늘어나고 조금 더 도톰해요.  \n2번은 조금 더 얇고, 두껍지 않은 쪽이에요.  \n이미지로 예측한 촉감 기준이에요.",
+          "action": "compare_products",
+          "tool_calls": [
+            {
+              "name": "compare_products",
+              "arguments": {
+                "product_ids": [
+                  "B014EFUYPW",
+                  "B07D6LWPLR"
+                ]
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.57,
+          "llm_requests": 2,
+          "chars": 117,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 4,
+          "message": "첫 번째 거 두 개 담아줘",
+          "note": "1번을 수량 2로 담는다.",
+          "answer": "1번 상품 두 개 담았어요. 검은색 라운드넥 버튼 가디건이 장바구니에 2개 들어갔습니다.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B014EFUYPW",
+                "quantity": 2
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.67,
+          "llm_requests": 2,
+          "chars": 49,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 5,
+          "message": "방금 담은 거 하나만 빼줘",
+          "note": "1번 가디건 2개 중 1개만 뺀다(quantity=1). 1개 남았다고 말한다.",
+          "answer": "하나 빼드렸어요. 1번 검은색 라운드넥 버튼 가디건이 1개 남아 있어요.",
+          "action": "remove_from_cart",
+          "tool_calls": [
+            {
+              "name": "remove_from_cart",
+              "arguments": {
+                "product_id": "B014EFUYPW",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.68,
+          "llm_requests": 2,
+          "chars": 40,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 1,
+          "message": "따뜻한 코트 보여줘",
+          "note": "coat 계열, want=warm.",
+          "answer": "세 상품 모두 따뜻해요. 1번은 목을 감싸는 퍼 장식 코트용 아이템이고, 2번은 검은색 롱 트렌치 코트예요. 3번은 니트 느낌의 퍼 숄·케이프 코트예요. 셋 다 이미지로 예측한 촉감 기준이에요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "따뜻한 코트",
+                "category": "coat",
+                "want": [
+                  "warm"
+                ],
+                "avoid": [],
+                "keywords": [],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.11,
+          "llm_requests": 2,
+          "chars": 108,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B07GSDC16Y",
+              "title": "Orchid Row Women's Fashion Faux fake Fur Cowl Scarf for Winter Coat Neck Warmer",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/91OS8TIEU5L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.842863142490387,
+                  "match_component": 0.842863142490387,
+                  "weight": 1.0,
+                  "weighted_component": 0.842863142490387
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B081G7SBLK",
+              "title": "Charis Allure Women's Double-Faced Long Trench Coat Lapel Wool-Blend Outwear with Removable Belt, Black, Medium",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/613w0stjzHL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8558511734008789,
+                  "match_component": 0.8558511734008789,
+                  "weight": 1.0,
+                  "weighted_component": 0.8558511734008789
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B00Q6BTH42",
+              "title": "Win8Fong Women's Long Knitted Fur Bolero Shawl Stole Cloak Cape Coat (Black)",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/51m1KGTPmHL._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8606036305427551,
+                  "match_component": 0.8606036305427551,
+                  "weight": 1.0,
+                  "weighted_component": 0.8606036305427551
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B0982YNLJH",
+              "title": "Men's Warm Padded Jacket Puffer Winter Coat Windproof Trucker Jacket with Hood (Black, L)",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71QDce0m-TL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8652240633964539,
+                  "match_component": 0.8652240633964539,
+                  "weight": 1.0,
+                  "weighted_component": 0.8652240633964539
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B07G99RMY9",
+              "title": "Remelon Womens Long Sleeve Winter Warm Lapel Fox Faux Fur Coat Jacket Overcoat Outwear with Pockets Red XXL",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71trOSLT53L._AC_UL1260_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8539127111434937,
+                  "match_component": 0.8539127111434937,
+                  "weight": 1.0,
+                  "weighted_component": 0.8539127111434937
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B07YJHTM3Q",
+              "title": "Charis Allure Women's Hooded Ultra Lightweight Short Winter Jacket Warm Short Outwear Coat, Navy Blue, Large",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71Cxn8njCDL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8679338097572327,
+                  "match_component": 0.8679338097572327,
+                  "weight": 1.0,
+                  "weighted_component": 0.8679338097572327
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B0150YIXFO",
+              "title": "Womens Cape Batwing Tassels Poncho Jacket Lady Cloak Coat Knitwear",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81Vf-ocUd5L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8577680587768555,
+                  "match_component": 0.8577680587768555,
+                  "weight": 1.0,
+                  "weighted_component": 0.8577680587768555
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B0BDDF7CF9",
+              "title": "KEMIMOTO Men's Heated Jacket with Battery Pack, Lightweight Heated Coat with Detachable Hood, Warm Heating Jackets for Men…",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61X9yTLFtzL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8643104434013367,
+                  "match_component": 0.8643104434013367,
+                  "weight": 1.0,
+                  "weighted_component": 0.8643104434013367
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B08DCTVRZD",
+              "title": "Basic Model Sherpa Jacket Women Full Zip Long Sleeve Lapel Oversized Fuzzy Winter Coat With Pockets, Medium",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/91Q7etNTVdL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8606036305427551,
+                  "match_component": 0.8606036305427551,
+                  "weight": 1.0,
+                  "weighted_component": 0.8606036305427551
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B09C7RXJYL",
+              "title": "Men's Quilted Flannel Lined Active Jacket Waterproof Cotton Duck Hooded Workwear Winter Coat",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71uV29aJ-rS._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8679338097572327,
+                  "match_component": 0.8679338097572327,
+                  "weight": 1.0,
+                  "weighted_component": 0.8679338097572327
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 2,
+          "message": "3번 담아줘",
+          "note": "직전 검색 3번을 담는다.",
+          "answer": "3번을 장바구니에 담았어요. 필요하시면 장바구니도 바로 확인해드릴게요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B00Q6BTH42",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.48,
+          "llm_requests": 2,
+          "chars": 39,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 3,
+          "message": "지금 장바구니에 뭐가 있어?",
+          "note": "view_cart로 방금 담은 코트 1개를 말한다.",
+          "answer": "장바구니에는 1개 있어요. 3번으로 담았던 검은색 니트 퍼 볼레로 숄 코트가 1개 들어 있습니다.",
+          "action": "view_cart",
+          "tool_calls": [
+            {
+              "name": "view_cart",
+              "arguments": {},
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.01,
+          "llm_requests": 2,
+          "chars": 54,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 4,
+          "message": "방금 담은 거 장바구니에서 빼줘",
+          "note": "remove_from_cart로 방금 담은 3번 코트를 뺀다. 무엇을 뺐는지 짧게 확인한다.",
+          "answer": "방금 담은 3번을 장바구니에서 뺐어요. 지금 장바구니는 비어 있어요.",
+          "action": "remove_from_cart",
+          "tool_calls": [
+            {
+              "name": "remove_from_cart",
+              "arguments": {
+                "product_id": "B00Q6BTH42",
+                "quantity": null
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.74,
+          "llm_requests": 2,
+          "chars": 38,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 5,
+          "message": "알겠어, 고마워요",
+          "note": "도구 없이 짧게 마무리 인사.",
+          "answer": "천만에요. 필요하시면 언제든 옷 찾는 걸 도와드릴게요.",
+          "action": "respond",
+          "tool_calls": [],
+          "latency_seconds": 1.35,
+          "llm_requests": 1,
+          "chars": 30,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        }
+      ]
+    }
+  ]
+}

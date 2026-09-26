@@ -54,46 +54,6 @@
     },
     {
       "config": "gpt-5.4-mini/low",
-      "scenario": "C4",
-      "turn": 1,
-      "message": "뻣뻣하지 않고 하늘하늘한 치마 찾아줘",
-      "pass_changed": false,
-      "search_changed": true
-    },
-    {
-      "config": "gpt-5.4-mini/low",
-      "scenario": "C5",
-      "turn": 1,
-      "message": "안 비치고 보풀 안 생기는 흰 티셔츠 찾아줘",
-      "pass_changed": false,
-      "search_changed": true
-    },
-    {
-      "config": "gpt-5.4-mini/low",
-      "scenario": "R1",
-      "turn": 1,
-      "message": "부드러운 검정 바지 찾아줘",
-      "pass_changed": false,
-      "search_changed": true
-    },
-    {
-      "config": "gpt-5.4-mini/low",
-      "scenario": "R1",
-      "turn": 2,
-      "message": "너무 얇은 건 싫어",
-      "pass_changed": false,
-      "search_changed": true
-    },
-    {
-      "config": "gpt-5.4-mini/low",
-      "scenario": "R1",
-      "turn": 3,
-      "message": "색은 남색으로 바꿔줘",
-      "pass_changed": false,
-      "search_changed": true
-    },
-    {
-      "config": "gpt-5.4-mini/low",
       "scenario": "P2",
       "turn": 1,
       "message": "시원한 여름 셔츠 찾아줘",
@@ -102,57 +62,9 @@
     },
     {
       "config": "gpt-5.4-mini/low",
-      "scenario": "K1",
-      "turn": 1,
-      "message": "따뜻한 코트 보여줘",
-      "pass_changed": false,
-      "search_changed": true
-    },
-    {
-      "config": "gpt-5.4-mini/low",
-      "scenario": "M1",
-      "turn": 2,
-      "message": "청바지 추천해줘",
-      "pass_changed": false,
-      "search_changed": true
-    },
-    {
-      "config": "gpt-5.4-mini/low",
-      "scenario": "V4",
-      "turn": 1,
-      "message": "Show me warm sweaters that are not itchy",
-      "pass_changed": false,
-      "search_changed": true
-    },
-    {
-      "config": "gpt-5.4-mini/low",
       "scenario": "V7",
       "turn": 1,
       "message": "운동화 추천해줘",
-      "pass_changed": false,
-      "search_changed": true
-    },
-    {
-      "config": "gpt-5.4-mini/low",
-      "scenario": "V10",
-      "turn": 2,
-      "message": "부드러운 잠옷 보여줘",
-      "pass_changed": false,
-      "search_changed": true
-    },
-    {
-      "config": "gpt-5.4-nano/low",
-      "scenario": "F1",
-      "turn": 1,
-      "message": "안 까끌하고 얇은 여름 원피스 찾아줘",
-      "pass_changed": false,
-      "search_changed": true
-    },
-    {
-      "config": "gpt-5.4-nano/low",
-      "scenario": "F1",
-      "turn": 2,
-      "message": "조금 더 두꺼운 걸로 보여줘",
       "pass_changed": false,
       "search_changed": true
     },
@@ -190,30 +102,6 @@
     },
     {
       "config": "gpt-5.4-nano/low",
-      "scenario": "C4",
-      "turn": 1,
-      "message": "뻣뻣하지 않고 하늘하늘한 치마 찾아줘",
-      "pass_changed": false,
-      "search_changed": true
-    },
-    {
-      "config": "gpt-5.4-nano/low",
-      "scenario": "C5",
-      "turn": 1,
-      "message": "안 비치고 보풀 안 생기는 흰 티셔츠 찾아줘",
-      "pass_changed": false,
-      "search_changed": true
-    },
-    {
-      "config": "gpt-5.4-nano/low",
-      "scenario": "R1",
-      "turn": 3,
-      "message": "색은 남색으로 바꿔줘",
-      "pass_changed": false,
-      "search_changed": true
-    },
-    {
-      "config": "gpt-5.4-nano/low",
       "scenario": "P2",
       "turn": 1,
       "message": "시원한 여름 셔츠 찾아줘",
@@ -246,22 +134,6 @@
     },
     {
       "config": "gpt-5.4-nano/low",
-      "scenario": "M1",
-      "turn": 2,
-      "message": "청바지 추천해줘",
-      "pass_changed": false,
-      "search_changed": true
-    },
-    {
-      "config": "gpt-5.4-nano/low",
-      "scenario": "V1",
-      "turn": 1,
-      "message": "부드러운바지추천좀",
-      "pass_changed": false,
-      "search_changed": true
-    },
-    {
-      "config": "gpt-5.4-nano/low",
       "scenario": "V2",
       "turn": 1,
       "message": "까끌거리는거 싫은데 셔츠 뭐있냐",
@@ -273,14 +145,6 @@
       "scenario": "V4",
       "turn": 1,
       "message": "Show me warm sweaters that are not itchy",
-      "pass_changed": false,
-      "search_changed": true
-    },
-    {
-      "config": "gpt-5.4-nano/low",
-      "scenario": "V5",
-      "turn": 1,
-      "message": "따뜻하고 부드럽지만 뻣뻣하지 않은 겨울 니트 찾아줘",
       "pass_changed": false,
       "search_changed": true
     },
@@ -305,14 +169,6 @@
       "scenario": "V8",
       "turn": 3,
       "message": "M 사이즈 있어?",
-      "pass_changed": false,
-      "search_changed": true
-    },
-    {
-      "config": "gpt-5.4-nano/low",
-      "scenario": "V10",
-      "turn": 2,
-      "message": "부드러운 잠옷 보여줘",
       "pass_changed": false,
       "search_changed": true
     }

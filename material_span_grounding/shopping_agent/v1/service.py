@@ -9,6 +9,7 @@ from recommendation_api.tactile_agent import intent_from_mapping
 from recommendation_api.tactile_models import TactileIntent
 
 from .agent_tools import ConversationToolRegistry, SHOPPING_TOOL
+from . import tactile_phrases
 from .contracts import AgentToolCall
 from .database import AgentDatabase
 from .llm import ResilientLLMProvider
@@ -631,11 +632,16 @@ class _ToolTurn:
         rows = self.ranked["results"][: int(self.settings["tool_result_products"])]
         for row in rows:
             self._reference(str(row["product_id"]))
+        # Phrases, not probabilities: the model must not read numbers or grades aloud.
+        common, tactile = tactile_phrases.split_common(
+            [tactile_phrases.phrases(row.get("last2_predictions", {}), requested) for row in rows]
+        )
         return {
             "result_count": len(self.ranked["results"]),
             "category": category,
             "category_relaxed": bool(search.get("category_relaxed", False)),
             "unsupported_concepts": self.unsupported_concepts,
+            "common_tactile_top3": common,
             "products": [
                 {
                     "number": number,
@@ -643,11 +649,7 @@ class _ToolTurn:
                     "title": str(row["title"])[:120],
                     "category": row["category"],
                     "evidence_source": row.get("tactile_target_source"),
-                    "requested_tactile": {
-                        name: round(float(row["last2_predictions"][name]), 2)
-                        for name in requested
-                        if name in row.get("last2_predictions", {})
-                    },
+                    "requested_tactile": tactile[number - 1],
                 }
                 for number, row in enumerate(rows, 1)
             ],
@@ -660,10 +662,9 @@ class _ToolTurn:
         if profile:
             tactile = {
                 "evidence_source": profile.get("source"),
-                "strongest": [
-                    {"class": item["class"], "probability": round(float(item["probability"]), 2)}
-                    for item in profile.get("strongest", [])
-                ],
+                "strongest": tactile_phrases.strongest(profile.get("classes") or {
+                    item["class"]: float(item["probability"]) for item in profile.get("strongest", [])
+                }),
                 "review_grounded_evidence_available": profile.get("review_grounded_evidence_available"),
                 "note": profile.get("note"),
             }
@@ -688,6 +689,11 @@ class _ToolTurn:
         comparison = self.service.tools.tactile.compare(ids)
         for product_id in ids:
             self._reference(product_id)
+        if comparison.get("source") == "image_predicted_last2":
+            comparison = {
+                **tactile_phrases.compare(comparison["items"]),
+                "evidence_source": "image_predicted_last2",
+            }
         return _truncate(comparison, int(self.settings["tool_output_max_chars"]))
 
     def add_to_cart(self, *, product_id: str, quantity: int) -> dict[str, Any]:

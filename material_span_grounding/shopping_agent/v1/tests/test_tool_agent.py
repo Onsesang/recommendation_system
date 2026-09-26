@@ -132,7 +132,31 @@ class ToolAgentServiceTests(unittest.TestCase):
         self.assertIn("personalization_weighted", result["products"][0]["score_breakdown"])
         tool_output = json.loads(post.call_args_list[1].args[1]["input"][0]["output"])
         self.assertEqual(tool_output["products"][0]["number"], 1)
-        self.assertEqual(set(tool_output["products"][0]["requested_tactile"]), {"thin", "cool", "rough"})
+        # The model sees phrases only, so it has no number or grade word to read aloud.
+        raw_output = post.call_args_list[1].args[1]["input"][0]["output"]
+        self.assertNotRegex(raw_output, r'"requested_tactile":\{[^}]*\d')
+        first_three = [{**tool_output["common_tactile_top3"], **row["requested_tactile"]} for row in tool_output["products"][:3]]
+        self.assertTrue(all(set(row) == {"thin", "cool", "rough"} for row in first_three))
+        self.assertTrue(all(value.endswith("다") for row in first_three for value in row.values()))
+
+        first_id, second = result["products"][0]["product_id"], result["products"][1]["product_id"]
+        post.side_effect = [
+            {"id": "resp_d1", "output": [_call("get_product_detail", {"product_id": first_id})]},
+            {"id": "resp_d2", "output": [_answer("1번은 얇아요.")]},
+            {"id": "resp_c1", "output": [_call("compare_products", {"product_ids": [first_id, second]})]},
+            {"id": "resp_c2", "output": [_answer("둘이 비슷해요.")]},
+        ]
+        self.app.agent.message(self.user_id, session_id, "1번 촉감 자세히 알려줘")
+        detail_output = post.call_args_list[3].args[1]["input"][-1]["output"]
+        self.assertNotIn("probability", detail_output)
+        self.assertTrue(json.loads(detail_output)["tactile"]["strongest"])
+        self.app.agent.message(self.user_id, session_id, "1번이랑 2번 비교해줘")
+        compare_output = post.call_args_list[5].args[1]["input"][-1]["output"]
+        self.assertNotIn("last2_predictions", compare_output)
+        self.assertNotRegex(compare_output, r"0\.\d")
+        comparison = json.loads(compare_output)["comparison"]
+        self.assertTrue(comparison)
+        self.assertTrue(all(row["difference"] in {"비슷함", "조금 차이 남", "뚜렷하게 차이 남"} for row in comparison.values()))
         self.assertEqual(tool_output["products"][0]["evidence_source"], result["products"][0]["tactile_target_source"])
 
         second_id = result["products"][1]["product_id"]

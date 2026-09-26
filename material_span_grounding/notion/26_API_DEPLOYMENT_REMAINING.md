@@ -20,6 +20,7 @@
 | B5 서버 전환 | ⚠️ 동기화 없음. 명세에 "전환 시 재로그인·새 세션"으로 명시 |
 | A1 고정 HTTPS 주소 | ✅ Tailscale Funnel `https://onsesang-pc-server.tail065d88.ts.net`. 외부 사용자 조건(공인 IP)에서 Vercel 페이지 호출·rate limit IP 구분 확인 |
 | B1 FastAPI | ❌ 결정 필요 |
+| 모델 확정 | ✅ `gpt-5.4-mini`, 오류 시 요청 단위로 `gpt-5.4-nano` 대체 → 둘 다 실패 시 로컬 라우터 |
 
 ## 1. 지금 상태
 

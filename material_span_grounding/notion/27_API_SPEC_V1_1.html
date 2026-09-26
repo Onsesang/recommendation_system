@@ -33,7 +33,7 @@ li { margin: 2px 0; }
 <body>
 
 <h1>쇼핑 에이전트 백엔드 API 명세서</h1>
-<div class="meta"><span>v1.1</span><span>최초 작성 2026-09-25 · @웨하스</span><span>수정 2026-09-26</span><span>기준 코드: GitHub <code>ai_agent</code> 브랜치 <code>db42b9a</code></span></div>
+<div class="meta"><span>v1.1</span><span>최초 작성 2026-09-25 · @웨하스</span><span>수정 2026-09-26</span><span>기준 코드: GitHub <code>ai_agent</code> 브랜치 <code>2b22689</code></span></div>
 
 <div class="changes">
 <b>v1.1 변경 사항</b> (v1 초안 대비)
@@ -43,6 +43,7 @@ li { margin: 2px 0; }
 <li>에이전트 답변에서 촉감 수치·"높음/낮음"이 사라짐. 응답 예시 교체. <code>recommendation_reason</code>, 확률 숫자는 화면에 표시하지 않도록 명시</li>
 <li>rate limit과 <code>429 too_many_requests</code> 추가. CORS는 등록된 여러 origin 허용</li>
 <li>응답 시간 실측값 갱신(중앙값 약 3초), 엔드포인트 수 18개로 정정, 오타·누락 오류 메시지 보완</li>
+<li>AI 모델 <code>gpt-5.4-mini</code> 확정, 오류 시 <code>gpt-5.4-nano</code> 대체 (응답 형식 변화 없음)</li>
 </ul>
 </div>
 
@@ -59,6 +60,7 @@ li { margin: 2px 0; }
 <tr><td>대화 응답 시간</td><td>중앙값 약 3초, 대부분 5초 이내, 드물게 10초 이상. <b>fetch timeout은 60초</b> 권장</td></tr>
 <tr><td>그 외 API 응답 시간</td><td>대부분 0.1초 미만 (회원가입·로그인은 약 0.3~1초)</td></tr>
 <tr><td>요청 한도</td><td>회원가입·로그인·대화 메시지에 한도가 있음. 아래 "요청 한도" 참고</td></tr>
+<tr><td>AI 모델</td><td>OpenAI <code>gpt-5.4-mini</code>. 오류가 나면 그 요청을 <code>gpt-5.4-nano</code>가 대신 처리하고, 둘 다 실패하면 로컬 모드가 답합니다. 어느 경우든 <b>응답 형식은 같습니다</b></td></tr>
 </table>
 <ul>
 <li>로그인 응답은 cookie(<code>HttpOnly; SameSite=Strict</code>)도 함께 주지만, 프론트가 다른 도메인에서 붙으면 cookie는 동작하지 않습니다. <b>Bearer 토큰을 쓰세요.</b></li>
@@ -247,7 +249,8 @@ li { margin: 2px 0; }
   "intent": { "...": "디버깅용" },
   "routing": { "tool": "search_products", "source": "openai_tool_loop", "confidence": null },
   "provenance": { "agent_mode": "openai_tool_loop", "llm_provider": "openai",
-                  "llm_model": "gpt-5.4-mini", "llm_requests": 2, "...": "" }
+                  "llm_model": "gpt-5.4-mini", "llm_model_fallback_used": false,
+                  "llm_requests": 2, "...": "" }
 }</pre>
 
 <h3>action별 화면 처리</h3>
@@ -271,7 +274,7 @@ li { margin: 2px 0; }
 <li>촉감 출처: <code>tactile_target_source</code>가 <code>image_predicted_last2</code>면 "이미지로 예측", <code>review_grounded_overlay</code>면 "리뷰 근거 있음"으로 표시합니다.</li>
 <li><code>status</code>가 <code>insufficient_results</code>면 조건에 맞는 상품이 없는 것이며 오류가 아닙니다.</li>
 <li><code>tool_calls</code>, <code>referenced_product_ids</code>, <code>unsupported_concepts</code>, <code>cart_updated</code>는 OpenAI 장애로 로컬 모드가 답할 때 없을 수 있습니다. 없으면 빈 배열, <code>false</code>로 처리하세요.</li>
-<li><code>intent</code>, <code>routing</code>, <code>provenance</code>는 디버깅용이라 화면에 보여줄 필요가 없습니다.</li>
+<li><code>intent</code>, <code>routing</code>, <code>provenance</code>는 디버깅용이라 화면에 보여줄 필요가 없습니다. <code>provenance.llm_model</code>은 실제로 답한 모델(<code>gpt-5.4-mini</code> 또는 대체 모델 <code>gpt-5.4-nano</code>)입니다.</li>
 <li>전송 중에는 로딩을 보여주고 중복 전송을 막아 주세요. 한 턴에 보통 3~5초 걸립니다.</li>
 </ul>
 

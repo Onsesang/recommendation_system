@@ -105,3 +105,17 @@ python -m shopping_agent.evaluation.review_app shopping_agent/evaluation/results
   "화면 N번"으로 풀어 보여 주고, 직전 목록에 없는 상품이면 빨간색으로 표시한다.
 - 공통: ← → 버튼·방향키 이동, 진행률, 필터, 턴 바로가기, 블라인드(모델 이름 숨김), 판정 기준, 요약,
   CSV 내보내기(탭별), 이미지 확대.
+
+## 검색 순위 설정 비교 (LLM 없이)
+
+```bash
+python -m shopping_agent.evaluation.ranking_variants \
+    --source shopping_agent/evaluation/results/<회귀 실행>/results.json \
+    --judgments shopping_agent/evaluation/results/<이전 검수>/judgments.json
+# A/B 비교 검수 (상위 3개가 달라진 턴만, 설정 이름은 가려짐)
+python -m shopping_agent.evaluation.pairwise_app <위 결과>/results.json --baseline baseline --candidates texture_words color
+# 브라우저에서 http://127.0.0.1:8892 → 1 = A, 2 = 비슷함, 3 = B
+```
+
+- 설정 후보는 `evaluation/ranking_variants.json`. 회귀 실행에서 모델이 만든 검색 조건을 그대로 재계산하므로 설정 효과만 비교된다.
+- 자동 지표(이전 판정 기준 정확도, 색상 일치, 촉감 충족)를 먼저 보고, 사람은 A/B 한 번씩만 고른다. 결과는 `pairwise_judgments.json`.

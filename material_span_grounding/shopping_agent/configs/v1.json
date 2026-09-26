@@ -23,16 +23,16 @@
     ],
     "weights": {
       "product_impression": 0.01,
-      "product_click": 0.10,
-      "product_dwell": 0.20,
+      "product_click": 0.1,
+      "product_dwell": 0.2,
       "image_zoom": 0.12,
       "similar_product_click": 0.18,
-      "favorite_add": 0.60,
-      "favorite_remove": -0.20,
-      "cart_add": 0.80,
+      "favorite_add": 0.6,
+      "favorite_remove": -0.2,
+      "cart_add": 0.8,
       "cart_remove": -0.25,
-      "explicit_like": 1.00,
-      "explicit_dislike": -1.00,
+      "explicit_like": 1.0,
+      "explicit_dislike": -1.0,
       "recommendation_skip": -0.03
     },
     "behavior_half_life_days": 30,
@@ -85,20 +85,71 @@
     "fallback_classifier_c": 8.0,
     "training_examples": {
       "respond_greeting": [
-        "안녕", "안녕하세요", "반가워", "좋은 아침이야", "잘 지냈어", "고마워", "감사합니다",
-        "hello", "hi there", "nice to meet you", "thanks"
+        "안녕",
+        "안녕하세요",
+        "반가워",
+        "좋은 아침이야",
+        "잘 지냈어",
+        "고마워",
+        "감사합니다",
+        "hello",
+        "hi there",
+        "nice to meet you",
+        "thanks"
       ],
       "respond_out_of_scope": [
-        "오늘 날씨 알려줘", "오늘 날씨 어때", "내일 비가 와", "서울 기온이 몇 도야", "뉴스를 요약해줘", "영어로 번역해줘",
-        "파이썬 코드를 작성해줘", "저녁 메뉴 추천해줘", "환율을 알려줘", "주식 가격이 얼마야",
-        "수학 문제를 풀어줘", "1 더하기 1은 뭐야", "계산해줘", "내일 일정 알려줘", "노래를 틀어줘"
+        "오늘 날씨 알려줘",
+        "오늘 날씨 어때",
+        "내일 비가 와",
+        "서울 기온이 몇 도야",
+        "뉴스를 요약해줘",
+        "영어로 번역해줘",
+        "파이썬 코드를 작성해줘",
+        "저녁 메뉴 추천해줘",
+        "환율을 알려줘",
+        "주식 가격이 얼마야",
+        "수학 문제를 풀어줘",
+        "1 더하기 1은 뭐야",
+        "계산해줘",
+        "내일 일정 알려줘",
+        "노래를 틀어줘"
       ],
       "search_products": [
-        "부드러운 바지를 추천해줘", "비치지 않는 치마를 찾아줘", "검정색 원피스를 보여줘",
-        "이 옷과 디자인이 비슷한 상품", "촉감이 비슷한 옷을 비교해줘", "여름에 입을 셔츠",
-        "세탁 후 늘어나지 않는 옷", "캐주얼한 코디를 찾고 있어", "장바구니 상품과 비슷한 옷",
-        "어떤 소재가 덜 까슬거려", "옷 추천해줘", "안녕 부드러운 치마를 찾아줘"
+        "부드러운 바지를 추천해줘",
+        "비치지 않는 치마를 찾아줘",
+        "검정색 원피스를 보여줘",
+        "이 옷과 디자인이 비슷한 상품",
+        "촉감이 비슷한 옷을 비교해줘",
+        "여름에 입을 셔츠",
+        "세탁 후 늘어나지 않는 옷",
+        "캐주얼한 코디를 찾고 있어",
+        "장바구니 상품과 비슷한 옷",
+        "어떤 소재가 덜 까슬거려",
+        "옷 추천해줘",
+        "안녕 부드러운 치마를 찾아줘"
       ]
+    }
+  },
+  "rate_limits": {
+    "trusted_proxies": [
+      "127.0.0.1",
+      "::1"
+    ],
+    "register": {
+      "limit": 5,
+      "window_seconds": 3600
+    },
+    "login": {
+      "limit": 10,
+      "window_seconds": 600
+    },
+    "messages": {
+      "limit": 20,
+      "window_seconds": 60
+    },
+    "messages_daily": {
+      "limit": 300,
+      "window_seconds": 86400
     }
   }
 }

@@ -34,11 +34,16 @@ def _resolve_project_path(value: str, default: Path) -> Path:
     return raw if raw.is_absolute() else PROJECT_ROOT / raw
 
 
+def _origins(value: str) -> tuple[str, ...]:
+    """Comma-separated origins, without trailing slashes; a browser sends "https://host" exactly."""
+    return tuple(dict.fromkeys(item.strip().rstrip("/") for item in value.split(",") if item.strip()))
+
+
 @dataclass(frozen=True)
 class AgentSettings:
     host: str
     port: int
-    cors_origin: str
+    cors_origins: tuple[str, ...]
     database_path: Path
     session_days: int
     llm_provider: str
@@ -77,7 +82,9 @@ class AgentSettings:
         return cls(
             host=os.getenv("SHOPPING_AGENT_HOST", "127.0.0.1"),
             port=int(os.getenv("SHOPPING_AGENT_PORT", "8878")),
-            cors_origin=os.getenv("SHOPPING_AGENT_CORS_ORIGIN", "http://127.0.0.1:8878"),
+            cors_origins=_origins(
+                os.getenv("SHOPPING_AGENT_CORS_ORIGINS") or os.getenv("SHOPPING_AGENT_CORS_ORIGIN", "http://127.0.0.1:8878")
+            ),
             database_path=database_path,
             session_days=int(os.getenv("SHOPPING_AGENT_SESSION_DAYS", str(config["auth"]["session_days"]))),
             llm_provider=provider,

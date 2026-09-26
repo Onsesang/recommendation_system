@@ -25,6 +25,7 @@ class AgentApiTests(unittest.TestCase):
             gemini_api_key="",
             # These assertions describe the curated catalog, independent of the local .env.
             catalog_mode="curated",
+            cors_origins=("https://onsesang-front.vercel.app", "http://localhost:3000"),
         )
         cls.app = AgentApplication(settings)
         cls.server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(cls.app))
@@ -147,6 +148,39 @@ class AgentApiTests(unittest.TestCase):
             self.assertEqual(updated["strength"], .5)
             self.assertEqual(self.auth_request("DELETE", f"/agent/v1/preferences/{preference_id}")[0], 200)
         self.assertEqual(self.auth_request("POST", "/agent/v1/checkout", {})[0], 404)
+
+    def test_cors_echoes_only_registered_origins(self) -> None:
+        for origin, allowed in (("https://onsesang-front.vercel.app", True), ("http://localhost:3000", True),
+                                ("https://evil.example.com", False)):
+            connection = HTTPConnection("127.0.0.1", self.port, timeout=10)
+            connection.request("OPTIONS", "/agent/v1/auth/login", headers={
+                "Origin": origin, "Access-Control-Request-Method": "POST",
+                "Access-Control-Request-Headers": "content-type, authorization"})
+            response = connection.getresponse(); response.read(); connection.close()
+            self.assertEqual(response.status, 204)
+            self.assertEqual(response.getheader("Access-Control-Allow-Origin"), origin if allowed else None)
+            self.assertIn("Authorization", response.getheader("Access-Control-Allow-Headers"))
+            self.assertEqual(response.getheader("Vary"), "Origin")
+
+    def test_rate_limits_return_429_with_retry_after(self) -> None:
+        from shopping_agent.v1.rate_limit import RateLimiter
+        original = self.app.rate_limiter
+        self.app.rate_limiter = RateLimiter({"login": {"limit": 2, "window_seconds": 60},
+                                             "messages": {"limit": 1, "window_seconds": 60}})
+        try:
+            bad_login = {"email": "api@example.com", "password": "wrong-password"}
+            self.assertEqual(self.request("POST", "/agent/v1/auth/login", bad_login)[0], 401)
+            self.assertEqual(self.request("POST", "/agent/v1/auth/login", bad_login)[0], 401)
+            status, payload, headers = self.request("POST", "/agent/v1/auth/login", bad_login)
+            self.assertEqual((status, payload["error"]["code"]), (429, "too_many_requests"))
+            self.assertGreaterEqual(int(headers["Retry-After"]), 1)
+            self.assertIn("초 후 다시 시도", payload["error"]["message"])
+            session = self.auth_request("POST", "/agent/v1/sessions", {})[1]
+            path = f"/agent/v1/sessions/{session['session_id']}/messages"
+            self.assertEqual(self.auth_request("POST", path, {"message": "안녕"})[0], 200)
+            self.assertEqual(self.auth_request("POST", path, {"message": "안녕"})[0], 429)
+        finally:
+            self.app.rate_limiter = original
 
     def test_ui_contains_login_cart_agent_and_inert_checkout(self) -> None:
         status, html, _ = self.request("GET", "/agent-demo")

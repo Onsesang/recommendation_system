@@ -21,6 +21,7 @@ from .database import AgentDatabase
 from .llm import build_llm_provider
 from .tool_agent import TOOL_NAMES, build_tool_agent
 from .personalization import PersonalizedRanker
+from .rate_limit import RateLimited, RateLimiter, client_ip
 from .preferences import PreferenceService
 from .service import ShoppingAgentService
 from .tools import ShoppingTools
@@ -86,6 +87,9 @@ class AgentApplication:
         else:
             self.tools = ShoppingTools()
         self.preferences = PreferenceService(self.database)
+        limits = dict(settings.config.get("rate_limits", {}))
+        self.trusted_proxies = set(limits.pop("trusted_proxies", []))
+        self.rate_limiter = RateLimiter(limits)
         self.ranker = PersonalizedRanker(self.database, self.tools, settings.config)
         self.llm = build_llm_provider(settings)
         self.tracer = TraceRecorder(
@@ -146,8 +150,13 @@ def make_handler(app: AgentApplication):
         def _headers(self, content_type: str, length: int, extra: dict[str, str] | None = None) -> None:
             self.send_header("Content-Type", content_type)
             self.send_header("Content-Length", str(length))
-            self.send_header("Access-Control-Allow-Origin", app.settings.cors_origin)
-            self.send_header("Access-Control-Allow-Credentials", "true")
+            origin = (self.headers.get("Origin") or "").rstrip("/")
+            if origin and origin in app.settings.cors_origins:
+                # Echo only a registered origin; other sites get no CORS grant at all.
+                self.send_header("Access-Control-Allow-Origin", origin)
+                self.send_header("Access-Control-Allow-Credentials", "true")
+            self.send_header("Vary", "Origin")
+            self.send_header("Access-Control-Expose-Headers", "Retry-After")
             self.send_header("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS")
             self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
             self.send_header("Cache-Control", "no-store")
@@ -211,8 +220,17 @@ def make_handler(app: AgentApplication):
             user = self._user()
             callback(user)
 
+        def _client_ip(self) -> str:
+            return client_ip(self.client_address[0], self.headers, app.trusted_proxies)
+
         def _route_error(self, exc: Exception) -> None:
-            if isinstance(exc, PermissionError):
+            if isinstance(exc, RateLimited):
+                self._json(
+                    HTTPStatus.TOO_MANY_REQUESTS,
+                    {"error": {"code": "too_many_requests", "message": str(exc)}},
+                    {"Retry-After": str(exc.retry_after)},
+                )
+            elif isinstance(exc, PermissionError):
                 self._error(HTTPStatus.UNAUTHORIZED, "unauthorized", str(exc))
             elif isinstance(exc, KeyError):
                 self._error(HTTPStatus.NOT_FOUND, "not_found", str(exc).strip("'"))
@@ -284,6 +302,7 @@ def make_handler(app: AgentApplication):
             path = urlparse(self.path).path
             try:
                 if path == "/agent/v1/auth/register":
+                    app.rate_limiter.check("register", self._client_ip())
                     body = self._body()
                     result = app.auth.register(
                         email=body.get("email", ""),
@@ -297,6 +316,7 @@ def make_handler(app: AgentApplication):
                     )
                     return
                 if path == "/agent/v1/auth/login":
+                    app.rate_limiter.check("login", self._client_ip())
                     body = self._body()
                     result = app.auth.login(email=body.get("email", ""), password=body.get("password", ""))
                     self._json(
@@ -318,6 +338,9 @@ def make_handler(app: AgentApplication):
                     self._json(HTTPStatus.CREATED, app.agent.create_session(user["user_id"]))
                 elif path.startswith("/agent/v1/sessions/") and path.endswith("/messages"):
                     session_id = path.removeprefix("/agent/v1/sessions/").removesuffix("/messages")
+                    # Each message costs OpenAI calls; cap bursts and daily volume per user.
+                    app.rate_limiter.check("messages", user["user_id"])
+                    app.rate_limiter.check("messages_daily", user["user_id"])
                     body = self._body()
                     self._json(
                         HTTPStatus.OK,

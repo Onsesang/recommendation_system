@@ -36,7 +36,7 @@ tunnel을 재시작했다면 다음 순서로 맞춘다.
 
 ```bash
 shopping_agent/tunnel.sh url
-# 출력된 URL을 shopping_agent/.env 의 SHOPPING_AGENT_CORS_ORIGIN 에 반영
+# 출력된 URL을 shopping_agent/.env 의 SHOPPING_AGENT_CORS_ORIGINS(쉼표 구분)에 추가
 shopping_agent/stop.sh && shopping_agent/start.sh
 ```
 

@@ -3,7 +3,7 @@
 #
 # Quick Tunnels need no Cloudflare account, but the hostname is random and
 # changes on every restart. After `start` or `restart`, read the new URL from
-# `url` and put it in SHOPPING_AGENT_CORS_ORIGIN in shopping_agent/.env, then
+# `url` and add it to SHOPPING_AGENT_CORS_ORIGINS in shopping_agent/.env, then
 # restart the agent so the Secure cookie keeps matching the public origin.
 set -euo pipefail
 

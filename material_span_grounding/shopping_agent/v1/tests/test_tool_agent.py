@@ -82,6 +82,36 @@ class ToolLoopContractTests(unittest.TestCase):
             self.loop().run(instructions="지침", input_items=[], execute=lambda name, arguments: {})
 
     @patch("shopping_agent.v1.tool_agent._post_json")
+    def test_answer_with_foreign_script_is_rewritten_once(self, post) -> None:
+        post.side_effect = [
+            {"id": "resp_1", "output": [_answer("3번은 앞이 खुल리는 롱 가디건이에요.")]},
+            {"id": "resp_2", "output": [_answer("3번은 앞이 트인 롱 가디건이에요.")]},
+        ]
+        result = self.loop().run(instructions="지침", input_items=[], execute=lambda name, arguments: {})
+        self.assertEqual(result.text, "3번은 앞이 트인 롱 가디건이에요.")
+        self.assertTrue(result.rewritten)
+        self.assertEqual(result.model_requests, 2)
+        retry = post.call_args_list[1].args[1]
+        self.assertEqual(retry["previous_response_id"], "resp_1")
+        self.assertEqual(retry["tool_choice"], "none")
+        self.assertIn("खुल", retry["input"][0]["content"])
+
+    @patch("shopping_agent.v1.tool_agent._post_json")
+    def test_foreign_script_left_after_rewrite_is_removed(self, post) -> None:
+        post.side_effect = [
+            {"id": "resp_1", "output": [_answer("장바구니는 հիմա 비어 있어요.")]},
+            {"id": "resp_2", "output": [_answer("장바구니는 հիմա 비어 있어요.")]},
+        ]
+        result = self.loop().run(instructions="지침", input_items=[], execute=lambda name, arguments: {})
+        self.assertEqual(result.text, "장바구니는 비어 있어요.")
+        self.assertEqual(result.removed_foreign, ["հիմա"])
+        post.reset_mock()
+        post.side_effect = [{"id": "resp_3", "output": [_answer("1번은 Allegra K 셔츠예요.")]}]
+        clean = self.loop().run(instructions="지침", input_items=[], execute=lambda name, arguments: {})
+        self.assertFalse(clean.rewritten)  # Hangul and Latin never trigger a rewrite
+        self.assertEqual(post.call_count, 1)
+
+    @patch("shopping_agent.v1.tool_agent._post_json")
     def test_tool_call_round_trip_uses_previous_response_id(self, post) -> None:
         post.side_effect = [
             {"id": "resp_1", "output": [_call("view_cart", {})]},

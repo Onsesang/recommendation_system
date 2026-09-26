@@ -1,0 +1,3980 @@
+{
+  "generated_at": "2026-09-26T13:41:24+00:00",
+  "scenario_file": "shopping_agent/evaluation/demo_scenarios.json",
+  "scenario_count": 2,
+  "turn_count": 10,
+  "instability": [],
+  "results": [
+    {
+      "model": "gpt-5.4-mini",
+      "reasoning_effort": "low",
+      "run": 1,
+      "turns": 10,
+      "passed": 10,
+      "latency_median": 2.81,
+      "latency_p90": 3.2,
+      "latency_max": 3.58,
+      "mean_chars": 69.2,
+      "mean_sentences": 2.6,
+      "length_warnings": 0,
+      "fallbacks": 0,
+      "rows": [
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 1,
+          "message": "부드러운 가디건 보여줘",
+          "note": "cardigan(또는 sweater), want=soft.",
+          "answer": "세 상품 모두 부드러워요.  \n1번은 포근한 망토형 가디건이고, 이미지로 예측한 촉감이에요.  \n2번은 검은색 버튼 가디건이고, 이미지로 예측한 촉감이에요.  \n3번은 긴소매 버튼 가디건이고, 이미지로 예측한 촉감이에요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "부드러운 가디건",
+                "category": "cardigan",
+                "want": [
+                  "soft"
+                ],
+                "avoid": [],
+                "keywords": [
+                  "cardigan"
+                ],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.2,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 123,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B08BFQ7ZH8",
+              "title": "QBSM Women's Shawl Wrap Poncho Ruana Capes Open Front Cardigan Blanket Wraps for Fall and Winter",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/617N3FhiPtL._AC_UL1000_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8116759657859802,
+                  "match_component": 0.8116759657859802,
+                  "weight": 1.0,
+                  "weighted_component": 0.8116759657859802
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B014EFUYPW",
+              "title": "BIADANI Women Round Neck Button Down Soft Classic Knit Cardigan Sweater Black Medium",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71+2hrzJJSL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8322367072105408,
+                  "match_component": 0.8322367072105408,
+                  "weight": 1.0,
+                  "weighted_component": 0.8322367072105408
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B076F6VRHH",
+              "title": "iliad USA 7027 Womens Button Down Crew Neck Long Sleeve Soft Knit Cardigan Sweater Black 3X-Large",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71PjCJUlf4L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8354835510253906,
+                  "match_component": 0.8354835510253906,
+                  "weight": 1.0,
+                  "weighted_component": 0.8354835510253906
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B073HZRYRF",
+              "title": "Women's Blazer Notched Lapel Casual Striped Cardigan Jacket Long Sleeve Spring Outwear",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61nPRQXLPzL._AC_UL1111_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8233283758163452,
+                  "match_component": 0.8233283758163452,
+                  "weight": 1.0,
+                  "weighted_component": 0.8233283758163452
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B01GP5QTI0",
+              "title": "NINEXIS Women's Long Sleeve Button Down Soft Knit Cardigan Sweater Aqua 2XL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71ISf3R6vaL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8333246111869812,
+                  "match_component": 0.8333246111869812,
+                  "weight": 1.0,
+                  "weighted_component": 0.8333246111869812
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B014EFWQ3U",
+              "title": "BIADANI Women Button Down Long Sleeve Crewneck Soft Knit Cardigan Sweater Brown Medium",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71bdlxw0K5L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8354835510253906,
+                  "match_component": 0.8354835510253906,
+                  "weight": 1.0,
+                  "weighted_component": 0.8354835510253906
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B01KFIYKF2",
+              "title": "DQdq Women's Hollow Bathing Suit Cover Ups Beach Cardigan White",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81LfEmx13vL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8140527606010437,
+                  "match_component": 0.8140527606010437,
+                  "weight": 1.0,
+                  "weighted_component": 0.8140527606010437
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B01M0L229A",
+              "title": "Naggoo Womens Casual Work Office Open Front Cardigan Blazer Jacket",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61OaKmPHstL._AC_UL1040_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8311430811882019,
+                  "match_component": 0.8311430811882019,
+                  "weight": 1.0,
+                  "weighted_component": 0.8311430811882019
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B07D6MGMVZ",
+              "title": "Womens Long Sleeve Jacket Open Front Cardigan + Pants 2 Piece Outfit Blue XL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61fc-0wGO8L._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.804405927658081,
+                  "match_component": 0.804405927658081,
+                  "weight": 1.0,
+                  "weighted_component": 0.804405927658081
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B01M1HC8N5",
+              "title": "KNITBEST Women's Knitwear Striped Checked Wool Long Sleeve Cardigan (X-Large, Checked)",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/91u4WUZOudL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8311430811882019,
+                  "match_component": 0.8311430811882019,
+                  "weight": 1.0,
+                  "weighted_component": 0.8311430811882019
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 2,
+          "message": "두 번째 거 자세히 알려줘",
+          "note": "직전 검색 2번 상세.",
+          "answer": "2번은 검은색 라운드넥 버튼 가디건이고, 부드럽고 조금 늘어나며 조금 따뜻해요.  \n조금 각이 잡혀 있고 조금 폭신한 느낌도 보여요.  \n이미지로 예측한 촉감이에요.",
+          "action": "get_product_detail",
+          "tool_calls": [
+            {
+              "name": "get_product_detail",
+              "arguments": {
+                "product_id": "B014EFUYPW"
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.81,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 92,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 3,
+          "message": "그거랑 첫 번째 비교해줘",
+          "note": "'그거'는 방금 본 2번. 2번과 1번을 비교한다.",
+          "answer": "두 제품은 전체적으로 비슷해요.  \n2번은 1번보다 조금 더 매끄럽고, 조금 더 늘어나며, 조금 더 따뜻한 쪽이에요.  \n나머지 촉감은 거의 비슷하고, 이미지로 예측한 촉감이에요.",
+          "action": "compare_products",
+          "tool_calls": [
+            {
+              "name": "compare_products",
+              "arguments": {
+                "product_ids": [
+                  "B014EFUYPW",
+                  "B08BFQ7ZH8"
+                ]
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.06,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 100,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 4,
+          "message": "첫 번째 거 두 개 담아줘",
+          "note": "1번을 수량 2로 담는다.",
+          "answer": "1번을 2개로 담았어요.  \n처음 보여드린 망토형 가디건입니다.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B08BFQ7ZH8",
+                "quantity": 2
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.95,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 35,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 5,
+          "message": "방금 담은 거 하나만 빼줘",
+          "note": "1번 가디건 2개 중 1개만 뺀다(quantity=1). 1개 남았다고 말한다.",
+          "answer": "하나만 빼드렸어요.  \n방금 담은 망토형 가디건은 이제 1개 남아 있어요.",
+          "action": "remove_from_cart",
+          "tool_calls": [
+            {
+              "name": "remove_from_cart",
+              "arguments": {
+                "product_id": "B08BFQ7ZH8",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.55,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 41,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 1,
+          "message": "따뜻한 코트 보여줘",
+          "note": "coat 계열, want=warm.",
+          "answer": "세 상품 모두 따뜻해요.  \n1번은 짧은 후드 겨울 코트이고, 2번은 퍼 안감이 있는 파카 코트예요.  \n3번은 길게 내려오는 패딩 코트라 더 겨울 느낌이 강해요.  \n원하시면 제가 이 중에서 더 가벼운 쪽이나 더 두꺼운 쪽으로도 골라드릴게요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "따뜻한 코트",
+                "category": "coat",
+                "want": [
+                  "warm"
+                ],
+                "avoid": [],
+                "keywords": [
+                  "coat",
+                  "warm"
+                ],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.58,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 136,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B07YJHTM3Q",
+              "title": "Charis Allure Women's Hooded Ultra Lightweight Short Winter Jacket Warm Short Outwear Coat, Navy Blue, Large",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71Cxn8njCDL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8679338097572327,
+                  "match_component": 0.8679338097572327,
+                  "weight": 1.0,
+                  "weighted_component": 0.8679338097572327
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B08HM324PK",
+              "title": "Women's Hooded Parka Coat Warm Winter Jacket with Faux Fur Lined Zipper Outwear Overcoat Thicked Coat（Large，Black）",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71rB2OAi4kL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8539127111434937,
+                  "match_component": 0.8539127111434937,
+                  "weight": 1.0,
+                  "weighted_component": 0.8539127111434937
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B07GW9N6N3",
+              "title": "iLoveSIA Women's Winter Long Puffer Coats Maxi Warm Coat with Fur Trimmed Hood Black US 12",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71uB1MgoriL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.837619960308075,
+                  "match_component": 0.837619960308075,
+                  "weight": 1.0,
+                  "weighted_component": 0.837619960308075
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B07GWJD58D",
+              "title": "Simplee Plus Women's Reversible Coat Warm Hooded Faux Fur Coat Long Jacket Black",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/7189YBdkIYL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8418256044387817,
+                  "match_component": 0.8418256044387817,
+                  "weight": 1.0,
+                  "weighted_component": 0.8418256044387817
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B07XJV8GD2",
+              "title": "Gmardar Men's Parka Winter Warm Faux Fur Lined Coat Jacket with Detachable Hood ArmyGreen",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/9128-T5Z16L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.873214840888977,
+                  "match_component": 0.873214840888977,
+                  "weight": 1.0,
+                  "weighted_component": 0.873214840888977
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B0B8Z5ML7N",
+              "title": "GRACE KARIN Women's Warm Thickened Parka Coat Outwear Winter Long Jackets for Skiing Navy XL",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71AP6-UJKcL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8479677438735962,
+                  "match_component": 0.8479677438735962,
+                  "weight": 1.0,
+                  "weighted_component": 0.8479677438735962
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B07H3NNTW1",
+              "title": "Dokotoo Womens Casual Warm Classic Regular Faux Fur Collar Zip Up Fashion Quilted Puffer Jacket Coat Outerwear with Pockets Khaki Small",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61Bt-gUtgVL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.842863142490387,
+                  "match_component": 0.842863142490387,
+                  "weight": 1.0,
+                  "weighted_component": 0.842863142490387
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B07W3RFT9H",
+              "title": "INVACHI Mens Fur Collar Removable Hooded Warm Fleece Lined Down Jacket Windproof Windbreaker Winter Coat",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/613VJI2epUL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8652240633964539,
+                  "match_component": 0.8652240633964539,
+                  "weight": 1.0,
+                  "weighted_component": 0.8652240633964539
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B07WDF6YHD",
+              "title": "WULFUL Men's Winter Coat Warm Parka Jacket with Detachable Fur Hood",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61Dzxem2chL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8661325573921204,
+                  "match_component": 0.8661325573921204,
+                  "weight": 1.0,
+                  "weighted_component": 0.8661325573921204
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B07Z1PQD9X",
+              "title": "ECHOINE Womens Lightweight Lapel Fuzzy Shearling Sherpa Fleece Coat Jacket with Pockets Warm Winter Coffee",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71VqPTTVbwL._AC_UL1170_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8688268065452576,
+                  "match_component": 0.8688268065452576,
+                  "weight": 1.0,
+                  "weighted_component": 0.8688268065452576
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 2,
+          "message": "3번 담아줘",
+          "note": "직전 검색 3번을 담는다.",
+          "answer": "3번을 장바구니에 담았어요.  \n길게 내려오는 따뜻한 패딩 코트예요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B07GW9N6N3",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.02,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 38,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 3,
+          "message": "지금 장바구니에 뭐가 있어?",
+          "note": "view_cart로 방금 담은 코트 1개를 말한다.",
+          "answer": "장바구니에는 1개가 있어요.  \niLoveSIA 여성용 겨울 롱 패딩 코트가 1개 담겨 있어요.",
+          "action": "view_cart",
+          "tool_calls": [
+            {
+              "name": "view_cart",
+              "arguments": {},
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.38,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 53,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 4,
+          "message": "방금 담은 거 장바구니에서 빼줘",
+          "note": "remove_from_cart로 방금 담은 3번 코트를 뺀다. 무엇을 뺐는지 짧게 확인한다.",
+          "answer": "방금 담은 상품을 장바구니에서 뺐어요.  \n이제 장바구니는 비어 있어요.",
+          "action": "remove_from_cart",
+          "tool_calls": [
+            {
+              "name": "remove_from_cart",
+              "arguments": {
+                "product_id": "B07GW9N6N3",
+                "quantity": null
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.46,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 40,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 5,
+          "message": "알겠어, 고마워요",
+          "note": "도구 없이 짧게 마무리 인사.",
+          "answer": "천만에요. 다른 코트나 원하는 촉감 있으면 바로 도와드릴게요.",
+          "action": "respond",
+          "tool_calls": [],
+          "latency_seconds": 1.1,
+          "llm_requests": 1,
+          "answer_rewritten": false,
+          "chars": 34,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.4-mini",
+      "reasoning_effort": "low",
+      "run": 2,
+      "turns": 10,
+      "passed": 10,
+      "latency_median": 2.61,
+      "latency_p90": 3.16,
+      "latency_max": 3.18,
+      "mean_chars": 69.0,
+      "mean_sentences": 2.7,
+      "length_warnings": 0,
+      "fallbacks": 0,
+      "rows": [
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 1,
+          "message": "부드러운 가디건 보여줘",
+          "note": "cardigan(또는 sweater), want=soft.",
+          "answer": "세 상품 모두 부드러워요.  \n1번은 담요처럼 덮는 형태의 가디건이고, 이미지는 촉감을 예측한 결과예요.  \n2번은 짧은 코바늘 느낌의 볼레로 가디건이고, 3번은 오픈형 가디건 세트예요.  \n원하시면 더 부드럽고 얇은 쪽으로도 다시 골라드릴게요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "부드러운 가디건",
+                "category": "cardigan",
+                "want": [
+                  "soft"
+                ],
+                "avoid": [],
+                "keywords": [
+                  "cardigan"
+                ],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.61,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 137,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B08BFQ7ZH8",
+              "title": "QBSM Women's Shawl Wrap Poncho Ruana Capes Open Front Cardigan Blanket Wraps for Fall and Winter",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/617N3FhiPtL._AC_UL1000_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8116759657859802,
+                  "match_component": 0.8116759657859802,
+                  "weight": 1.0,
+                  "weighted_component": 0.8116759657859802
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B00MJ0RVI8",
+              "title": "Ladies Knitted Bolero Crochet Cardigan Shrug",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/714OE7OtrWL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8333246111869812,
+                  "match_component": 0.8333246111869812,
+                  "weight": 1.0,
+                  "weighted_component": 0.8333246111869812
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B07D6LWPLR",
+              "title": "Womens Open Front Cardigan Outerwear Jacket and Pants 2 Piece Outfit Blue 2XL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61fc-0wGO8L._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.804405927658081,
+                  "match_component": 0.804405927658081,
+                  "weight": 1.0,
+                  "weighted_component": 0.804405927658081
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B075CXVDWR",
+              "title": "Umeko Womens Cardigans Fall Casual Long Sweaters Open Front Lightweight Knit Cardigan with Pockets Blue",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/617mlAmUSaL._AC_UL1000_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8322367072105408,
+                  "match_component": 0.8322367072105408,
+                  "weight": 1.0,
+                  "weighted_component": 0.8322367072105408
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B0B7X9G38Z",
+              "title": "Karlywindow Mens Long Sleeve Cardigan Sweater Button Down Casual Slim Fit Lightweight Knitted Sweaters Army Green",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/51jU2ZD7qML._AC_UL1200_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8344069123268127,
+                  "match_component": 0.8344069123268127,
+                  "weight": 1.0,
+                  "weighted_component": 0.8344069123268127
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B01GP5QTI0",
+              "title": "NINEXIS Women's Long Sleeve Button Down Soft Knit Cardigan Sweater Aqua 2XL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71ISf3R6vaL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8333246111869812,
+                  "match_component": 0.8333246111869812,
+                  "weight": 1.0,
+                  "weighted_component": 0.8333246111869812
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B00CW89S7O",
+              "title": "Doublju Short Length Knit Shrug Cardigan IVORY (US-L)",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/713wvnBTDAL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8333246111869812,
+                  "match_component": 0.8333246111869812,
+                  "weight": 1.0,
+                  "weighted_component": 0.8333246111869812
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B07GD8QWTD",
+              "title": "DUNEA Women's Casual 3/4 Sleeve Soft Drape Open Front Long Jersey Cardigan with Pocket (Dark Rust, XXX-Large)",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61JchDafc0L._AC_UL1300_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8322367072105408,
+                  "match_component": 0.8322367072105408,
+                  "weight": 1.0,
+                  "weighted_component": 0.8322367072105408
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B01A357M4S",
+              "title": "3/4 Sleeve Bolero Cardigan for Women Lace Size L BP49-1",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71UQDM2mBEL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8255897164344788,
+                  "match_component": 0.8255897164344788,
+                  "weight": 1.0,
+                  "weighted_component": 0.8255897164344788
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B0B5XN4KF1",
+              "title": "Boys and Kids Cable Knit Cardigan Sweater V-Neck Button Up Sweater Girls Fall Winter Outwear 5-14 Years",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61R-vo3TygL._AC_UL1400_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8210441470146179,
+                  "match_component": 0.8210441470146179,
+                  "weight": 1.0,
+                  "weighted_component": 0.8210441470146179
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 2,
+          "message": "두 번째 거 자세히 알려줘",
+          "note": "직전 검색 2번 상세.",
+          "answer": "2번은 코바늘 느낌의 볼레로 가디건이고, 부드럽고 조금 얇아요.  \n조금 늘어나고 조금 하늘하늘하면서, 형태는 약간 각이 잡혀 있어요.  \n이미지로 예측한 촉감이라 실제 착용감은 다를 수 있어요.",
+          "action": "get_product_detail",
+          "tool_calls": [
+            {
+              "name": "get_product_detail",
+              "arguments": {
+                "product_id": "B00MJ0RVI8"
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.93,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 109,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 3,
+          "message": "그거랑 첫 번째 비교해줘",
+          "note": "'그거'는 방금 본 2번. 2번과 1번을 비교한다.",
+          "answer": "두 번째와 첫 번째는 부드러운 느낌이 비슷해요.  \n두 번째는 첫 번째보다 조금 더 얇고 조금 더 매끄럽고, 첫 번째는 조금 더 도톰해요.  \n두 번째는 조금 더 시원한 느낌이 있고, 첫 번째는 시원하지 않아요.  \n둘 다 이미지로 예측한 촉감이에요.",
+          "action": "compare_products",
+          "tool_calls": [
+            {
+              "name": "compare_products",
+              "arguments": {
+                "product_ids": [
+                  "B00MJ0RVI8",
+                  "B08BFQ7ZH8"
+                ]
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.18,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 140,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 4,
+          "message": "첫 번째 거 두 개 담아줘",
+          "note": "1번을 수량 2로 담는다.",
+          "answer": "첫 번째 상품을 2개 담았어요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B08BFQ7ZH8",
+                "quantity": 2
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.34,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 17,
+          "sentences": 1,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 5,
+          "message": "방금 담은 거 하나만 빼줘",
+          "note": "1번 가디건 2개 중 1개만 뺀다(quantity=1). 1개 남았다고 말한다.",
+          "answer": "방금 담은 상품에서 1개를 뺐어요.  \n지금은 첫 번째 상품이 1개 남아 있어요.",
+          "action": "remove_from_cart",
+          "tool_calls": [
+            {
+              "name": "remove_from_cart",
+              "arguments": {
+                "product_id": "B08BFQ7ZH8",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.48,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 45,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 1,
+          "message": "따뜻한 코트 보여줘",
+          "note": "coat 계열, want=warm.",
+          "answer": "세 상품 모두 따뜻해요. 이미지로 예측한 촉감이라 참고용으로 봐주세요.  \n1번은 방수 다운 코트예요.  \n2번은 캐주얼한 롱코트예요.  \n3번은 후드가 있는 겨울용 솜 코트예요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "따뜻한 코트",
+                "category": "coat",
+                "want": [
+                  "warm"
+                ],
+                "avoid": [],
+                "keywords": [
+                  "coat"
+                ],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.16,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 100,
+          "sentences": 5,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B00NU9T49Q",
+              "title": "Jessie G. Women's Alicia Waterproof Down Coat Black Small",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61Bp89IrsPL._AC_UL1400_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8577680587768555,
+                  "match_component": 0.8577680587768555,
+                  "weight": 1.0,
+                  "weighted_component": 0.8577680587768555
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B07W417V43",
+              "title": "Charis Allure Women's Casual Long Coat with Pockets M",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81LGshYmh8L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8469578623771667,
+                  "match_component": 0.8469578623771667,
+                  "weight": 1.0,
+                  "weighted_component": 0.8469578623771667
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B07VK9T2XD",
+              "title": "Molemsx Men's Winter Warm Hooded Cotton Coat Puffer Jacket",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/41LDfchWxzL._AC_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8529354333877563,
+                  "match_component": 0.8529354333877563,
+                  "weight": 1.0,
+                  "weighted_component": 0.8529354333877563
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B08HM324PK",
+              "title": "Women's Hooded Parka Coat Warm Winter Jacket with Faux Fur Lined Zipper Outwear Overcoat Thicked Coat（Large，Black）",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71rB2OAi4kL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8539127111434937,
+                  "match_component": 0.8539127111434937,
+                  "weight": 1.0,
+                  "weighted_component": 0.8539127111434937
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B014S66DFC",
+              "title": "Mordenmiss Women Loose One-Chinese Frog Button Wool Coat XL Blackish Green",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81F3Uo6R-0L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8529354333877563,
+                  "match_component": 0.8529354333877563,
+                  "weight": 1.0,
+                  "weighted_component": 0.8529354333877563
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B01N0QLSEL",
+              "title": "Hego Women's 2016 Brown Collar Slim Long Sleeve Faux Fur Warm Coat H2994 (S, Brown)",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71iPH+SxemL._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8587185740470886,
+                  "match_component": 0.8587185740470886,
+                  "weight": 1.0,
+                  "weighted_component": 0.8587185740470886
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B076D59PGX",
+              "title": "haoricu Women Coat, Elegant Fall Winter Womens Button Long Sleeve Jacket Ladies Coat with Pockets",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61qpXCA4LwL._AC_UL1029_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8679338097572327,
+                  "match_component": 0.8679338097572327,
+                  "weight": 1.0,
+                  "weighted_component": 0.8679338097572327
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B07G99RMY9",
+              "title": "Remelon Womens Long Sleeve Winter Warm Lapel Fox Faux Fur Coat Jacket Overcoat Outwear with Pockets Red XXL",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71trOSLT53L._AC_UL1260_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8539127111434937,
+                  "match_component": 0.8539127111434937,
+                  "weight": 1.0,
+                  "weighted_component": 0.8539127111434937
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B07W4Q6M8L",
+              "title": "KAMONG Womens Leopard Coat Casual Fleece Sherpa Fuzzy Lapel Cozy Shearling Zipper Winter Jacket with Pockets (Beige, Large)",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61-jKhVO-6L._AC_UL1000_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8469578623771667,
+                  "match_component": 0.8469578623771667,
+                  "weight": 1.0,
+                  "weighted_component": 0.8469578623771667
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B0150YIXFO",
+              "title": "Womens Cape Batwing Tassels Poncho Jacket Lady Cloak Coat Knitwear",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81Vf-ocUd5L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8577680587768555,
+                  "match_component": 0.8577680587768555,
+                  "weight": 1.0,
+                  "weighted_component": 0.8577680587768555
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 2,
+          "message": "3번 담아줘",
+          "note": "직전 검색 3번을 담는다.",
+          "answer": "3번을 장바구니에 담았어요. 현재 수량은 1개예요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B07VK9T2XD",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.82,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 28,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 3,
+          "message": "지금 장바구니에 뭐가 있어?",
+          "note": "view_cart로 방금 담은 코트 1개를 말한다.",
+          "answer": "장바구니에는 1개가 들어 있어요. 후드가 있는 겨울용 솜 코트 1개예요.",
+          "action": "view_cart",
+          "tool_calls": [
+            {
+              "name": "view_cart",
+              "arguments": {},
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.36,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 40,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 4,
+          "message": "방금 담은 거 장바구니에서 빼줘",
+          "note": "remove_from_cart로 방금 담은 3번 코트를 뺀다. 무엇을 뺐는지 짧게 확인한다.",
+          "answer": "방금 담은 상품을 장바구니에서 뺐어요. 이제 장바구니는 비어 있어요.",
+          "action": "remove_from_cart",
+          "tool_calls": [
+            {
+              "name": "remove_from_cart",
+              "arguments": {
+                "product_id": "B07VK9T2XD",
+                "quantity": null
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.67,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 38,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 5,
+          "message": "알겠어, 고마워요",
+          "note": "도구 없이 짧게 마무리 인사.",
+          "answer": "천만에요. 필요하시면 다시 따뜻한 코트나 다른 옷도 골라드릴게요.",
+          "action": "respond",
+          "tool_calls": [],
+          "latency_seconds": 1.2,
+          "llm_requests": 1,
+          "answer_rewritten": false,
+          "chars": 36,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.4-mini",
+      "reasoning_effort": "low",
+      "run": 3,
+      "turns": 10,
+      "passed": 10,
+      "latency_median": 2.68,
+      "latency_p90": 3.31,
+      "latency_max": 3.87,
+      "mean_chars": 70.0,
+      "mean_sentences": 2.3,
+      "length_warnings": 0,
+      "fallbacks": 0,
+      "rows": [
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 1,
+          "message": "부드러운 가디건 보여줘",
+          "note": "cardigan(또는 sweater), want=soft.",
+          "answer": "1번부터 3번까지는 세 상품 모두 부드러워요.  \n1번은 판초처럼 걸치는 오픈형 가디건이고, 2번은 앞이 열린 트렌치 느낌의 가디건이에요.  \n3번은 베이지색 클래식 오픈형 가디건이라 기본적인 스타일을 찾을 때 보기 좋아요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "부드러운 가디건",
+                "category": "cardigan",
+                "want": [
+                  "soft"
+                ],
+                "avoid": [],
+                "keywords": [],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.31,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 125,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B08BFQ7ZH8",
+              "title": "QBSM Women's Shawl Wrap Poncho Ruana Capes Open Front Cardigan Blanket Wraps for Fall and Winter",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/617N3FhiPtL._AC_UL1000_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8116759657859802,
+                  "match_component": 0.8116759657859802,
+                  "weight": 1.0,
+                  "weighted_component": 0.8116759657859802
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B07QDXWKC9",
+              "title": "Charis Allure Women's Casual Drawstring Trench Coat Waterfall Collar Long Sleeve Open Front Cardigan, Black, Medium",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/7102ZtzgnoL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8092759251594543,
+                  "match_component": 0.8092759251594543,
+                  "weight": 1.0,
+                  "weighted_component": 0.8092759251594543
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B01H73INN8",
+              "title": "ElbonBoutique Womens Long Sleeve Classic Open Front Cardigan , Beige , XX-Large",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/614RRh4Oo3L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8322367072105408,
+                  "match_component": 0.8322367072105408,
+                  "weight": 1.0,
+                  "weighted_component": 0.8322367072105408
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B015E5PXYI",
+              "title": "DJT Womens allover Casual Tie Dyed Long Sleeve Cascading Cardigan Large #C11 Light Grey",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81uKn9DamlL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8128673434257507,
+                  "match_component": 0.8128673434257507,
+                  "weight": 1.0,
+                  "weighted_component": 0.8128673434257507
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B07D6LWPLR",
+              "title": "Womens Open Front Cardigan Outerwear Jacket and Pants 2 Piece Outfit Blue 2XL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61fc-0wGO8L._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.804405927658081,
+                  "match_component": 0.804405927658081,
+                  "weight": 1.0,
+                  "weighted_component": 0.804405927658081
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B01AZM3IS8",
+              "title": "Merona Women's Favorite Cardigan Sweater Red Crew Neck (Large)",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61KBbzbSRPL._AC_UL1024_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8255897164344788,
+                  "match_component": 0.8255897164344788,
+                  "weight": 1.0,
+                  "weighted_component": 0.8255897164344788
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B076F6VRHH",
+              "title": "iliad USA 7027 Womens Button Down Crew Neck Long Sleeve Soft Knit Cardigan Sweater Black 3X-Large",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71PjCJUlf4L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8354835510253906,
+                  "match_component": 0.8354835510253906,
+                  "weight": 1.0,
+                  "weighted_component": 0.8354835510253906
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B018TZMT60",
+              "title": "DRSKIN Women's Open - Front Long Sleeve Knit Cardigan (Cardigan Black, 2XL)",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/6190R0YigSL._AC_UL1300_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.7732163667678833,
+                  "match_component": 0.7732163667678833,
+                  "weight": 1.0,
+                  "weighted_component": 0.7732163667678833
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B075CHVJT5",
+              "title": "Tribear Women's Long Sleeve Open Front Loose Causal Lightweight Kimono Cardigan(Black,Small)",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61vNFffoHXL._AC_UL1200_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8140527606010437,
+                  "match_component": 0.8140527606010437,
+                  "weight": 1.0,
+                  "weighted_component": 0.8140527606010437
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B073HZRYRF",
+              "title": "Women's Blazer Notched Lapel Casual Striped Cardigan Jacket Long Sleeve Spring Outwear",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61nPRQXLPzL._AC_UL1111_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8233283758163452,
+                  "match_component": 0.8233283758163452,
+                  "weight": 1.0,
+                  "weighted_component": 0.8233283758163452
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 2,
+          "message": "두 번째 거 자세히 알려줘",
+          "note": "직전 검색 2번 상세.",
+          "answer": "2번은 블랙 색상의 오픈형 가디건이고, 앞여밈 없이 가볍게 걸치는 느낌이에요.  \n이미지로 예측한 촉감으로는 부드럽고 조금 얇으며, 약간 따뜻하고 조금 늘어나는 편이에요.  \n다만 약간 까끌할 수 있다고 보여서, 아주 매끈한 느낌을 기대하시면 조금 다를 수 있어요.",
+          "action": "get_product_detail",
+          "tool_calls": [
+            {
+              "name": "get_product_detail",
+              "arguments": {
+                "product_id": "B07QDXWKC9"
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.73,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 148,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 3,
+          "message": "그거랑 첫 번째 비교해줘",
+          "note": "'그거'는 방금 본 2번. 2번과 1번을 비교한다.",
+          "answer": "두 상품은 부드럽고 조금 매끄럽고, 약간 까끌할 수 있는 느낌은 비슷해요.  \n2번은 조금 더 얇고, 1번은 조금 더 도톰해요.  \n두 번째는 앞이 열린 트렌치 느낌의 가디건이고, 첫 번째는 판초처럼 걸치는 오픈형 가디건이에요.",
+          "action": "compare_products",
+          "tool_calls": [
+            {
+              "name": "compare_products",
+              "arguments": {
+                "product_ids": [
+                  "B07QDXWKC9",
+                  "B08BFQ7ZH8"
+                ]
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.68,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 127,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 4,
+          "message": "첫 번째 거 두 개 담아줘",
+          "note": "1번을 수량 2로 담는다.",
+          "answer": "첫 번째 상품을 2개 담았어요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B08BFQ7ZH8",
+                "quantity": 2
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.87,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 17,
+          "sentences": 1,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 5,
+          "message": "방금 담은 거 하나만 빼줘",
+          "note": "1번 가디건 2개 중 1개만 뺀다(quantity=1). 1개 남았다고 말한다.",
+          "answer": "방금 담은 상품을 1개 줄였어요. এখন 남은 수량은 1개예요.",
+          "action": "remove_from_cart",
+          "tool_calls": [
+            {
+              "name": "remove_from_cart",
+              "arguments": {
+                "product_id": "B08BFQ7ZH8",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.37,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 35,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 1,
+          "message": "따뜻한 코트 보여줘",
+          "note": "coat 계열, want=warm.",
+          "answer": "세 상품 모두 따뜻해요. 1번은 짧은 후드 겨울 코트이고, 이미지로 예측한 촉감이라 참고용으로 보면 돼요. 2번은 방수 다운 코트이고, 3번은 퍼 안감이 있는 파카 코트예요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "따뜻한 코트",
+                "category": "coat",
+                "want": [
+                  "warm"
+                ],
+                "avoid": [],
+                "keywords": [],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.87,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 97,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B07YJHTM3Q",
+              "title": "Charis Allure Women's Hooded Ultra Lightweight Short Winter Jacket Warm Short Outwear Coat, Navy Blue, Large",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71Cxn8njCDL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8679338097572327,
+                  "match_component": 0.8679338097572327,
+                  "weight": 1.0,
+                  "weighted_component": 0.8679338097572327
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B00NU9T49Q",
+              "title": "Jessie G. Women's Alicia Waterproof Down Coat Black Small",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61Bp89IrsPL._AC_UL1400_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8577680587768555,
+                  "match_component": 0.8577680587768555,
+                  "weight": 1.0,
+                  "weighted_component": 0.8577680587768555
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B08HM324PK",
+              "title": "Women's Hooded Parka Coat Warm Winter Jacket with Faux Fur Lined Zipper Outwear Overcoat Thicked Coat（Large，Black）",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71rB2OAi4kL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8539127111434937,
+                  "match_component": 0.8539127111434937,
+                  "weight": 1.0,
+                  "weighted_component": 0.8539127111434937
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B08KZQRLFL",
+              "title": "TECREW Women's Fleece Coat Lapel Fuzzy Faux Zip Up Short Pocket Jacket Outwear",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71+9zgOU6vL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8714748620986938,
+                  "match_component": 0.8714748620986938,
+                  "weight": 1.0,
+                  "weighted_component": 0.8714748620986938
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B098X2KZQS",
+              "title": "Venustas Heated Jacket with Battery Pack 7.4V (Unisex), 6 heat zones, Heated Coat for Women and Men with Detachable hood",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61FvCtjIsEL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8652240633964539,
+                  "match_component": 0.8652240633964539,
+                  "weight": 1.0,
+                  "weighted_component": 0.8652240633964539
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B07XSWYRRH",
+              "title": "Aiboria Womens Thickened Parka Coat Outwear Jacket with Removable Hooded (Navy,M)",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/710b51a5HLL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8438951373100281,
+                  "match_component": 0.8438951373100281,
+                  "weight": 1.0,
+                  "weighted_component": 0.8438951373100281
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B014S66DFC",
+              "title": "Mordenmiss Women Loose One-Chinese Frog Button Wool Coat XL Blackish Green",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81F3Uo6R-0L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8529354333877563,
+                  "match_component": 0.8529354333877563,
+                  "weight": 1.0,
+                  "weighted_component": 0.8529354333877563
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B08BHKKYKW",
+              "title": "ZOSLEY Women's Long Down Jacket Hooded Winter Down Coat Parka Puffer Jacket with Hood Super Soft (Khaki, L)",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71lEYbEcCdL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8568122982978821,
+                  "match_component": 0.8568122982978821,
+                  "weight": 1.0,
+                  "weighted_component": 0.8568122982978821
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B081G7SBLK",
+              "title": "Charis Allure Women's Double-Faced Long Trench Coat Lapel Wool-Blend Outwear with Removable Belt, Black, Medium",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/613w0stjzHL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8558511734008789,
+                  "match_component": 0.8558511734008789,
+                  "weight": 1.0,
+                  "weighted_component": 0.8558511734008789
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B08DCTVRZD",
+              "title": "Basic Model Sherpa Jacket Women Full Zip Long Sleeve Lapel Oversized Fuzzy Winter Coat With Pockets, Medium",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/91Q7etNTVdL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8606036305427551,
+                  "match_component": 0.8606036305427551,
+                  "weight": 1.0,
+                  "weighted_component": 0.8606036305427551
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 2,
+          "message": "3번 담아줘",
+          "note": "직전 검색 3번을 담는다.",
+          "answer": "3번 담아드렸어요. 장바구니 수량은 1개로 설정됐어요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B08HM324PK",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.43,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 30,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 3,
+          "message": "지금 장바구니에 뭐가 있어?",
+          "note": "view_cart로 방금 담은 코트 1개를 말한다.",
+          "answer": "장바구니에는 1개가 있어요. 여성용 후드 파카 코트 1개가 담겨 있고, 수량은 1개예요.",
+          "action": "view_cart",
+          "tool_calls": [
+            {
+              "name": "view_cart",
+              "arguments": {},
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.39,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 49,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 4,
+          "message": "방금 담은 거 장바구니에서 빼줘",
+          "note": "remove_from_cart로 방금 담은 3번 코트를 뺀다. 무엇을 뺐는지 짧게 확인한다.",
+          "answer": "방금 담은 3번을 장바구니에서 뺐어요. 이제 장바구니는 비어 있어요.",
+          "action": "remove_from_cart",
+          "tool_calls": [
+            {
+              "name": "remove_from_cart",
+              "arguments": {
+                "product_id": "B08HM324PK",
+                "quantity": null
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.8,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 38,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 5,
+          "message": "알겠어, 고마워요",
+          "note": "도구 없이 짧게 마무리 인사.",
+          "answer": "언제든지요. 필요하면 또 원하는 코트나 촉감으로 골라드릴게요.",
+          "action": "respond",
+          "tool_calls": [],
+          "latency_seconds": 1.2,
+          "llm_requests": 1,
+          "answer_rewritten": false,
+          "chars": 34,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.4-mini",
+      "reasoning_effort": "low",
+      "run": 4,
+      "turns": 10,
+      "passed": 10,
+      "latency_median": 2.44,
+      "latency_p90": 2.61,
+      "latency_max": 3.0,
+      "mean_chars": 65.7,
+      "mean_sentences": 2.5,
+      "length_warnings": 0,
+      "fallbacks": 0,
+      "rows": [
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 1,
+          "message": "부드러운 가디건 보여줘",
+          "note": "cardigan(또는 sweater), want=soft.",
+          "answer": "세 상품 모두 부드러워요.\n1번은 블레이저 느낌이 섞인 스트라이프 가디건이고, 이미지로 예측한 촉감입니다.\n2번은 버튼형 검정 니트 가디건이고, 3번은 앞이 열린 가벼운 검정 가디건이에요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "부드러운 가디건",
+                "category": "cardigan",
+                "want": [
+                  "soft"
+                ],
+                "avoid": [],
+                "keywords": [
+                  "cardigan"
+                ],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.28,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 105,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B073HZRYRF",
+              "title": "Women's Blazer Notched Lapel Casual Striped Cardigan Jacket Long Sleeve Spring Outwear",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61nPRQXLPzL._AC_UL1111_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8233283758163452,
+                  "match_component": 0.8233283758163452,
+                  "weight": 1.0,
+                  "weighted_component": 0.8233283758163452
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B014EFUYPW",
+              "title": "BIADANI Women Round Neck Button Down Soft Classic Knit Cardigan Sweater Black Medium",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71+2hrzJJSL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8322367072105408,
+                  "match_component": 0.8322367072105408,
+                  "weight": 1.0,
+                  "weighted_component": 0.8322367072105408
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B08CNC4LGJ",
+              "title": "ANRABESS Women's Long Sleeve Soft Lightweight Knit Sweater Open Front Cardigan Outwear with Pockets A232hei-M Black",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/510fd3jtVOL._AC_UL1209_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8233283758163452,
+                  "match_component": 0.8233283758163452,
+                  "weight": 1.0,
+                  "weighted_component": 0.8233283758163452
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B0748DPDHP",
+              "title": "Ruanyu Women's Casual Plaid Print Long Sleeve Elbow Patch Draped Open Front Cardigan Sweater ((US 12-14) Large, Red)",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61hgDfUPKCL._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8255897164344788,
+                  "match_component": 0.8255897164344788,
+                  "weight": 1.0,
+                  "weighted_component": 0.8255897164344788
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B01MRDWPF3",
+              "title": "Leo & Nicole Ladies Textured Weave Cardigan",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/7127NIHRWIL._AC_UL1000_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8267117738723755,
+                  "match_component": 0.8267117738723755,
+                  "weight": 1.0,
+                  "weighted_component": 0.8267117738723755
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B010R2QWLG",
+              "title": "BIADANI Women Button Down Long Sleeve Soft V-Neck Cardigan Sweater Yellow Large",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71LRuPgZCQL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8116759657859802,
+                  "match_component": 0.8116759657859802,
+                  "weight": 1.0,
+                  "weighted_component": 0.8116759657859802
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B0B7X9G38Z",
+              "title": "Karlywindow Mens Long Sleeve Cardigan Sweater Button Down Casual Slim Fit Lightweight Knitted Sweaters Army Green",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/51jU2ZD7qML._AC_UL1200_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8344069123268127,
+                  "match_component": 0.8344069123268127,
+                  "weight": 1.0,
+                  "weighted_component": 0.8344069123268127
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B07D6LWPLR",
+              "title": "Womens Open Front Cardigan Outerwear Jacket and Pants 2 Piece Outfit Blue 2XL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61fc-0wGO8L._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.804405927658081,
+                  "match_component": 0.804405927658081,
+                  "weight": 1.0,
+                  "weighted_component": 0.804405927658081
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B07D6MGMVZ",
+              "title": "Womens Long Sleeve Jacket Open Front Cardigan + Pants 2 Piece Outfit Blue XL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61fc-0wGO8L._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.804405927658081,
+                  "match_component": 0.804405927658081,
+                  "weight": 1.0,
+                  "weighted_component": 0.804405927658081
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B014EFVSIO",
+              "title": "CIELO Women Round Neck Button Down Soft Classic Knit Cardigan Sweater Grey Small",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71kVe2dfp7L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8300437331199646,
+                  "match_component": 0.8300437331199646,
+                  "weight": 1.0,
+                  "weighted_component": 0.8300437331199646
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 2,
+          "message": "두 번째 거 자세히 알려줘",
+          "note": "직전 검색 2번 상세.",
+          "answer": "2번은 검정색 버튼형 니트 가디건이고, 부드럽고 조금 늘어나며 조금 따뜻해요.\n이미지로 예측한 촉감이라 참고용으로 봐 주세요.\n조금 각이 잡혀 있고 조금 폭신한 느낌도 있어요.",
+          "action": "get_product_detail",
+          "tool_calls": [
+            {
+              "name": "get_product_detail",
+              "arguments": {
+                "product_id": "B014EFUYPW"
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.52,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 98,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 3,
+          "message": "그거랑 첫 번째 비교해줘",
+          "note": "'그거'는 방금 본 2번. 2번과 1번을 비교한다.",
+          "answer": "둘 다 부드럽고 조금 늘어나며 조금 각이 잡혀 있어요. 2번은 조금 도톰하고 따뜻한 쪽이고, 1번은 두껍지 않고 조금 시원한 쪽이에요.\n이미지로 예측한 촉감이라 참고용으로 봐 주세요.",
+          "action": "compare_products",
+          "tool_calls": [
+            {
+              "name": "compare_products",
+              "arguments": {
+                "product_ids": [
+                  "B014EFUYPW",
+                  "B073HZRYRF"
+                ]
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.59,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 102,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 4,
+          "message": "첫 번째 거 두 개 담아줘",
+          "note": "1번을 수량 2로 담는다.",
+          "answer": "1번을 2개로 장바구니에 담았어요. 다른 것도 더 보실까요?",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B073HZRYRF",
+                "quantity": 2
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.58,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 33,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 5,
+          "message": "방금 담은 거 하나만 빼줘",
+          "note": "1번 가디건 2개 중 1개만 뺀다(quantity=1). 1개 남았다고 말한다.",
+          "answer": "방금 담은 1번에서 1개를 뺐어요. 지금은 1개 남아 있어요.",
+          "action": "remove_from_cart",
+          "tool_calls": [
+            {
+              "name": "remove_from_cart",
+              "arguments": {
+                "product_id": "B073HZRYRF",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.0,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 34,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 1,
+          "message": "따뜻한 코트 보여줘",
+          "note": "coat 계열, want=warm.",
+          "answer": "세 상품 모두 따뜻해요.  \n1번은 짧은 퍼 소재 코트 느낌이고, 이미지로 예측한 촉감이에요.  \n2번은 가벼운 발열 코트이고, 3번은 기본적인 롱 코트 스타일이에요.  \n원하시면 더 두껍게, 더 부드럽게, 또는 긴 코트 위주로 다시 보여드릴게요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "따뜻한 코트",
+                "category": "coat",
+                "want": [
+                  "warm"
+                ],
+                "avoid": [],
+                "keywords": [],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.61,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 138,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B08KZQRLFL",
+              "title": "TECREW Women's Fleece Coat Lapel Fuzzy Faux Zip Up Short Pocket Jacket Outwear",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71+9zgOU6vL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8714748620986938,
+                  "match_component": 0.8714748620986938,
+                  "weight": 1.0,
+                  "weighted_component": 0.8714748620986938
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B0BDDF7CF9",
+              "title": "KEMIMOTO Men's Heated Jacket with Battery Pack, Lightweight Heated Coat with Detachable Hood, Warm Heating Jackets for Men…",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61X9yTLFtzL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8643104434013367,
+                  "match_component": 0.8643104434013367,
+                  "weight": 1.0,
+                  "weighted_component": 0.8643104434013367
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B076D59PGX",
+              "title": "haoricu Women Coat, Elegant Fall Winter Womens Button Long Sleeve Jacket Ladies Coat with Pockets",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61qpXCA4LwL._AC_UL1029_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8679338097572327,
+                  "match_component": 0.8679338097572327,
+                  "weight": 1.0,
+                  "weighted_component": 0.8679338097572327
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B07Z5RKL9M",
+              "title": "ZINRAY Women's Thermolite Hooded Jacket Packable Lightweight Puffer Insulated Coat for Travel Outdoor Hiking Black",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61CCJg7wt+L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8587185740470886,
+                  "match_component": 0.8587185740470886,
+                  "weight": 1.0,
+                  "weighted_component": 0.8587185740470886
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B07GW9N6N3",
+              "title": "iLoveSIA Women's Winter Long Puffer Coats Maxi Warm Coat with Fur Trimmed Hood Black US 12",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71uB1MgoriL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.837619960308075,
+                  "match_component": 0.837619960308075,
+                  "weight": 1.0,
+                  "weighted_component": 0.837619960308075
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B07VKJZJ4H",
+              "title": "TEMOFON Women's Coat Casual Fleece Fuzzy Faux Shearling Fluffy Jackets Winter Long Sleeve Zip Up Outwear with Pockets Khaki 3XL",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61kJ0pur6lL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8705973029136658,
+                  "match_component": 0.8705973029136658,
+                  "weight": 1.0,
+                  "weighted_component": 0.8705973029136658
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B07TYHQ5XW",
+              "title": "Alicegana Women's Autumn and Winter New Lapel Pocket Suit Collar Plush Button Fuzzy Pea Coat Jackets",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61nbXNNJjHL._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8577680587768555,
+                  "match_component": 0.8577680587768555,
+                  "weight": 1.0,
+                  "weighted_component": 0.8577680587768555
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B07VTNGWPG",
+              "title": "CASODA Women's Cashmere Wool Blend Coat Double Breasted Warm Trench Outerwear Pea Wallker Coat,Orange,S",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61Vt0hdbrhL._AC_UL1298_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8624675869941711,
+                  "match_component": 0.8624675869941711,
+                  "weight": 1.0,
+                  "weighted_component": 0.8624675869941711
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B0BB7K8VKD",
+              "title": "MEROKEETY Women's Button Fleece Jacket 2022 Fall Winter Casual Fuzzy Sherpa Shacket Coat with Pockets Camel S",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81oCbiQ-BwL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.859663724899292,
+                  "match_component": 0.859663724899292,
+                  "weight": 1.0,
+                  "weighted_component": 0.859663724899292
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B00NU9T49Q",
+              "title": "Jessie G. Women's Alicia Waterproof Down Coat Black Small",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61Bp89IrsPL._AC_UL1400_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8577680587768555,
+                  "match_component": 0.8577680587768555,
+                  "weight": 1.0,
+                  "weighted_component": 0.8577680587768555
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 2,
+          "message": "3번 담아줘",
+          "note": "직전 검색 3번을 담는다.",
+          "answer": "3번을 장바구니에 담았어요. 현재 수량은 1개예요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B076D59PGX",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.44,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 28,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 3,
+          "message": "지금 장바구니에 뭐가 있어?",
+          "note": "view_cart로 방금 담은 코트 1개를 말한다.",
+          "answer": "장바구니에는 1개가 있어요.  \nhaoricu 여성 코트가 1개 담겨 있어요.",
+          "action": "view_cart",
+          "tool_calls": [
+            {
+              "name": "view_cart",
+              "arguments": {},
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.43,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 43,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 4,
+          "message": "방금 담은 거 장바구니에서 빼줘",
+          "note": "remove_from_cart로 방금 담은 3번 코트를 뺀다. 무엇을 뺐는지 짧게 확인한다.",
+          "answer": "방금 담은 상품을 장바구니에서 뺐어요. 이제 장바구니는 비어 있어요.",
+          "action": "remove_from_cart",
+          "tool_calls": [
+            {
+              "name": "remove_from_cart",
+              "arguments": {
+                "product_id": "B076D59PGX",
+                "quantity": null
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.27,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 38,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 5,
+          "message": "알겠어, 고마워요",
+          "note": "도구 없이 짧게 마무리 인사.",
+          "answer": "천만에요. 필요하시면 언제든지 따뜻한 코트나 다른 옷도 골라드릴게요.",
+          "action": "respond",
+          "tool_calls": [],
+          "latency_seconds": 1.25,
+          "llm_requests": 1,
+          "answer_rewritten": false,
+          "chars": 38,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.4-mini",
+      "reasoning_effort": "low",
+      "run": 5,
+      "turns": 10,
+      "passed": 10,
+      "latency_median": 2.58,
+      "latency_p90": 3.02,
+      "latency_max": 3.55,
+      "mean_chars": 73.8,
+      "mean_sentences": 3.0,
+      "length_warnings": 0,
+      "fallbacks": 0,
+      "rows": [
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 1,
+          "message": "부드러운 가디건 보여줘",
+          "note": "cardigan(또는 sweater), want=soft.",
+          "answer": "세 상품 모두 부드러워요. 이미지로 예측한 촉감이에요.\n\n1번은 오픈형 가디건이고, 전체적으로 편하게 걸치기 좋은 느낌이에요.  \n2번은 7부 소매 브이넥 니트 가디건이고, 1번보다 좀 더 깔끔한 기본형이에요.  \n3번은 긴소매 버튼 가디건이고, 무난한 블랙 기본 가디건이에요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "부드러운 가디건",
+                "category": "cardigan",
+                "want": [
+                  "soft"
+                ],
+                "avoid": [],
+                "keywords": [
+                  "cardigan"
+                ],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.02,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 155,
+          "sentences": 5,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B07D6LWPLR",
+              "title": "Womens Open Front Cardigan Outerwear Jacket and Pants 2 Piece Outfit Blue 2XL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61fc-0wGO8L._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.804405927658081,
+                  "match_component": 0.804405927658081,
+                  "weight": 1.0,
+                  "weighted_component": 0.804405927658081
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B01LNH1FUM",
+              "title": "H2H Womens 3/4 Sleeve V-Neck Knit Cardigan Grape S",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71dRXzbAmAL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8322367072105408,
+                  "match_component": 0.8322367072105408,
+                  "weight": 1.0,
+                  "weighted_component": 0.8322367072105408
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B01GP6LZ3I",
+              "title": "NINEXIS Womens Basic Long Sleeve V-Neck Button Down Knit Cardigan Sweater Black M",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71jHKEbXs9L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8386797308921814,
+                  "match_component": 0.8386797308921814,
+                  "weight": 1.0,
+                  "weighted_component": 0.8386797308921814
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B07HDTGRHT",
+              "title": "YTUIEKY Button Down Knitwear Long Sleeve Soft Basic Knit Snap Cardigan Sweater White XL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/31xTp1AQivL._AC_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8344069123268127,
+                  "match_component": 0.8344069123268127,
+                  "weight": 1.0,
+                  "weighted_component": 0.8344069123268127
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B07GL4JX7W",
+              "title": "Lands' End Women's Petite Supima Cotton Cardigan Sweater, XL, Atlas Yellow",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61+1aJ-eb8L._AC_UL1275_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8344069123268127,
+                  "match_component": 0.8344069123268127,
+                  "weight": 1.0,
+                  "weighted_component": 0.8344069123268127
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B012ZND0JM",
+              "title": "Meaneor Women's Long Sleeves Floral Lace Back Boyfriend Pocket Cardigan Black XXL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71o1aO4-8VL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8344069123268127,
+                  "match_component": 0.8344069123268127,
+                  "weight": 1.0,
+                  "weighted_component": 0.8344069123268127
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B01CHBEQ5E",
+              "title": "CTC WSK1078 Womens Lightweight Tie Dye Open Long Maxi Cardigan L Wine",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/813qPHdsT4L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8289388418197632,
+                  "match_component": 0.8289388418197632,
+                  "weight": 1.0,
+                  "weighted_component": 0.8289388418197632
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B01A357M4S",
+              "title": "3/4 Sleeve Bolero Cardigan for Women Lace Size L BP49-1",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71UQDM2mBEL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8255897164344788,
+                  "match_component": 0.8255897164344788,
+                  "weight": 1.0,
+                  "weighted_component": 0.8255897164344788
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B016PSF95G",
+              "title": "Women's Elbow Patch Long Sleeve Shawl Collar Striped Cotton Sweater Cardigan (M, Grey and White)",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71m8rgvCGxL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.7981867790222168,
+                  "match_component": 0.7981867790222168,
+                  "weight": 1.0,
+                  "weighted_component": 0.7981867790222168
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B0714LQ5P8",
+              "title": "WoolOvers Womens Silk and Cotton 3/4 Sleeve Crop Cardigan",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81i1ygYt9VL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8278281688690186,
+                  "match_component": 0.8278281688690186,
+                  "weight": 1.0,
+                  "weighted_component": 0.8278281688690186
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 2,
+          "message": "두 번째 거 자세히 알려줘",
+          "note": "직전 검색 2번 상세.",
+          "answer": "2번은 보라색 7부소매 브이넥 니트 가디건이에요. 부드럽고 조금 얇고, 조금 하늘하늘한 느낌이에요.  \n이미지로 예측한 촉감이에요. 구매자 리뷰 근거는 없어요.",
+          "action": "get_product_detail",
+          "tool_calls": [
+            {
+              "name": "get_product_detail",
+              "arguments": {
+                "product_id": "B01LNH1FUM"
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.68,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 89,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 3,
+          "message": "그거랑 첫 번째 비교해줘",
+          "note": "'그거'는 방금 본 2번. 2번과 1번을 비교한다.",
+          "answer": "둘 다 부드럽고, 하늘하늘한 느낌은 비슷해요. 이미지로 예측한 촉감이에요.  \n2번이 조금 더 얇고 조금 더 매끄러운 편이고, 1번은 시원한 느낌이 더 있어요.  \n반대로 1번은 2번보다 덜 시원해요.",
+          "action": "compare_products",
+          "tool_calls": [
+            {
+              "name": "compare_products",
+              "arguments": {
+                "product_ids": [
+                  "B01LNH1FUM",
+                  "B07D6LWPLR"
+                ]
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.58,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 112,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 4,
+          "message": "첫 번째 거 두 개 담아줘",
+          "note": "1번을 수량 2로 담는다.",
+          "answer": "1번을 2개로 담았어요. 오픈형 가디건 세트가 장바구니에 들어갔어요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B07D6LWPLR",
+                "quantity": 2
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.78,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 38,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 5,
+          "message": "방금 담은 거 하나만 빼줘",
+          "note": "1번 가디건 2개 중 1개만 뺀다(quantity=1). 1개 남았다고 말한다.",
+          "answer": "하나만 뺐어요. 방금 담은 오픈형 가디건은 이제 1개 남아 있어요.",
+          "action": "remove_from_cart",
+          "tool_calls": [
+            {
+              "name": "remove_from_cart",
+              "arguments": {
+                "product_id": "B07D6LWPLR",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.4,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 37,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 1,
+          "message": "따뜻한 코트 보여줘",
+          "note": "coat 계열, want=warm.",
+          "answer": "세 상품 모두 따뜻해요.  \n1번은 방수 다운 코트예요. 이미지로 예측한 촉감 기준이라 촉감 근거는 그 점을 참고해 주세요.  \n2번은 긴 패딩 코트이고, 3번은 더블페이스 트렌치 코트예요. 원하시면 더 두껍거나 더 가벼운 느낌으로도 골라드릴게요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "따뜻한 코트",
+                "category": "coat",
+                "want": [
+                  "warm"
+                ],
+                "avoid": [],
+                "keywords": [
+                  "coat"
+                ],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.69,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 138,
+          "sentences": 5,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B00NU9T49Q",
+              "title": "Jessie G. Women's Alicia Waterproof Down Coat Black Small",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61Bp89IrsPL._AC_UL1400_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8577680587768555,
+                  "match_component": 0.8577680587768555,
+                  "weight": 1.0,
+                  "weighted_component": 0.8577680587768555
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B07GW9N6N3",
+              "title": "iLoveSIA Women's Winter Long Puffer Coats Maxi Warm Coat with Fur Trimmed Hood Black US 12",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71uB1MgoriL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.837619960308075,
+                  "match_component": 0.837619960308075,
+                  "weight": 1.0,
+                  "weighted_component": 0.837619960308075
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B081G7SBLK",
+              "title": "Charis Allure Women's Double-Faced Long Trench Coat Lapel Wool-Blend Outwear with Removable Belt, Black, Medium",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/613w0stjzHL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8558511734008789,
+                  "match_component": 0.8558511734008789,
+                  "weight": 1.0,
+                  "weighted_component": 0.8558511734008789
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B08DCTVRZD",
+              "title": "Basic Model Sherpa Jacket Women Full Zip Long Sleeve Lapel Oversized Fuzzy Winter Coat With Pockets, Medium",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/91Q7etNTVdL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8606036305427551,
+                  "match_component": 0.8606036305427551,
+                  "weight": 1.0,
+                  "weighted_component": 0.8606036305427551
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B07XSWYRRH",
+              "title": "Aiboria Womens Thickened Parka Coat Outwear Jacket with Removable Hooded (Navy,M)",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/710b51a5HLL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8438951373100281,
+                  "match_component": 0.8438951373100281,
+                  "weight": 1.0,
+                  "weighted_component": 0.8438951373100281
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B0184ZXDWY",
+              "title": "Allegra K Women's Turn Down Collar Slant Pockets Longline Toggle Coat S Pink",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61Al3fjOc2L._AC_UL1447_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8365545868873596,
+                  "match_component": 0.8365545868873596,
+                  "weight": 1.0,
+                  "weighted_component": 0.8365545868873596
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B07G99RMY9",
+              "title": "Remelon Womens Long Sleeve Winter Warm Lapel Fox Faux Fur Coat Jacket Overcoat Outwear with Pockets Red XXL",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71trOSLT53L._AC_UL1260_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8539127111434937,
+                  "match_component": 0.8539127111434937,
+                  "weight": 1.0,
+                  "weighted_component": 0.8539127111434937
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B07T7GFMJ9",
+              "title": "CILKOO Womens Casual Ladies Winter Faux Fur Collar Zip Up Open Front Quilted Puffer Jacket Coat Outerwear with Pockets Black US8-10 Medium",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81wnnQ1wGFL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8499711751937866,
+                  "match_component": 0.8499711751937866,
+                  "weight": 1.0,
+                  "weighted_component": 0.8499711751937866
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B07TYHQ5XW",
+              "title": "Alicegana Women's Autumn and Winter New Lapel Pocket Suit Collar Plush Button Fuzzy Pea Coat Jackets",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61nbXNNJjHL._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8577680587768555,
+                  "match_component": 0.8577680587768555,
+                  "weight": 1.0,
+                  "weighted_component": 0.8577680587768555
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B00Q6BTH42",
+              "title": "Win8Fong Women's Long Knitted Fur Bolero Shawl Stole Cloak Cape Coat (Black)",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/51m1KGTPmHL._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8606036305427551,
+                  "match_component": 0.8606036305427551,
+                  "weight": 1.0,
+                  "weighted_component": 0.8606036305427551
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 2,
+          "message": "3번 담아줘",
+          "note": "직전 검색 3번을 담는다.",
+          "answer": "3번 담았어요. 장바구니 수량은 1개로 설정됐어요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B081G7SBLK",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.55,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 28,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 3,
+          "message": "지금 장바구니에 뭐가 있어?",
+          "note": "view_cart로 방금 담은 코트 1개를 말한다.",
+          "answer": "장바구니에는 1개가 있어요.  \nCharis Allure 더블페이스 롱 트렌치 코트가 1개 담겨 있어요.",
+          "action": "view_cart",
+          "tool_calls": [
+            {
+              "name": "view_cart",
+              "arguments": {},
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.47,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 58,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 4,
+          "message": "방금 담은 거 장바구니에서 빼줘",
+          "note": "remove_from_cart로 방금 담은 3번 코트를 뺀다. 무엇을 뺐는지 짧게 확인한다.",
+          "answer": "방금 담은 거 장바구니에서 뺐어요. હવે 장바구니에는 남아 있는 상품이 없어요.",
+          "action": "remove_from_cart",
+          "tool_calls": [
+            {
+              "name": "remove_from_cart",
+              "arguments": {
+                "product_id": "B081G7SBLK",
+                "quantity": null
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.4,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 45,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 5,
+          "message": "알겠어, 고마워요",
+          "note": "도구 없이 짧게 마무리 인사.",
+          "answer": "천만에요. 또 찾고 싶은 옷이나 원하는 촉감이 있으면 말씀해 주세요.",
+          "action": "respond",
+          "tool_calls": [],
+          "latency_seconds": 1.17,
+          "llm_requests": 1,
+          "answer_rewritten": false,
+          "chars": 38,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.4-mini",
+      "reasoning_effort": "low",
+      "run": 6,
+      "turns": 10,
+      "passed": 10,
+      "latency_median": 2.65,
+      "latency_p90": 2.86,
+      "latency_max": 3.59,
+      "mean_chars": 60.4,
+      "mean_sentences": 2.6,
+      "length_warnings": 0,
+      "fallbacks": 0,
+      "rows": [
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 1,
+          "message": "부드러운 가디건 보여줘",
+          "note": "cardigan(또는 sweater), want=soft.",
+          "answer": "부드러운 가디건으로 세 상품이 먼저 보여요. 1번은 오픈 프런트 가디건 세트이고 부드러워요. 2번은 크로셰 볼레로 가디건이고 부드러워요. 3번은 검은색 오픈 프런트 니트 가디건이고 부드러워요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "부드러운 가디건",
+                "category": "cardigan",
+                "want": [
+                  "soft"
+                ],
+                "avoid": [],
+                "keywords": [
+                  "cardigan"
+                ],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.39,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 107,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B07D6LWPLR",
+              "title": "Womens Open Front Cardigan Outerwear Jacket and Pants 2 Piece Outfit Blue 2XL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61fc-0wGO8L._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.804405927658081,
+                  "match_component": 0.804405927658081,
+                  "weight": 1.0,
+                  "weighted_component": 0.804405927658081
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B00MJ0RVI8",
+              "title": "Ladies Knitted Bolero Crochet Cardigan Shrug",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/714OE7OtrWL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8333246111869812,
+                  "match_component": 0.8333246111869812,
+                  "weight": 1.0,
+                  "weighted_component": 0.8333246111869812
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B01NCJV3QR",
+              "title": "JayJay Women Open Front Casual Knit Long Sleeve Sweater Classic Cover Up Cardigan,Black,L",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71EwYZfRKKL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8187368512153625,
+                  "match_component": 0.8187368512153625,
+                  "weight": 1.0,
+                  "weighted_component": 0.8187368512153625
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B0B5XN4KF1",
+              "title": "Boys and Kids Cable Knit Cardigan Sweater V-Neck Button Up Sweater Girls Fall Winter Outwear 5-14 Years",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61R-vo3TygL._AC_UL1400_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8210441470146179,
+                  "match_component": 0.8210441470146179,
+                  "weight": 1.0,
+                  "weighted_component": 0.8210441470146179
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B06XF3CFWS",
+              "title": "XQS Women's Open Crochet Mesh Shawl Cardigan Cover-up Khaki OS",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/714U6GGw4ML._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8300437331199646,
+                  "match_component": 0.8300437331199646,
+                  "weight": 1.0,
+                  "weighted_component": 0.8300437331199646
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B0749G9N15",
+              "title": "Opino Womens Long Sleeve Open Front Drape Lightweight Cardigan XXL, Royal Blue",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71GKGIAkiNL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8198933005332947,
+                  "match_component": 0.8198933005332947,
+                  "weight": 1.0,
+                  "weighted_component": 0.8198933005332947
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B01M0L229A",
+              "title": "Naggoo Womens Casual Work Office Open Front Cardigan Blazer Jacket",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61OaKmPHstL._AC_UL1040_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8311430811882019,
+                  "match_component": 0.8311430811882019,
+                  "weight": 1.0,
+                  "weighted_component": 0.8311430811882019
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B094NKGTKM",
+              "title": "Women's Lightweight Cardigan 3/4 Sleeve Waffle Knit Cardigan Loose Batwing Open Front Cardigan Purple L",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81PciAVEgeL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8244618773460388,
+                  "match_component": 0.8244618773460388,
+                  "weight": 1.0,
+                  "weighted_component": 0.8244618773460388
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B01BPCXSQO",
+              "title": "WearAll Women's Plus Knit Crochet Short Sleeve Open Cardigan - Black - US 24-26 (UK 28-30)",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81ki0EXa97L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8300437331199646,
+                  "match_component": 0.8300437331199646,
+                  "weight": 1.0,
+                  "weighted_component": 0.8300437331199646
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B01LY4NMA6",
+              "title": "Sherosa Women Fall Tassels Hem Knitted Cardigan Loose Poncho Sweater Coat Khaki",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61vfuw5FMPL._AC_UL1014_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8140527606010437,
+                  "match_component": 0.8140527606010437,
+                  "weight": 1.0,
+                  "weighted_component": 0.8140527606010437
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 2,
+          "message": "두 번째 거 자세히 알려줘",
+          "note": "직전 검색 2번 상세.",
+          "answer": "2번은 레이스 느낌의 볼레로 가디건이고 부드럽고 조금 얇아요. 조금 늘어나고 조금 하늘하늘해서 가볍게 걸치기 좋겠어요. 촉감 근거는 이미지로 예측한 촉감이에요.",
+          "action": "get_product_detail",
+          "tool_calls": [
+            {
+              "name": "get_product_detail",
+              "arguments": {
+                "product_id": "B00MJ0RVI8"
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.51,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 89,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 3,
+          "message": "그거랑 첫 번째 비교해줘",
+          "note": "'그거'는 방금 본 2번. 2번과 1번을 비교한다.",
+          "answer": "두 상품은 부드럽고, 매끄러운 느낌도 비슷해요. 2번이 조금 더 잘 늘어나고, 1번이 조금 더 따뜻해요. 촉감 근거는 이미지로 예측한 촉감이에요.",
+          "action": "compare_products",
+          "tool_calls": [
+            {
+              "name": "compare_products",
+              "arguments": {
+                "product_ids": [
+                  "B00MJ0RVI8",
+                  "B07D6LWPLR"
+                ]
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.86,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 81,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 4,
+          "message": "첫 번째 거 두 개 담아줘",
+          "note": "1번을 수량 2로 담는다.",
+          "answer": "첫 번째 상품을 2개로 담아드렸어요. 필요하시면 장바구니도 바로 확인해드릴게요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B07D6LWPLR",
+                "quantity": 2
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.81,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 44,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 5,
+          "message": "방금 담은 거 하나만 빼줘",
+          "note": "1번 가디건 2개 중 1개만 뺀다(quantity=1). 1개 남았다고 말한다.",
+          "answer": "방금 담은 첫 번째 상품을 1개 줄였어요. 지금은 1개 남아 있어요.",
+          "action": "remove_from_cart",
+          "tool_calls": [
+            {
+              "name": "remove_from_cart",
+              "arguments": {
+                "product_id": "B07D6LWPLR",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.83,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 38,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 1,
+          "message": "따뜻한 코트 보여줘",
+          "note": "coat 계열, want=warm.",
+          "answer": "세 상품 모두 따뜻해요. 1번은 짧은 플리스 코트 느낌이고, 2번은 가볍게 입는 발열 재킷이에요. 3번은 후드가 달린 겨울 파카 코트예요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "따뜻한 코트",
+                "category": "coat",
+                "want": [
+                  "warm"
+                ],
+                "avoid": [],
+                "keywords": [],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.85,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 77,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B08KZQRLFL",
+              "title": "TECREW Women's Fleece Coat Lapel Fuzzy Faux Zip Up Short Pocket Jacket Outwear",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71+9zgOU6vL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8714748620986938,
+                  "match_component": 0.8714748620986938,
+                  "weight": 1.0,
+                  "weighted_component": 0.8714748620986938
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B0BDDF7CF9",
+              "title": "KEMIMOTO Men's Heated Jacket with Battery Pack, Lightweight Heated Coat with Detachable Hood, Warm Heating Jackets for Men…",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61X9yTLFtzL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8643104434013367,
+                  "match_component": 0.8643104434013367,
+                  "weight": 1.0,
+                  "weighted_component": 0.8643104434013367
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B08HM324PK",
+              "title": "Women's Hooded Parka Coat Warm Winter Jacket with Faux Fur Lined Zipper Outwear Overcoat Thicked Coat（Large，Black）",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71rB2OAi4kL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8539127111434937,
+                  "match_component": 0.8539127111434937,
+                  "weight": 1.0,
+                  "weighted_component": 0.8539127111434937
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B07VTNGWPG",
+              "title": "CASODA Women's Cashmere Wool Blend Coat Double Breasted Warm Trench Outerwear Pea Wallker Coat,Orange,S",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61Vt0hdbrhL._AC_UL1298_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8624675869941711,
+                  "match_component": 0.8624675869941711,
+                  "weight": 1.0,
+                  "weighted_component": 0.8624675869941711
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B0184ZXDWY",
+              "title": "Allegra K Women's Turn Down Collar Slant Pockets Longline Toggle Coat S Pink",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61Al3fjOc2L._AC_UL1447_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8365545868873596,
+                  "match_component": 0.8365545868873596,
+                  "weight": 1.0,
+                  "weighted_component": 0.8365545868873596
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B07JFSTM34",
+              "title": "SySea Womens Fall Winter Hooded Woolen Coat Open Front Mid Length Wrap Belt Overcoat Robe Outerwear",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61QjyaKU4FL._AC_UL1200_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8587185740470886,
+                  "match_component": 0.8587185740470886,
+                  "weight": 1.0,
+                  "weighted_component": 0.8587185740470886
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B07YJHTM3Q",
+              "title": "Charis Allure Women's Hooded Ultra Lightweight Short Winter Jacket Warm Short Outwear Coat, Navy Blue, Large",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71Cxn8njCDL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8679338097572327,
+                  "match_component": 0.8679338097572327,
+                  "weight": 1.0,
+                  "weighted_component": 0.8679338097572327
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B07XSWYRRH",
+              "title": "Aiboria Womens Thickened Parka Coat Outwear Jacket with Removable Hooded (Navy,M)",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/710b51a5HLL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8438951373100281,
+                  "match_component": 0.8438951373100281,
+                  "weight": 1.0,
+                  "weighted_component": 0.8438951373100281
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B0982YNLJH",
+              "title": "Men's Warm Padded Jacket Puffer Winter Coat Windproof Trucker Jacket with Hood (Black, L)",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71QDce0m-TL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8652240633964539,
+                  "match_component": 0.8652240633964539,
+                  "weight": 1.0,
+                  "weighted_component": 0.8652240633964539
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B00Q6BTH42",
+              "title": "Win8Fong Women's Long Knitted Fur Bolero Shawl Stole Cloak Cape Coat (Black)",
+              "category": "outerwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/51m1KGTPmHL._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "warm",
+                  "raw_probability": 0.8606036305427551,
+                  "match_component": 0.8606036305427551,
+                  "weight": 1.0,
+                  "weighted_component": 0.8606036305427551
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 2,
+          "message": "3번 담아줘",
+          "note": "직전 검색 3번을 담는다.",
+          "answer": "3번을 장바구니에 담았어요. 후드가 달린 겨울 파카 코트예요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B08HM324PK",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.65,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 34,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 3,
+          "message": "지금 장바구니에 뭐가 있어?",
+          "note": "view_cart로 방금 담은 코트 1개를 말한다.",
+          "answer": "장바구니에는 1개가 있어요. 여성용 후드 파카 코트 1벌이 1개 담겨 있고, 수량은 1개예요.",
+          "action": "view_cart",
+          "tool_calls": [
+            {
+              "name": "view_cart",
+              "arguments": {},
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.47,
+          "llm_requests": 2,
+          "answer_rewritten": false,
+          "chars": 52,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 4,
+          "message": "방금 담은 거 장바구니에서 빼줘",
+          "note": "remove_from_cart로 방금 담은 3번 코트를 뺀다. 무엇을 뺐는지 짧게 확인한다.",
+          "answer": "죄송해요. 방금 담은 상품을 장바구니에서 뺐어요. 이제 장바구니에는 남은 상품이 없어요.",
+          "action": "remove_from_cart",
+          "tool_calls": [
+            {
+              "name": "remove_from_cart",
+              "arguments": {
+                "product_id": "B08HM324PK",
+                "quantity": null
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.59,
+          "llm_requests": 3,
+          "answer_rewritten": true,
+          "chars": 49,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "K1",
+          "title": "장바구니: 담기 → 조회 → 빼기 → 감사",
+          "turn": 5,
+          "message": "알겠어, 고마워요",
+          "note": "도구 없이 짧게 마무리 인사.",
+          "answer": "언제든지요. 필요한 옷 있으면 촉감이나 종류를 말해 주세요.",
+          "action": "respond",
+          "tool_calls": [],
+          "latency_seconds": 1.05,
+          "llm_requests": 1,
+          "answer_rewritten": false,
+          "chars": 33,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        }
+      ]
+    }
+  ]
+}

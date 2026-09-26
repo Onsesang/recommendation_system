@@ -327,6 +327,13 @@ class ShoppingAgentService:
             return output
 
         run = self.tool_agent.run(instructions=instructions, input_items=input_items, execute=execute)
+        if run.rewritten:
+            self.tracer.tool(
+                trace,
+                name="answer_rewrite",
+                inputs={"reason": "foreign_script"},
+                output_summary={"removed": run.removed_foreign},
+            )
         if run.fallback_used:
             self.tracer.tool(
                 trace,
@@ -414,6 +421,7 @@ class ShoppingAgentService:
                 "llm_provider": self.tool_agent.info.provider,
                 "llm_model": run.model or self.tool_agent.info.model_id,
                 "llm_model_fallback_used": run.fallback_used,
+                "answer_rewritten": run.rewritten,
                 "llm_requests": run.model_requests,
                 "llm_fallback_used": False,
                 "router_fallback_used": False,

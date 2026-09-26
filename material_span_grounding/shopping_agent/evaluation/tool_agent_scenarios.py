@@ -386,6 +386,7 @@ def run_config(app: Any, scenarios: list[dict[str, Any]], *, model: str, effort:
                     "tool_calls": result.get("tool_calls", []),
                     "latency_seconds": round(elapsed, 2),
                     "llm_requests": result.get("provenance", {}).get("llm_requests"),
+                    "answer_rewritten": bool(result.get("provenance", {}).get("answer_rewritten")),
                     "chars": len(message),
                     "sentences": sentence_count(message),
                     "passed": not failures,

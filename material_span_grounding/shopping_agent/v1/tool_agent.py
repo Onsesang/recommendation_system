@@ -9,6 +9,7 @@ Any failure is raised to the caller, which falls back to the router pipeline.
 from __future__ import annotations
 
 import json
+import re
 import sys
 from dataclasses import dataclass, field
 from typing import Any, Callable
@@ -74,6 +75,20 @@ AGENT_INSTRUCTIONS = """당신은 시각장애인 사용자의 온라인 의류 
   검색 결과는 항상 1번, 2번, 3번을 순서대로 소개한다. 조건에 덜 맞는 상품이 있어도 건너뛰거나 다른 번호로
   바꾸지 말고 "2번은 조금 덜 얇아요"처럼 그 점을 짧게 말한다. 4번 이후는 사용자가 더 보여 달라거나 번호로 물을 때만 말한다.
 - 번호는 shown_products와 search_products 결과의 number를 그대로 쓴다."""
+
+
+# Scripts other than Hangul and Latin. The model occasionally drops a word from another
+# language into a Korean answer (e.g. Hindi "खुल" for "open-front"), which a screen reader
+# cannot pronounce; such answers are rewritten once before they reach the user.
+FOREIGN_SCRIPT = re.compile(
+    r"[\u0370-\u03FF\u0400-\u04FF\u0530-\u058F\u0590-\u05FF\u0600-\u06FF\u0900-\u097F"
+    r"\u0E00-\u0E7F\u3040-\u30FF\u4E00-\u9FFF]+"
+)
+REWRITE_INSTRUCTION = (
+    "직전 답변에 한국어와 영어가 아닌 문자({found})가 섞였습니다. 사용자는 직전 답변을 보지 못했습니다. "
+    "같은 내용과 같은 상품 번호로, 도구를 다시 부르지 말고 한국어로만 다시 답하세요. "
+    "사과하거나 고쳐 썼다는 말은 하지 마세요."
+)
 
 
 def _nullable_enum(values: tuple[str, ...]) -> dict[str, Any]:
@@ -196,6 +211,8 @@ class ToolLoopResult:
     model: str = ""
     fallback_used: bool = False
     fallback_error: str | None = None
+    rewritten: bool = False
+    removed_foreign: list[str] = field(default_factory=list)
 
 
 def _output_text(response: dict[str, Any]) -> str:
@@ -268,6 +285,32 @@ class OpenAIToolLoop:
                   file=sys.stderr, flush=True)
             return self._request({**payload, "model": self.fallback_model})
 
+    def _repair_foreign_script(self, result: ToolLoopResult, base: dict[str, Any], response: dict[str, Any]) -> None:
+        found = FOREIGN_SCRIPT.findall(result.text)
+        if not found:
+            return
+        result.rewritten = True
+        try:
+            if not response.get("id"):
+                raise RuntimeError("no response id to continue from")
+            retry = self._request_with_fallback(
+                {**base, "previous_response_id": response["id"], "tool_choice": "none",
+                 "input": [{"role": "user", "content": REWRITE_INSTRUCTION.format(found=", ".join(found))}]},
+                result,
+            )
+            result.model_requests += 1
+            text = _output_text(retry)
+            if text:
+                result.text = text
+        except Exception as exc:  # the original answer is still better than no answer
+            print(f"[tool_agent] rewrite failed: {str(exc)[:200]}", file=sys.stderr, flush=True)
+        leftover = FOREIGN_SCRIPT.findall(result.text)
+        if leftover:
+            # Last resort: drop the unreadable fragments rather than read them aloud.
+            result.removed_foreign = leftover
+            result.text = re.sub(r"[ \t]{2,}", " ", FOREIGN_SCRIPT.sub("", result.text)).strip()
+        print(f"[tool_agent] foreign script {found} in answer; rewritten, removed={leftover}", file=sys.stderr, flush=True)
+
     def run(
         self,
         *,
@@ -302,6 +345,7 @@ class OpenAIToolLoop:
                 result.text = _output_text(response)
                 if not result.text:
                     raise RuntimeError("OpenAI response did not contain output text")
+                self._repair_foreign_script(result, base, response)
                 return result
             outputs = []
             for call in calls:

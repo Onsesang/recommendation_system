@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>쇼핑 에이전트 백엔드 API 명세서 v1.1</title>
+<style>
+@page { size: A4; margin: 18mm 16mm 18mm 16mm; }
+* { box-sizing: border-box; }
+body { font-family: "Noto Sans KR", sans-serif; font-size: 10pt; line-height: 1.6; color: #1d2330; margin: 0; }
+h1 { font-size: 22pt; font-weight: 700; margin: 0 0 6px; }
+h2 { font-size: 14pt; font-weight: 700; margin: 22px 0 8px; padding-bottom: 4px; border-bottom: 1.5px solid #1d2330; break-after: avoid; }
+h3 { font-size: 11.5pt; font-weight: 700; margin: 16px 0 6px; break-after: avoid; font-family: ui-monospace, "Noto Sans KR", monospace; }
+p { margin: 5px 0; }
+.meta { color: #5f6b7a; font-size: 9.5pt; margin-bottom: 10px; }
+.meta span { display: inline-block; background: #eef0f3; border-radius: 99px; padding: 1px 9px; margin-right: 6px; }
+.changes { border: 1px solid #c9d5f5; background: #f3f6fd; border-radius: 8px; padding: 8px 12px; margin: 10px 0 4px; font-size: 9.3pt; }
+.changes b { color: #2f5bd3; }
+.changes ul { margin: 4px 0 0; padding-left: 18px; }
+table { border-collapse: collapse; width: 100%; margin: 6px 0 10px; font-size: 9.2pt; break-inside: auto; }
+tr { break-inside: avoid; }
+th, td { border: 1px solid #dde2e8; padding: 4px 7px; text-align: left; vertical-align: top; }
+th { background: #f4f5f7; font-weight: 600; }
+code { font-family: ui-monospace, "DejaVu Sans Mono", "Noto Sans KR", monospace; font-size: 8.8pt; background: #f1f2f4; border-radius: 3px; padding: 0 3px; }
+pre { font-family: ui-monospace, "DejaVu Sans Mono", "Noto Sans KR", monospace; font-size: 8.3pt; line-height: 1.45; background: #f6f7f9; border: 1px solid #e3e6ea; border-radius: 6px; padding: 8px 10px; white-space: pre-wrap; word-break: break-all; margin: 6px 0 10px; break-inside: avoid; }
+ul { margin: 4px 0 8px; padding-left: 20px; }
+li { margin: 2px 0; }
+.new { display: inline-block; font-size: 7.5pt; font-weight: 700; color: #fff; background: #2f5bd3; border-radius: 3px; padding: 0 4px; margin-left: 4px; vertical-align: 1px; font-family: "Noto Sans KR", sans-serif; }
+.warn { border-left: 3px solid #c2362f; background: #fbf1f0; padding: 6px 10px; margin: 8px 0; border-radius: 0 6px 6px 0; }
+.note { border-left: 3px solid #9a6400; background: #fdf6e7; padding: 6px 10px; margin: 8px 0; border-radius: 0 6px 6px 0; }
+.nowrap { white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<h1>쇼핑 에이전트 백엔드 API 명세서</h1>
+<div class="meta"><span>v1.1</span><span>최초 작성 2026-09-25 · @웨하스</span><span>수정 2026-09-26</span><span>기준 코드: GitHub <code>ai_agent</code> 브랜치 <code>b010992</code></span></div>
+
+<div class="changes">
+<b>v1.1 변경 사항</b> (v1 초안 대비)
+<ul>
+<li>메인 서버를 RTX 3060으로 변경, 예비 서버(A100)는 준비 중. 서버 전환 시 로그인·대화·장바구니가 이어지지 않는다는 점을 명시</li>
+<li>대화 <code>action</code>에 <code>remove_from_cart</code>(장바구니 빼기) 추가. <code>cart_updated</code>는 담기·빼기 모두에서 true</li>
+<li>에이전트 답변에서 촉감 수치·"높음/낮음"이 사라짐. 응답 예시 교체. <code>recommendation_reason</code>, 확률 숫자는 화면에 표시하지 않도록 명시</li>
+<li>rate limit과 <code>429 too_many_requests</code> 추가. CORS는 등록된 여러 origin 허용</li>
+<li>응답 시간 실측값 갱신(중앙값 약 3초), 엔드포인트 수 18개로 정정, 오타·누락 오류 메시지 보완</li>
+</ul>
+</div>
+
+<h2>개요</h2>
+<p>모든 API는 <code>/agent/v1</code> 아래의 JSON API이고, 로그인 후 받은 토큰을 <code>Authorization: Bearer</code> 헤더로 보냅니다.</p>
+
+<table>
+<tr><th style="width:26%">항목</th><th>값</th></tr>
+<tr><td>메인 서버 Base URL</td><td>공개 주소 발급 후 전달 예정 (<b>RTX 3060 서버</b>)</td></tr>
+<tr><td>예비 서버 Base URL</td><td>준비 중 (A100 서버). 준비되면 전달</td></tr>
+<tr><td>형식</td><td>요청·응답 모두 <code>application/json; charset=utf-8</code>. 본문이 있는 요청은 <code>Content-Type: application/json</code> 필수</td></tr>
+<tr><td>인증</td><td><code>Authorization: Bearer {access_token}</code></td></tr>
+<tr><td>CORS</td><td>서버에 등록된 origin만 허용. 현재 등록: <code>https://onsesang-front.vercel.app</code>, <code>http://localhost:3000</code>, <code>http://127.0.0.1:3000</code>. 다른 개발·시연 origin은 알려주면 등록</td></tr>
+<tr><td>대화 응답 시간</td><td>중앙값 약 3초, 대부분 5초 이내, 드물게 10초 이상. <b>fetch timeout은 60초</b> 권장</td></tr>
+<tr><td>그 외 API 응답 시간</td><td>대부분 0.1초 미만 (회원가입·로그인은 약 0.3~1초)</td></tr>
+<tr><td>요청 한도</td><td>회원가입·로그인·대화 메시지에 한도가 있음. 아래 "요청 한도" 참고</td></tr>
+</table>
+<ul>
+<li>로그인 응답은 cookie(<code>HttpOnly; SameSite=Strict</code>)도 함께 주지만, 프론트가 다른 도메인에서 붙으면 cookie는 동작하지 않습니다. <b>Bearer 토큰을 쓰세요.</b></li>
+<li>서버 상태 확인: <code>GET /agent/v1/health</code>는 인증 없이 호출할 수 있습니다.</li>
+</ul>
+
+<h2>엔드포인트 한눈에 보기</h2>
+<p>엔드포인트는 <b>18개</b>이고, health · openapi.json · 회원가입 · 로그인 · 로그아웃을 빼면 모두 로그인이 필요합니다.</p>
+<table>
+<tr><th>분류</th><th>메서드</th><th>경로</th><th class="nowrap">인증</th><th>설명</th></tr>
+<tr><td>상태</td><td>GET</td><td><code>/agent/v1/health</code></td><td>없음</td><td>서버 상태, 모델, catalog 크기</td></tr>
+<tr><td>상태</td><td>GET</td><td><code>/agent/v1/openapi.json</code></td><td>없음</td><td>경로 요약</td></tr>
+<tr><td>인증</td><td>POST</td><td><code>/agent/v1/auth/register</code></td><td>없음</td><td>회원가입 후 바로 로그인</td></tr>
+<tr><td>인증</td><td>POST</td><td><code>/agent/v1/auth/login</code></td><td>없음</td><td>로그인</td></tr>
+<tr><td>인증</td><td>POST</td><td><code>/agent/v1/auth/logout</code></td><td>없음</td><td>현재 토큰 폐기</td></tr>
+<tr><td>인증</td><td>GET</td><td><code>/agent/v1/auth/me</code></td><td>필요</td><td>현재 사용자</td></tr>
+<tr><td>상품</td><td>GET</td><td><code>/agent/v1/products?page=&amp;page_size=</code></td><td>필요</td><td>첫 화면 상품 목록</td></tr>
+<tr><td>상품</td><td>GET</td><td><code>/agent/v1/products/{product_id}</code></td><td>필요</td><td>상품 상세와 촉감</td></tr>
+<tr><td>대화</td><td>POST</td><td><code>/agent/v1/sessions</code></td><td>필요</td><td>대화 세션 생성</td></tr>
+<tr><td>대화</td><td>GET</td><td><code>/agent/v1/sessions/{session_id}</code></td><td>필요</td><td>세션 상태와 메시지 기록</td></tr>
+<tr><td>대화</td><td>POST</td><td><code>/agent/v1/sessions/{session_id}/messages</code></td><td>필요</td><td>사용자 메시지 전송, agent 답변·추천</td></tr>
+<tr><td>행동</td><td>POST</td><td><code>/agent/v1/events</code></td><td>필요</td><td>노출·클릭·체류 등 기록</td></tr>
+<tr><td>취향</td><td>GET</td><td><code>/agent/v1/preferences</code></td><td>필요</td><td>자동 저장된 취향 목록</td></tr>
+<tr><td>취향</td><td>PATCH</td><td><code>/agent/v1/preferences/{preference_id}</code></td><td>필요</td><td>취향 수정</td></tr>
+<tr><td>취향</td><td>DELETE</td><td><code>/agent/v1/preferences/{preference_id}</code></td><td>필요</td><td>취향 삭제</td></tr>
+<tr><td>장바구니</td><td>GET</td><td><code>/agent/v1/cart</code></td><td>필요</td><td>장바구니 조회</td></tr>
+<tr><td>장바구니</td><td>POST</td><td><code>/agent/v1/cart/items</code></td><td>필요</td><td>담기·수량 변경</td></tr>
+<tr><td>장바구니</td><td>DELETE</td><td><code>/agent/v1/cart/items/{product_id}</code></td><td>필요</td><td>빼기</td></tr>
+</table>
+<ul>
+<li>구매(checkout) API는 없습니다. 구매 버튼은 비활성으로 둡니다.</li>
+<li><b>대화 목록 API는 없습니다.</b> 세션은 생성·단건 조회만 됩니다. 프론트가 <code>session_id</code>를 보관해야 이전 대화를 다시 열 수 있습니다.</li>
+</ul>
+
+<h2>인증 API</h2>
+<p>회원가입과 로그인은 같은 형식의 응답을 돌려주고, 이 중 <code>access_token</code>을 저장해 이후 모든 요청에 붙이면 됩니다. 토큰은 30일간 유효합니다.</p>
+
+<h3>POST /agent/v1/auth/register</h3>
+<p>이메일 형식, 비밀번호 8~256자, 이름 1~80자를 검사합니다. 성공하면 201과 함께 바로 로그인 상태가 됩니다.</p>
+<pre>// 요청
+{ "email": "user@example.com", "password": "password123", "display_name": "홍길동" }
+
+// 응답 201
+{
+  "status": "authenticated",
+  "user": {
+    "user_id": "usr_0deb6055d62c43e0...",
+    "email": "user@example.com",
+    "display_name": "홍길동",
+    "created_at": "2026-09-24T15:18:15.178718+00:00"
+  },
+  "access_token": "rtWNr8o8nS7zvgZQ...",
+  "token_type": "Bearer",
+  "expires_at": "2026-10-24T15:18:15.186181+00:00"
+}</pre>
+<table>
+<tr><th>실패</th><th>상태</th><th><code>error.message</code></th></tr>
+<tr><td>이메일 형식 오류</td><td>400</td><td>올바른 이메일 주소를 입력해주세요.</td></tr>
+<tr><td>비밀번호 8자 미만</td><td>400</td><td>비밀번호는 8자 이상이어야 합니다.</td></tr>
+<tr><td>비밀번호 256자 초과 <span class="new">추가</span></td><td>400</td><td>비밀번호가 너무 깁니다.</td></tr>
+<tr><td>이름 길이 오류</td><td>400</td><td>이름은 1~80자로 입력해주세요.</td></tr>
+<tr><td>중복 이메일</td><td>400</td><td>이미 가입된 이메일입니다.</td></tr>
+<tr><td>요청 한도 초과 <span class="new">추가</span></td><td>429</td><td>요청이 너무 많습니다. N초 후 다시 시도해주세요.</td></tr>
+</table>
+
+<h3>POST /agent/v1/auth/login</h3>
+<p>요청은 <code>{ "email", "password" }</code>이고 응답은 회원가입과 같은 형식(200)입니다. 이메일이나 비밀번호가 틀리면 401 <code>이메일 또는 비밀번호가 올바르지 않습니다.</code>가 옵니다. 너무 자주 시도하면 429가 옵니다.</p>
+
+<h3>POST /agent/v1/auth/logout</h3>
+<p>본문 없이 토큰 헤더만 보냅니다. 응답은 200 <code>{ "status": "logged_out" }</code>이고, 그 토큰은 이후 401이 됩니다.</p>
+
+<h3>GET /agent/v1/auth/me</h3>
+<p>응답은 200 <code>{ "user": { "user_id", "email", "display_name", "created_at" } }</code>입니다. 앱을 다시 열 때 저장된 토큰이 아직 유효한지 확인하는 용도로 씁니다. 401이면 로그인 화면으로 보냅니다.</p>
+
+<h2>상품 API</h2>
+<p>catalog는 825,840개 상품이고, 목록은 인기순으로 페이지를 나눠 줍니다. 촉감 값은 대부분 <b>상품 이미지에서 예측한 확률</b>이며 구매자 리뷰가 아닙니다.</p>
+
+<h3>GET /agent/v1/products?page=1&amp;page_size=30</h3>
+<p><code>page</code>는 1부터, <code>page_size</code>는 1~100(기본 30)입니다.</p>
+<pre>{
+  "items": [
+    {
+      "product_id": "B09KHSM7BB",
+      "title": "Russell Athletic Men's Dri-Power Fleece Hoodies ...",
+      "category": "top",
+      "image_url": "/images/B09KHSM7BB.jpg",
+      "remote_image_url": "https://m.media-amazon.com/images/I/....jpg",
+      "train_interaction_count": 159
+    }
+  ],
+  "total": 825840, "page": 1, "page_size": 30, "total_pages": 27528,
+  "has_previous": false, "has_next": true
+}</pre>
+
+<h3>GET /agent/v1/products/{product_id}</h3>
+<p>상품 정보와 14개 촉감 항목의 확률(0~1)을 줍니다. 화면에는 <code>strongest</code>의 <b><code>label_ko</code>(한국어 이름)만</b> 보여주고, <b>확률 숫자는 표시하지 마세요</b>. 화면낭독기 사용자에게 숫자는 도움이 되지 않고, 에이전트 답변도 숫자를 쓰지 않습니다. <code>note</code>는 함께 보여주는 것을 권장합니다.</p>
+<pre>{
+  "product": {
+    "product_id": "B01CEC78VA",
+    "title": "ROMWE Women's Summer Cute Birds Print Short Sleeve Loose Tunic Top Dress",
+    "category": "dress",
+    "image_url": "/images/B01CEC78VA.jpg",
+    "remote_image_url": "https://m.media-amazon.com/images/I/71CTzQVPFDL._AC_UL1465_.jpg",
+    "train_interaction_count": 4
+  },
+  "tactile_profile": {
+    "source": "image_predicted_last2",
+    "model": "fashionclip_last2",
+    "classes": { "soft": 0.73, "firm": 0.20, "smooth": 0.67, "rough": 0.33, "...": "14개" },
+    "strongest": [
+      { "class": "thin", "label_ko": "얇음", "probability": 0.84 },
+      { "class": "cool", "label_ko": "시원함", "probability": 0.82 }
+    ],
+    "review_grounded_evidence_available": false,
+    "note": "이 확률은 상품 이미지에서 예측한 값이며 구매자 리뷰 근거가 아닙니다."
+  },
+  "tactile_concerns": [],
+  "related": []
+}</pre>
+<p>촉감 항목 14개: <code>soft</code> 부드러움, <code>firm</code> 탄탄함, <code>smooth</code> 매끄러움, <code>rough</code> 거칠/까슬함, <code>non_elastic</code> 신축성 없음, <code>elastic</code> 신축성, <code>thin</code> 얇음, <code>thick</code> 두꺼움, <code>flexible</code> 유연함, <code>stiff</code> 뻣뻣함, <code>warm</code> 따뜻함, <code>cool</code> 시원함, <code>spongy</code> 폭신함, <code>crisp</code> 각 잡힌 느낌.</p>
+
+<h3>이미지</h3>
+<ul>
+<li><b><code>remote_image_url</code>(Amazon CDN)을 우선 쓰세요.</b> 어느 서버에서든 같은 이미지가 나옵니다. 값이 빈 상품이 드물게 있으니 빈 값이면 대체 이미지를 보여주세요.</li>
+<li><code>image_url</code>(<code>/images/{id}.jpg</code>)은 상대 경로라 Base URL을 앞에 붙여야 합니다. <b>현재 메인 서버에는 이미지 파일이 없어 404</b>가 옵니다. 쓰지 않는 것을 권장합니다.</li>
+<li>화면낭독기 사용자를 위해 <code>&lt;img alt&gt;</code>에는 <code>title</code>을 넣어 주세요.</li>
+</ul>
+
+<h2>대화 API</h2>
+<p>로그인 후 세션을 하나 만들고, 사용자 입력마다 <code>messages</code>를 호출합니다. 서버가 대화 맥락(직전 검색 조건, 보여준 상품 번호, 장바구니)을 기억하므로, 프론트는 <code>session_id</code>만 유지하면 됩니다.</p>
+
+<h3>POST /agent/v1/sessions</h3>
+<p>본문은 <code>{}</code>입니다. 응답 201:</p>
+<pre>{
+  "session_id": "shop_8627884b28314999aecde0a466b0b530",
+  "state": { "intent": {}, "last_product_ids": [], "turn_count": 0, "agent_version": "v1" },
+  "created_at": "2026-09-24T15:18:15.283456+00:00",
+  "updated_at": "2026-09-24T15:18:15.283456+00:00"
+}</pre>
+
+<h3>GET /agent/v1/sessions/{session_id}</h3>
+<p>세션 상태와 최근 메시지 50개(<code>messages[]</code>: <code>role</code>, <code>content</code>, <code>created_at</code>)를 줍니다. 새로고침 후 채팅 기록을 복원할 때 씁니다.</p>
+
+<h3>POST /agent/v1/sessions/{session_id}/messages</h3>
+<pre>// 요청
+{ "message": "부드러운 니트 보여줘", "limit": 30 }</pre>
+<p><code>message</code>는 1~4000자, <code>limit</code>는 선택(검색 결과 개수, 기본 30, 최대 50)입니다. 응답 200 (검색 턴, <code>products</code>는 1개만 표시):</p>
+<pre>{
+  "status": "complete",
+  "action": "search_products",
+  "session_id": "shop_8627884b...",
+  "trace_id": "b69e6a19-a0b5-4a6e-b160-b6f94dfafb23",
+  "message": "세 상품 모두 부드러워요.\n1번은 크로셰 느낌의 볼레로 가디건이고 이미지로 예측한 촉감이에요.\n2번은 메리노 니트 후드풀오버, 3번은 프린트가 들어간 니트 판초예요.\n원하시면 더 포근한 느낌이나 덜 까슬한 쪽으로도 다시 골라드릴게요.",
+  "products": [
+    {
+      "product_id": "B07XXXXXXX",
+      "title": "Women's Crochet Bolero Shrug Cardigan ...",
+      "category": "sweater",
+      "image_url": "/images/B07XXXXXXX.jpg",
+      "remote_image_url": "https://m.media-amazon.com/images/I/....jpg",
+      "tactile_target_source": "image_predicted_last2",
+      "last2_predictions": { "soft": 0.81, "...": "14개" },
+      "recommendation_reason": "(디버깅용, 화면 표시 금지)",
+      "personalization_reasons": ["대화의 촉감 조건"],
+      "personalized_score": 0.52,
+      "rank": 3,
+      "score_breakdown": { "...": "디버깅용 점수 내역" }
+    }
+  ],
+  "preferences_saved": [
+    { "preference_id": "pref_1710...", "scope_category": "sweater",
+      "attribute_type": "tactile", "attribute": "softness", "direction": "more" }
+  ],
+  "profile_summary": { "preference_count": 1, "behavior_event_count": 0,
+                       "cart_item_count": 0, "personalization_applied": true },
+  "tool_calls": [
+    { "name": "search_products",
+      "arguments": { "query_text": "부드러운 니트", "category": "sweater", "want": ["soft"],
+                     "avoid": [], "keywords": ["knit"], "unsupported_concepts": [] },
+      "ok": true }
+  ],
+  "cart_updated": false,
+  "referenced_product_ids": ["B07XXXXXXX", "..."],
+  "unsupported_concepts": [],
+  "intent": { "...": "디버깅용" },
+  "routing": { "tool": "search_products", "source": "openai_tool_loop", "confidence": null },
+  "provenance": { "agent_mode": "openai_tool_loop", "llm_provider": "openai",
+                  "llm_model": "gpt-5.4-mini", "llm_requests": 2, "...": "" }
+}</pre>
+
+<h3>action별 화면 처리</h3>
+<table>
+<tr><th style="width:24%">action</th><th>사용자 발화 예</th><th style="width:11%">products</th><th>프론트 처리</th></tr>
+<tr><td><code>search_products</code></td><td>"안 까끌한 여름 원피스 찾아줘", "좀 더 두꺼운 걸로"</td><td>결과 목록</td><td>답변 추가 + 상품 목록을 <b>배열 순서 그대로</b> 교체</td></tr>
+<tr><td><code>get_product_detail</code></td><td>"1번 촉감 자세히 알려줘"</td><td><code>[]</code></td><td>답변만 추가, 기존 목록 유지</td></tr>
+<tr><td><code>compare_products</code></td><td>"1번이랑 2번 중 뭐가 더 부드러워?"</td><td><code>[]</code></td><td>답변만 추가, 기존 목록 유지</td></tr>
+<tr><td><code>add_to_cart</code></td><td>"2번 장바구니에 담아줘"</td><td><code>[]</code></td><td>답변 추가 + <code>GET /cart</code>로 장바구니 갱신</td></tr>
+<tr><td><code>remove_from_cart</code> <span class="new">추가</span></td><td>"방금 담은 거 빼줘", "그거 하나만 빼줘"</td><td><code>[]</code></td><td>답변 추가 + <code>GET /cart</code>로 장바구니 갱신</td></tr>
+<tr><td><code>view_cart</code></td><td>"장바구니에 뭐 있어?"</td><td><code>[]</code></td><td>답변만 추가</td></tr>
+<tr><td><code>respond</code></td><td>인사, 쇼핑과 무관한 질문, 되묻기</td><td><code>[]</code></td><td>답변만 추가</td></tr>
+<tr><td><code>respond_greeting</code>, <code>respond_out_of_scope</code></td><td>OpenAI 장애 시 로컬 모드 응답</td><td><code>[]</code></td><td><code>respond</code>와 같게 처리</td></tr>
+</table>
+<ul>
+<li><b>"N번"은 <code>products</code> 배열의 순서(1부터)입니다.</b> 상품의 <code>rank</code> 필드는 개인화 전 검색 순위라 화면 번호로 쓰면 안 됩니다.</li>
+<li><code>products</code>를 다시 정렬하지 마세요. 답변의 번호와 화면 번호가 어긋납니다.</li>
+<li><b><code>cart_updated</code>가 <code>true</code>면 담기·빼기 중 하나가 일어난 것입니다.</b> 빼기는 수량만 줄일 수도 있으니 장바구니와 배지는 항상 <code>GET /agent/v1/cart</code> 결과로 그리세요. 서버가 <code>cart_add</code>·<code>cart_remove</code> 이벤트를 이미 기록했으니 프론트에서 다시 보내지 마세요.</li>
+<li><code>message</code>는 화면낭독기용 평문이고 줄바꿈(<code>\n</code>)이 들어 있습니다. 마크다운으로 해석하지 말고 <code>white-space: pre-line</code>으로 표시하세요. 새 답변 영역에는 <code>aria-live="polite"</code>를 권장합니다. 답변에는 촉감 확률 숫자나 "높음/낮음" 같은 등급어가 나오지 않습니다.</li>
+<li><b><code>recommendation_reason</code>, <code>last2_predictions</code>, <code>personalized_score</code>, <code>score_breakdown</code>은 화면에 표시하지 마세요.</b> 내부 모델명과 확률 숫자가 들어 있는 디버깅용 값입니다.</li>
+<li>촉감 출처: <code>tactile_target_source</code>가 <code>image_predicted_last2</code>면 "이미지로 예측", <code>review_grounded_overlay</code>면 "리뷰 근거 있음"으로 표시합니다.</li>
+<li><code>status</code>가 <code>insufficient_results</code>면 조건에 맞는 상품이 없는 것이며 오류가 아닙니다.</li>
+<li><code>tool_calls</code>, <code>referenced_product_ids</code>, <code>unsupported_concepts</code>, <code>cart_updated</code>는 OpenAI 장애로 로컬 모드가 답할 때 없을 수 있습니다. 없으면 빈 배열, <code>false</code>로 처리하세요.</li>
+<li><code>intent</code>, <code>routing</code>, <code>provenance</code>는 디버깅용이라 화면에 보여줄 필요가 없습니다.</li>
+<li>전송 중에는 로딩을 보여주고 중복 전송을 막아 주세요. 한 턴에 보통 3~5초 걸립니다.</li>
+</ul>
+
+<h2>행동 이벤트 API</h2>
+<p>상품을 보고 누른 기록을 보내면 다음 추천의 개인화에 반영됩니다. 같은 <code>event_id</code>를 다시 보내면 중복 저장하지 않으므로, 재시도해도 안전합니다.</p>
+<h3>POST /agent/v1/events</h3>
+<pre>// 요청
+{
+  "event_id": "evt_프론트에서_만든_uuid",
+  "event_type": "product_click",
+  "product_id": "B01CEC78VA",
+  "session_id": "shop_8627884b...",
+  "context": { "rank": 1 }
+}
+
+// 응답: 새로 저장 201, 이미 있던 event_id 200
+{ "event_id": "evt_5bbfce9697c64cc6bfe8026e2de81be4", "created": true }</pre>
+<p><code>event_id</code> · <code>session_id</code> · <code>context</code>는 선택입니다. <code>event_id</code>를 생략하면 서버가 만들지만, 중복 방지를 위해 프론트에서 만들어 보내는 것을 권장합니다.</p>
+<table>
+<tr><th>event_type</th><th>보내는 시점</th><th>context</th></tr>
+<tr><td><code>product_impression</code></td><td>상품 카드가 화면에 처음 보일 때 (상품당 1회)</td><td><code>{ "rank": 1 }</code></td></tr>
+<tr><td><code>product_click</code></td><td>상품 상세를 열 때</td><td><code>{ "rank": 1 }</code></td></tr>
+<tr><td><code>product_dwell</code></td><td>상세를 닫을 때, 실제로 본 시간</td><td><code>{ "dwell_ms": 12000 }</code> (0~300000)</td></tr>
+<tr><td><code>image_zoom</code></td><td>상품 이미지를 확대할 때</td><td>없음</td></tr>
+<tr><td><code>similar_product_click</code></td><td>유사 상품을 눌렀을 때</td><td>없음</td></tr>
+<tr><td><code>favorite_add</code> / <code>favorite_remove</code></td><td>찜 추가·해제</td><td>없음</td></tr>
+<tr><td><code>explicit_like</code> / <code>explicit_dislike</code></td><td>좋아요·싫어요 버튼</td><td>없음</td></tr>
+<tr><td><code>recommendation_skip</code></td><td>추천을 넘길 때</td><td>없음</td></tr>
+<tr><td><code>cart_add</code> / <code>cart_remove</code></td><td><b>보내지 마세요.</b> 장바구니 API와 대화가 자동으로 기록합니다</td><td>—</td></tr>
+</table>
+<p><code>context.rank</code>에는 화면 번호(<code>products</code> 배열 순서)를 넣으세요. 목록에 없는 <code>event_type</code>은 400, 없는 <code>product_id</code>는 404입니다.</p>
+
+<h2>취향 API</h2>
+<p>대화에서 "얇은", "검은색" 같은 조건이 나오면 서버가 취향으로 자동 저장하고, 다음 추천에 반영합니다. 프론트는 "내 취향" 화면에서 조회·수정·삭제만 하면 됩니다.</p>
+<h3>GET /agent/v1/preferences</h3>
+<pre>{
+  "items": [
+    {
+      "preference_id": "pref_1710ba35e2f048a88088f89502c12519",
+      "scope_category": "dress",
+      "attribute_type": "tactile",
+      "attribute": "thinness",
+      "direction": "more",
+      "strength": 0.65,
+      "confidence": 0.75,
+      "source": "chat_auto",
+      "source_text": "안 까끌하고 얇은 여름 원피스 찾아줘",
+      "active": true,
+      "created_at": "2026-09-24T15:18:17.571009+00:00",
+      "updated_at": "2026-09-24T15:18:17.571009+00:00"
+    }
+  ],
+  "auto_save": true
+}</pre>
+<table>
+<tr><th style="width:26%">필드</th><th>값</th></tr>
+<tr><td><code>scope_category</code></td><td>적용되는 옷 종류. <code>null</code>이면 전체</td></tr>
+<tr><td><code>attribute_type</code></td><td><code>tactile</code>(촉감), <code>color</code>(색상), <code>style</code>(스타일)</td></tr>
+<tr><td><code>direction</code></td><td><code>more</code> 더, <code>less</code> 덜, <code>avoid</code> 피함, <code>must_have</code> 반드시</td></tr>
+<tr><td><code>strength</code>, <code>confidence</code></td><td>0~1 (내부 값. 화면에 숫자로 보여줄 필요 없음)</td></tr>
+<tr><td><code>source_text</code></td><td>저장의 근거가 된 사용자 발화. 로그·분석 도구에 보내지 마세요</td></tr>
+</table>
+<h3>PATCH /agent/v1/preferences/{preference_id}</h3>
+<p><code>direction</code>, <code>strength</code>, <code>confidence</code>, <code>active</code>만 바꿀 수 있습니다. 예: <code>{ "strength": 0.5 }</code> 또는 <code>{ "active": false }</code>. 응답은 수정된 취향 하나이고, 다른 필드를 보내면 400입니다.</p>
+<h3>DELETE /agent/v1/preferences/{preference_id}</h3>
+<p>응답은 200 <code>{ "status": "forgotten", "preference_id": "pref_..." }</code>입니다.</p>
+
+<h2>장바구니 API</h2>
+<p>장바구니는 버튼으로도, 대화("2번 담아줘", "방금 담은 거 빼줘")로도 바뀝니다. 두 경우 모두 같은 장바구니에 저장되므로, 대화 응답의 <code>cart_updated</code>가 <code>true</code>이면 조회 API로 다시 불러오세요.</p>
+<h3>GET /agent/v1/cart</h3>
+<pre>{
+  "items": [
+    {
+      "product_id": "B01CEC78VA",
+      "quantity": 2,
+      "added_at": "2026-09-24T15:18:21.180939+00:00",
+      "updated_at": "2026-09-24T15:18:22.358917+00:00",
+      "product": {
+        "product_id": "B01CEC78VA",
+        "title": "ROMWE Women's Summer Cute Birds Print Short Sleeve Loose Tunic Top Dress White L",
+        "category": "dress",
+        "image_url": "/images/B01CEC78VA.jpg",
+        "remote_image_url": "https://m.media-amazon.com/images/I/71CTzQVPFDL._AC_UL1465_.jpg",
+        "tactile_target_source": "image_predicted_last2"
+      }
+    }
+  ],
+  "checkout_enabled": false
+}</pre>
+<h3>POST /agent/v1/cart/items</h3>
+<p>담기와 수량 변경에 같이 씁니다. 이미 담긴 상품이면 수량을 <b>덮어씁니다</b>(더하지 않음). 한 상품은 최대 20개입니다.</p>
+<pre>// 요청 (quantity 1~20, 기본 1)
+{ "product_id": "B01CEC78VA", "quantity": 2, "session_id": "shop_..." }
+
+// 응답 201
+{ "status": "added", "product_id": "B01CEC78VA", "quantity": 2 }</pre>
+<h3>DELETE /agent/v1/cart/items/{product_id}</h3>
+<p>응답은 200 <code>{ "status": "removed", "product_id": "B01CEC78VA" }</code>이고, 장바구니에 없는 상품이면 404입니다. 두 API 모두 <code>cart_add</code>·<code>cart_remove</code> 이벤트를 서버가 자동으로 기록합니다.</p>
+
+<h2>요청 한도 <span class="new">추가</span></h2>
+<p>공개 서버 보호와 비용 관리를 위해 아래 한도가 있습니다. 넘으면 <code>429 too_many_requests</code>와 <code>Retry-After</code>(초) 헤더가 옵니다. CORS에서 <code>Retry-After</code> 헤더를 읽을 수 있습니다.</p>
+<table>
+<tr><th>대상</th><th>기준</th><th>한도</th></tr>
+<tr><td><code>POST /auth/register</code></td><td>IP당</td><td>1시간에 5회</td></tr>
+<tr><td><code>POST /auth/login</code></td><td>IP당</td><td>10분에 10회 (실패 포함)</td></tr>
+<tr><td><code>POST /sessions/{id}/messages</code></td><td>사용자당</td><td>1분에 20회, 하루 300회</td></tr>
+</table>
+<pre>// 응답 429 (헤더 Retry-After: 600)
+{ "error": { "code": "too_many_requests", "message": "요청이 너무 많습니다. 600초 후 다시 시도해주세요." } }</pre>
+
+<h2>오류 형식과 상태 코드</h2>
+<p>모든 오류는 같은 형식입니다. 인증·요청 한도 오류의 <code>error.message</code>는 한국어라 그대로 보여줘도 되지만, <b>일부 입력 오류는 영어</b>입니다(예: <code>Unknown product_id: …</code>, <code>quantity must be between 1 and 20</code>, <code>Route not found</code>). 사용자에게는 <code>error.code</code>별로 프론트가 정한 한국어 문구를 보여주는 것을 권장합니다.</p>
+<pre>{ "error": { "code": "unauthorized", "message": "로그인이 필요합니다." } }</pre>
+<table>
+<tr><th>HTTP</th><th><code>error.code</code></th><th>의미</th><th>프론트 처리</th></tr>
+<tr><td>400</td><td><code>invalid_request</code></td><td>입력값 오류 (예: quantity 1~20 밖)</td><td>안내 문구 표시</td></tr>
+<tr><td>401</td><td><code>unauthorized</code></td><td>토큰 없음·만료·로그인 실패</td><td>토큰 삭제 후 로그인 화면</td></tr>
+<tr><td>404</td><td><code>not_found</code></td><td>없는 상품·세션·취향·장바구니 항목·경로, 이미지 없음</td><td>대상 갱신 후 안내, 세션이면 새로 생성</td></tr>
+<tr><td>429 <span class="new">추가</span></td><td><code>too_many_requests</code></td><td>요청 한도 초과</td><td><code>Retry-After</code>초 뒤 다시 시도하도록 안내. 자동 재시도는 하지 않기</td></tr>
+<tr><td>500</td><td><code>internal_error</code></td><td>서버 오류</td><td>재시도 안내</td></tr>
+<tr><td>응답 없음·연결 실패</td><td>—</td><td>서버 다운</td><td>아래 "서버 전환" 참고</td></tr>
+</table>
+<ul>
+<li>OpenAI가 장애여도 대화 API는 로컬 모드로 200을 돌려줍니다. 오류로 처리하지 마세요.</li>
+<li>촉감 근거가 비어 있거나 <code>image_predicted_last2</code>인 것도 오류가 아닙니다.</li>
+<li>토큰, 대화 원문, <code>source_text</code>는 콘솔·분석 도구에 남기지 마세요.</li>
+</ul>
+
+<h2>서버 전환 <span class="new">수정</span></h2>
+<div class="warn">
+<b>현재 메인 서버와 예비 서버는 데이터(계정·토큰·대화·장바구니·취향)를 공유하지 않습니다.</b> 예비 서버가 준비되더라도 동기화가 생기기 전까지는 다음과 같이 동작합니다.
+<ul>
+<li>예비 서버로 넘어가면 기존 토큰은 401입니다. 다시 로그인(또는 가입)해야 합니다.</li>
+<li>기존 <code>session_id</code>는 404입니다. 새 세션을 만들어야 하고, 대화 기록·장바구니·취향은 이어지지 않습니다.</li>
+<li>대화 메시지 전송은 같은 <code>session_id</code>로 다른 서버에 재시도하지 마세요.</li>
+</ul>
+</div>
+<p>전환 판단은 <code>GET /agent/v1/health</code>에 응답이 없을 때로 합니다. 예비 서버 Base URL과 동기화 여부는 준비되는 대로 이 문서에 반영합니다.</p>
+
+</body>
+</html>

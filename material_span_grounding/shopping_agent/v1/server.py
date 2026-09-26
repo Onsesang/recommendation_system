@@ -118,6 +118,7 @@ class AgentApplication:
                 "provider": self.llm.info.provider,
                 "model": self.llm.info.model_id,
                 "remote_configured": self.llm.info.provider != "deterministic",
+                "fallback_model": self.agent.tool_agent.fallback_model if self.agent.tool_agent else None,
             },
             "tracing": {
                 "trace_id_enabled": True,

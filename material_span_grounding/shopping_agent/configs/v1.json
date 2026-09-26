@@ -72,7 +72,8 @@
     "shown_products_memory": 10,
     "tool_result_products": 8,
     "tool_output_max_chars": 4000,
-    "structured_intent_confidence": 0.9
+    "structured_intent_confidence": 0.9,
+    "fallback_model": "gpt-5.4-nano"
   },
   "conversation_tools": {
     "responses": {

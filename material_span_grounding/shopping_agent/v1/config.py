@@ -49,6 +49,7 @@ class AgentSettings:
     llm_provider: str
     openai_api_key: str
     openai_model: str
+    openai_fallback_model: str
     gemini_api_key: str
     gemini_model: str
     langsmith_tracing: bool
@@ -89,7 +90,11 @@ class AgentSettings:
             session_days=int(os.getenv("SHOPPING_AGENT_SESSION_DAYS", str(config["auth"]["session_days"]))),
             llm_provider=provider,
             openai_api_key=openai_key,
-            openai_model=os.getenv("OPENAI_MODEL", "gpt-5.6").strip(),
+            openai_model=os.getenv("OPENAI_MODEL", "gpt-5.4-mini").strip(),
+            # Empty disables the fallback; the default comes from configs/v1.json tool_agent.fallback_model.
+            openai_fallback_model=os.getenv(
+                "OPENAI_FALLBACK_MODEL", str(config.get("tool_agent", {}).get("fallback_model", ""))
+            ).strip(),
             gemini_api_key=gemini_key,
             gemini_model=os.getenv("GEMINI_MODEL", "gemini-3.7-flash").strip(),
             langsmith_tracing=os.getenv("LANGSMITH_TRACING", "false").casefold() in {"1", "true", "yes"},

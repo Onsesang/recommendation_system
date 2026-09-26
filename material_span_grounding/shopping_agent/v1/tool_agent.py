@@ -9,6 +9,7 @@ Any failure is raised to the caller, which falls back to the router pipeline.
 from __future__ import annotations
 
 import json
+import sys
 from dataclasses import dataclass, field
 from typing import Any, Callable
 
@@ -192,6 +193,9 @@ class ToolLoopResult:
     text: str
     calls: list[dict[str, Any]] = field(default_factory=list)
     model_requests: int = 0
+    model: str = ""
+    fallback_used: bool = False
+    fallback_error: str | None = None
 
 
 def _output_text(response: dict[str, Any]) -> str:
@@ -218,9 +222,12 @@ class OpenAIToolLoop:
         max_steps: int,
         max_output_tokens: int,
         reasoning_effort: str | None,
+        fallback_model: str | None = None,
     ) -> None:
         self.api_key = api_key
         self.model = model
+        # Used when a request to `model` fails (HTTP error, timeout, empty answer).
+        self.fallback_model = fallback_model if fallback_model and fallback_model != model else None
         self.timeout = timeout
         self.max_steps = max(1, int(max_steps))
         self.max_output_tokens = int(max_output_tokens)
@@ -238,6 +245,29 @@ class OpenAIToolLoop:
             self.timeout,
         )
 
+    def _request_with_fallback(self, payload: dict[str, Any], result: ToolLoopResult) -> dict[str, Any]:
+        """Send one request; if the primary model fails, resend that same request to the fallback model.
+
+        Only the failed request is retried, never the whole turn, so tools that already ran
+        (a cart change, say) are not executed twice. Once a turn falls back it stays on the
+        fallback model. If the fallback also fails the error propagates and the service
+        answers from the local router instead.
+        """
+        model = self.fallback_model if result.fallback_used else self.model
+        try:
+            response = self._request({**payload, "model": model})
+            if not response.get("output"):
+                raise RuntimeError("OpenAI response had no output")
+            return response
+        except Exception as exc:
+            if result.fallback_used or not self.fallback_model:
+                raise
+            result.fallback_used = True
+            result.fallback_error = str(exc)[:300]
+            print(f"[tool_agent] {model} failed, retrying with {self.fallback_model}: {result.fallback_error}",
+                  file=sys.stderr, flush=True)
+            return self._request({**payload, "model": self.fallback_model})
+
     def run(
         self,
         *,
@@ -245,7 +275,7 @@ class OpenAIToolLoop:
         input_items: list[dict[str, Any]],
         execute: Callable[[str, dict[str, Any]], dict[str, Any]],
     ) -> ToolLoopResult:
-        result = ToolLoopResult(text="")
+        result = ToolLoopResult(text="", model=self.model)
         base = {
             "model": self.model,
             "instructions": instructions,
@@ -260,8 +290,9 @@ class OpenAIToolLoop:
             if step == self.max_steps - 1:
                 # The last request must produce an answer instead of another tool call.
                 payload["tool_choice"] = "none"
-            response = self._request(payload)
+            response = self._request_with_fallback(payload, result)
             result.model_requests += 1
+            result.model = self.fallback_model if result.fallback_used else self.model
             calls = [
                 item
                 for item in response.get("output", [])
@@ -310,4 +341,5 @@ def build_tool_agent(settings: AgentSettings) -> OpenAIToolLoop | None:
         max_steps=int(config["max_steps"]),
         max_output_tokens=int(config["max_output_tokens"]),
         reasoning_effort=config.get("reasoning_effort") or None,
+        fallback_model=settings.openai_fallback_model or None,
     )

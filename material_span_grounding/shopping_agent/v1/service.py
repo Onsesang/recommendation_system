@@ -327,6 +327,13 @@ class ShoppingAgentService:
             return output
 
         run = self.tool_agent.run(instructions=instructions, input_items=input_items, execute=execute)
+        if run.fallback_used:
+            self.tracer.tool(
+                trace,
+                name="model_fallback",
+                inputs={"primary": self.tool_agent.model, "fallback": self.tool_agent.fallback_model},
+                output_summary={"error": run.fallback_error},
+            )
         answer = run.text
         searched = turn.ranked is not None
         products = turn.ranked["results"] if turn.ranked else []
@@ -405,7 +412,8 @@ class ShoppingAgentService:
                 "agent_mode": "openai_tool_loop",
                 "tactile_provider": self.tools.tactile.version,
                 "llm_provider": self.tool_agent.info.provider,
-                "llm_model": self.tool_agent.info.model_id,
+                "llm_model": run.model or self.tool_agent.info.model_id,
+                "llm_model_fallback_used": run.fallback_used,
                 "llm_requests": run.model_requests,
                 "llm_fallback_used": False,
                 "router_fallback_used": False,

@@ -38,6 +38,50 @@ class ToolLoopContractTests(unittest.TestCase):
         return OpenAIToolLoop(**values)
 
     @patch("shopping_agent.v1.tool_agent._post_json")
+    def test_failed_request_is_resent_to_the_fallback_model_only_once(self, post) -> None:
+        post.side_effect = [
+            {"id": "resp_1", "output": [_call("view_cart", {})]},
+            RuntimeError("LLM API returned HTTP 503: overloaded"),
+            {"id": "resp_2", "output": [_answer("장바구니가 비어 있습니다.")]},
+        ]
+        executed = []
+        result = self.loop(model="gpt-5.4-mini", fallback_model="gpt-5.4-nano").run(
+            instructions="지침", input_items=[{"role": "user", "content": "장바구니 보여줘"}],
+            execute=lambda name, arguments: executed.append(name) or {"item_count": 0, "items": []},
+        )
+        self.assertEqual(result.text, "장바구니가 비어 있습니다.")
+        self.assertEqual(executed, ["view_cart"])  # the tool is not run again
+        self.assertEqual([call.args[1]["model"] for call in post.call_args_list],
+                         ["gpt-5.4-mini", "gpt-5.4-mini", "gpt-5.4-nano"])
+        self.assertEqual(post.call_args_list[2].args[1]["previous_response_id"], "resp_1")
+        self.assertTrue(result.fallback_used)
+        self.assertEqual(result.model, "gpt-5.4-nano")
+        self.assertIn("503", result.fallback_error)
+
+    @patch("shopping_agent.v1.tool_agent._post_json")
+    def test_turn_stays_on_fallback_and_raises_when_both_models_fail(self, post) -> None:
+        post.side_effect = [RuntimeError("HTTP 500"), {"id": "r", "output": [_call("view_cart", {})]},
+                            {"id": "r2", "output": [_answer("비어 있어요.")]}]
+        result = self.loop(model="gpt-5.4-mini", fallback_model="gpt-5.4-nano").run(
+            instructions="지침", input_items=[], execute=lambda name, arguments: {"items": []})
+        self.assertEqual([call.args[1]["model"] for call in post.call_args_list],
+                         ["gpt-5.4-mini", "gpt-5.4-nano", "gpt-5.4-nano"])
+        post.reset_mock()
+        post.side_effect = [RuntimeError("HTTP 500"), RuntimeError("HTTP 500 again")]
+        with self.assertRaises(RuntimeError):
+            self.loop(model="gpt-5.4-mini", fallback_model="gpt-5.4-nano").run(
+                instructions="지침", input_items=[], execute=lambda name, arguments: {})
+        post.reset_mock()
+        post.side_effect = [{"id": "r3", "output": []}, {"id": "r4", "output": [_answer("안녕하세요.")]}]
+        empty = self.loop(model="gpt-5.4-mini", fallback_model="gpt-5.4-nano").run(
+            instructions="지침", input_items=[], execute=lambda name, arguments: {})
+        self.assertTrue(empty.fallback_used)  # an empty answer also counts as a failure
+        post.reset_mock()
+        post.side_effect = [RuntimeError("HTTP 500")]
+        with self.assertRaises(RuntimeError):  # no fallback configured: behave as before
+            self.loop().run(instructions="지침", input_items=[], execute=lambda name, arguments: {})
+
+    @patch("shopping_agent.v1.tool_agent._post_json")
     def test_tool_call_round_trip_uses_previous_response_id(self, post) -> None:
         post.side_effect = [
             {"id": "resp_1", "output": [_call("view_cart", {})]},
@@ -125,6 +169,7 @@ class ToolAgentServiceTests(unittest.TestCase):
         result = self.app.agent.message(self.user_id, session_id, "안 까끌하고 얇은 여름 원피스 찾아줘")
         self.assertEqual(result["action"], "search_products")
         self.assertEqual(result["routing"]["source"], "openai_tool_loop")
+        self.assertFalse(result["provenance"]["llm_model_fallback_used"])
         self.assertTrue(result["products"])
         self.assertEqual(result["intent"]["category"], "dress")
         self.assertIn("thin", result["intent"]["desired_more"])

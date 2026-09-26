@@ -96,6 +96,11 @@ health 확인 → 남은 차이 0 확인 순서로 진행하고, 원격 테스�
 검색 순위·촉감 점수·장바구니는 모두 기존 서비스가 계산한다. 원격 호출이 실패하면 로컬
 라우터 파이프라인으로 자동 전환한다. 장바구니는 대화에서 이미 보여준 상품만 담을 수 있다.
 
+모델은 `gpt-5.4-mini`로 확정했다(2026-09-26, mini·nano 비교와 사람 검수 결과). 기본 모델 요청이 실패하면
+(HTTP 오류, timeout, 빈 응답) 그 요청만 `OPENAI_FALLBACK_MODEL`(기본 `gpt-5.4-nano`)로 다시 보내고, 그 턴의
+나머지도 대체 모델로 처리한다. 둘 다 실패하면 로컬 라우터가 답한다. 응답의 `provenance.llm_model`과
+`llm_model_fallback_used`에 실제로 답한 모델이 기록된다.
+
 실제 API로 시연 시나리오를 평가한다. 시나리오는 `evaluation/demo_scenarios.json`에 있고
 (작성법: `evaluation/SCENARIOS.md`), 도구 선택·구조화 조건·지칭·장바구니 부작용·답변 규칙을
 자동 판정한 뒤 사람이 판정할 검수표(`review.md`, `review.csv`)를 만든다.

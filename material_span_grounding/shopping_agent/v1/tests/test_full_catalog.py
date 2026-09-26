@@ -77,6 +77,17 @@ class FullCatalogToolsTests(unittest.TestCase):
         # Categories that are the excluded type keep them.
         self.assertEqual(kept("underwear", ["Cotton Hipster Panties"]), [True])
 
+    def test_products_without_a_photo_are_skipped(self) -> None:
+        index = self.tools.index
+        placeholder = int((~index.has_image).sum())
+        self.assertGreater(placeholder, 10_000)  # Amazon's shared "no image" GIF
+        listing = self.tools.list_products(page=1, page_size=100)
+        self.assertEqual(listing["total"], len(index.asins) - placeholder)
+        self.assertFalse(any(item["remote_image_url"].endswith(".gif") for item in listing["items"]))
+        for category in (None, "pants", "dress"):
+            rows, _ = index.candidate_rows(category)
+            self.assertTrue(index.has_image[rows].all())
+
     def test_search_results_are_deduplicated_by_product_family(self) -> None:
         payload = self.tools.tactile.search("검정색 신축성 있는 바지", limit=25)
         titles = [item["title"] for item in payload["items"]]

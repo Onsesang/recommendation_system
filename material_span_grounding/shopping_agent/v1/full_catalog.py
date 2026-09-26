@@ -154,6 +154,15 @@ class FullCatalogIndex:
         self.titles = metadata["title"].fillna("제목 정보 없음").astype(str).to_numpy()[ids]
         self.categories = metadata["category"].fillna("other").astype(str).to_numpy()[ids]
         self.image_urls = metadata["image_url"].fillna("").astype(str).to_numpy()[ids]
+        # Amazon serves one transparent GIF for listings without a photo; such products show
+        # an empty card and cannot be judged by a user, so search and the product list skip them.
+        placeholder = str(self.config["retrieval"].get("placeholder_image_pattern") or "")
+        self.has_image = (
+            ~pd.Series(self.image_urls, copy=False).str.contains(placeholder, case=False, regex=True, na=True).to_numpy()
+            if placeholder
+            else np.ones(len(self.image_urls), dtype=bool)
+        )
+        self.rows_with_image = np.flatnonzero(self.has_image).astype(np.int32)
         self.train_counts = metadata["train_count"].fillna(0).to_numpy(dtype=np.int32)[ids]
         self.matrix = profiles[list(TACTILE_CLASSES)].to_numpy(dtype=np.float32, copy=True)
         if not np.isfinite(self.matrix).all() or (self.matrix < 0).any() or (self.matrix > 1).any():
@@ -222,16 +231,16 @@ class FullCatalogIndex:
     def candidate_rows(self, category: str | None) -> tuple[np.ndarray, bool]:
         """Rows for a parsed category, with a flag for a relaxed garment filter."""
         if category is None:
-            return np.arange(len(self.asins), dtype=np.int32), False
+            return self.rows_with_image, False
         cached = self._category_cache.get(category)
         if cached is not None:
             return cached
         spec = CATEGORY_SPECS.get(category)
         if spec is None:
-            result = (np.arange(len(self.asins), dtype=np.int32), True)
+            result = (self.rows_with_image, True)
             self._category_cache[category] = result
             return result
-        broad_rows = np.flatnonzero(np.isin(self.categories, spec.broad_categories)).astype(np.int32)
+        broad_rows = np.flatnonzero(np.isin(self.categories, spec.broad_categories) & self.has_image).astype(np.int32)
         rows = broad_rows
         relaxed = False
         if spec.title_pattern and broad_rows.size:
@@ -780,7 +789,8 @@ class FullCatalogTools:
     def list_products(self, *, page: int, page_size: int) -> dict[str, Any]:
         page = max(1, int(page))
         page_size = max(1, min(int(page_size), 100))
-        order = np.lexsort((self.index.asins, -self.index.popularity))
+        rows = self.index.rows_with_image
+        order = rows[np.lexsort((self.index.asins[rows], -self.index.popularity[rows]))]
         total = len(order)
         start = (page - 1) * page_size
         window = order[start : start + page_size]

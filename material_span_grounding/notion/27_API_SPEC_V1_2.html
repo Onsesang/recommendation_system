@@ -39,6 +39,7 @@ li { margin: 2px 0; }
 <b>v1.2 변경 사항</b> (v1.1 대비)
 <ul>
 <li>대화 응답의 <code>action</code>: 표에 없는 값이 오면 <code>respond</code>처럼 처리하도록 규칙 추가 (앞으로 action이 늘어도 화면이 깨지지 않게)</li>
+<li>사진이 없는 상품(약 1.5%)은 상품 목록과 추천에서 제외. 목록의 <code>total</code>이 catalog 크기보다 작음</li>
 </ul>
 <b>v1.1 변경 사항</b> (v1 초안 대비)
 <ul>
@@ -141,7 +142,7 @@ li { margin: 2px 0; }
 <p>응답은 200 <code>{ "user": { "user_id", "email", "display_name", "created_at" } }</code>입니다. 앱을 다시 열 때 저장된 토큰이 아직 유효한지 확인하는 용도로 씁니다. 401이면 로그인 화면으로 보냅니다.</p>
 
 <h2>상품 API</h2>
-<p>catalog는 825,840개 상품이고, 목록은 인기순으로 페이지를 나눠 줍니다. 촉감 값은 대부분 <b>상품 이미지에서 예측한 확률</b>이며 구매자 리뷰가 아닙니다.</p>
+<p>catalog는 825,840개 상품이고, 목록은 인기순으로 페이지를 나눠 줍니다. <b>사진이 없는 상품은 목록과 대화 추천에서 제외</b>되므로 목록의 <code>total</code>은 catalog 크기보다 조금 작습니다(약 81만 개). 촉감 값은 대부분 <b>상품 이미지에서 예측한 확률</b>이며 구매자 리뷰가 아닙니다.</p>
 
 <h3>GET /agent/v1/products?page=1&amp;page_size=30</h3>
 <p><code>page</code>는 1부터, <code>page_size</code>는 1~100(기본 30)입니다.</p>
@@ -156,7 +157,7 @@ li { margin: 2px 0; }
       "train_interaction_count": 159
     }
   ],
-  "total": 825840, "page": 1, "page_size": 30, "total_pages": 27528,
+  "total": 813768, "page": 1, "page_size": 30, "total_pages": 27126,
   "has_previous": false, "has_next": true
 }</pre>
 

@@ -68,7 +68,8 @@
         ]
       }
     ],
-    "type_exclusion_ignore_phrase": "\\b(?:with|w/)\\s+(?:[\\w'-]+\\s+){0,2}[\\w'-]+"
+    "type_exclusion_ignore_phrase": "\\b(?:with|w/)\\s+(?:[\\w'-]+\\s+){0,2}[\\w'-]+",
+    "placeholder_image_pattern": "\\.gif$|^\\s*$"
   },
   "relevance": {
     "tactile_match_weight": 0.5,

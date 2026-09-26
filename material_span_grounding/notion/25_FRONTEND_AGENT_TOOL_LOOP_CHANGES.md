@@ -15,6 +15,7 @@ OpenAI 도구 호출 agent로 동작한다. 모델이 한 턴 안에서 아래 �
 | `get_product_detail` | "1번 촉감 자세히 알려줘" | `get_product_detail` |
 | `compare_products` | "1번이랑 2번 중에 뭐가 더 부드러워?" | `compare_products` |
 | `add_to_cart` | "2번 장바구니에 담아줘" | `add_to_cart` |
+| `remove_from_cart` | "방금 담은 거 빼줘", "그거 하나만 빼줘" (2026-09-26 추가) | `remove_from_cart` |
 | `view_cart` | "장바구니에 뭐 있어?" | `view_cart` |
 | (도구 없음) | 인사, 쇼핑과 무관한 요청 | `respond` |
 
@@ -29,7 +30,7 @@ interface AgentMessageResponse {
   // ... 기존 필드 전부 유지 (notion/24 7절)
   action:
     | "search_products" | "get_product_detail" | "compare_products"
-    | "add_to_cart" | "view_cart" | "respond"
+    | "add_to_cart" | "remove_from_cart" | "view_cart" | "respond"
     | "respond_greeting" | "respond_out_of_scope";   // 뒤 두 값은 fallback 때만
   tool_calls?: Array<{ name: string; arguments: Record<string, unknown>; ok: boolean }>;
   cart_updated?: boolean;            // 이번 턴에 장바구니가 바뀌었으면 true
@@ -52,7 +53,8 @@ interface AgentMessageResponse {
 - 그 외 action은 `products = []`다. **기존 grid를 유지**하고 채팅 답변만 추가한다.
   답변의 "1번, 2번"은 직전 검색 grid의 순서와 같다.
 - `cart_updated === true`면 `GET /agent/v1/cart`로 장바구니 배지를 갱신한다.
-  서버가 이미 `cart_add` event를 기록했으니 프론트에서 다시 보내지 않는다.
+  서버가 이미 `cart_add`·`cart_remove` event를 기록했으니 프론트에서 다시 보내지 않는다.
+  `remove_from_cart`는 수량을 줄이기만 할 수도 있으니 배지는 항상 `GET /agent/v1/cart` 결과로 그린다.
 - `unsupported_concepts`가 있으면 "이 조건은 반영하지 못했어요" 안내를 붙여도 된다(답변에도 이미 포함된다).
 - `message`는 화면낭독기용 평문이다. 마크다운으로 해석하지 않는다.
 

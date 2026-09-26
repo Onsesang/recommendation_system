@@ -91,7 +91,8 @@ health 확인 → 남은 차이 0 확인 순서로 진행하고, 원격 테스�
 
 `SHOPPING_AGENT_LLM_PROVIDER=openai`이고 `configs/v1.json`의 `tool_agent.enabled`가 true이면
 메시지 턴을 `v1/tool_agent.py`의 Responses API 도구 호출 루프가 처리한다. 도구는
-`search_products`, `get_product_detail`, `compare_products`, `add_to_cart`, `view_cart`이고,
+`search_products`, `get_product_detail`, `compare_products`, `add_to_cart`,
+`remove_from_cart`, `view_cart`이고,
 검색 순위·촉감 점수·장바구니는 모두 기존 서비스가 계산한다. 원격 호출이 실패하면 로컬
 라우터 파이프라인으로 자동 전환한다. 장바구니는 대화에서 이미 보여준 상품만 담을 수 있다.
 

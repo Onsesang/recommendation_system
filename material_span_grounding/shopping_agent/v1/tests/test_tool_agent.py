@@ -164,6 +164,45 @@ class ToolAgentServiceTests(unittest.TestCase):
         self.assertEqual(len(self.app.database.list_cart(self.user_id)), before)
 
     @patch("shopping_agent.v1.tool_agent._post_json")
+    def test_remove_from_cart_decreases_then_removes(self, post) -> None:
+        session_id = self.session()
+        product_id = str(self.app.tools.tactile.index.asins[0])
+        self.app.database.add_cart_item(self.user_id, product_id, 3)
+        post.side_effect = [
+            {"id": "resp_1", "output": [_call("remove_from_cart", {"product_id": product_id, "quantity": 1})]},
+            {"id": "resp_2", "output": [_answer("하나 뺐어요. 2개 남았습니다.")]},
+        ]
+        result = self.app.agent.message(self.user_id, session_id, "그거 하나만 빼줘")
+        self.assertTrue(result["cart_updated"])
+        self.assertEqual(result["action"], "remove_from_cart")
+        tool_output = json.loads(post.call_args_list[1].args[1]["input"][0]["output"])
+        self.assertEqual((tool_output["status"], tool_output["remaining_quantity"]), ("decreased", 2))
+        quantities = {row["product_id"]: row["quantity"] for row in self.app.database.list_cart(self.user_id)}
+        self.assertEqual(quantities[product_id], 2)
+
+        post.side_effect = [
+            {"id": "resp_3", "output": [_call("remove_from_cart", {"product_id": product_id, "quantity": None})]},
+            {"id": "resp_4", "output": [_answer("장바구니에서 뺐어요.")]},
+        ]
+        result = self.app.agent.message(self.user_id, session_id, "그거 전부 빼줘")
+        self.assertTrue(result["cart_updated"])
+        self.assertNotIn(product_id, [row["product_id"] for row in self.app.database.list_cart(self.user_id)])
+        events = [row["event_type"] for row in self.app.database.list_events(self.user_id)]
+        self.assertEqual(events.count("cart_remove"), 2)
+
+    @patch("shopping_agent.v1.tool_agent._post_json")
+    def test_remove_from_cart_rejects_items_not_in_cart(self, post) -> None:
+        session_id = self.session()
+        missing = str(self.app.tools.tactile.index.asins[-1])
+        post.side_effect = [
+            {"id": "resp_1", "output": [_call("remove_from_cart", {"product_id": missing, "quantity": None})]},
+            {"id": "resp_2", "output": [_answer("장바구니에 없는 상품이에요.")]},
+        ]
+        result = self.app.agent.message(self.user_id, session_id, "그거 빼줘")
+        self.assertFalse(result["cart_updated"])
+        self.assertFalse(result["tool_calls"][0]["ok"])
+
+    @patch("shopping_agent.v1.tool_agent._post_json")
     def test_greeting_answers_without_tools(self, post) -> None:
         post.side_effect = [{"id": "resp_1", "output": [_answer("안녕하세요. 어떤 옷을 찾으세요?")]}]
         session_id = self.session()

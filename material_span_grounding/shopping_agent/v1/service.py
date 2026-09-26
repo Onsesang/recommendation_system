@@ -565,6 +565,7 @@ class _ToolTurn:
             "get_product_detail": self.get_product_detail,
             "compare_products": self.compare_products,
             "add_to_cart": self.add_to_cart,
+            "remove_from_cart": self.remove_from_cart,
             "view_cart": self.view_cart,
         }[name]
         return handler(**arguments)
@@ -710,6 +711,43 @@ class _ToolTurn:
         self._reference(product_id)
         title = str(service.tools.public_product(product_id).get("title", ""))[:120]
         return {"status": "added", "product_id": product_id, "title": title, "quantity": int(quantity)}
+
+    def remove_from_cart(self, *, product_id: str, quantity: int | None) -> dict[str, Any]:
+        service = self.service
+        item = next(
+            (row for row in service.database.list_cart(self.user_id) if row["product_id"] == product_id), None
+        )
+        if item is None:
+            raise KeyError(f"Not in cart: {product_id}")
+        current = int(item["quantity"])
+        if quantity is not None and not 1 <= int(quantity) <= 20:
+            raise ValueError("quantity must be between 1 and 20 or null")
+        remaining = 0 if quantity is None else max(0, current - int(quantity))
+        if remaining:
+            service.database.add_cart_item(self.user_id, product_id, remaining)
+        else:
+            service.database.remove_cart_item(self.user_id, product_id)
+        service.database.record_event(
+            self.user_id,
+            event_id=f"evt_{uuid.uuid4().hex}",
+            event_type="cart_remove",
+            product_id=product_id,
+            session_id=self.session_id,
+            context={"removed_quantity": current - remaining, "source": "openai_tool_loop"},
+        )
+        self.cart_updated = True
+        self._reference(product_id)
+        try:
+            title = str(service.tools.public_product(product_id).get("title", ""))[:120]
+        except KeyError:
+            title = ""
+        return {
+            "status": "decreased" if remaining else "removed",
+            "product_id": product_id,
+            "title": title,
+            "removed_quantity": current - remaining,
+            "remaining_quantity": remaining,
+        }
 
     def view_cart(self) -> dict[str, Any]:
         service = self.service

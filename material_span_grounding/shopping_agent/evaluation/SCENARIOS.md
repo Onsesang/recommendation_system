@@ -43,8 +43,9 @@ python -m shopping_agent.evaluation.tool_agent_scenarios --check
 | `no_tools` | `true` | 도구를 부르지 않고 상품도 반환하지 않아야 한다 (인사, 범위 밖) |
 | `tools` | `["view_cart"]` | 나열한 도구가 모두 호출되어야 한다 |
 | `search` | 아래 표 | `search_products`의 마지막 호출 인자를 검사한다 |
-| `refers` | `{"tool": "add_to_cart", "positions": [2]}` | 직전 검색 목록의 해당 번호 상품을 정확히 가리켜야 한다. 도구는 `get_product_detail`, `compare_products`, `add_to_cart`. 담기에는 `"quantity": 2`로 수량도 검사할 수 있다 |
+| `refers` | `{"tool": "add_to_cart", "positions": [2]}` | 직전 검색 목록의 해당 번호 상품을 정확히 가리켜야 한다. 도구는 `get_product_detail`, `compare_products`, `add_to_cart`. `remove_from_cart`도 쓸 수 있다(보여준 목록 번호 기준). 담기·빼기는 `"quantity": 2`로 수량도 검사한다(빼기에서 `null`은 전부) |
 | `cart_updated` | `true` / `false` | 이번 턴에 장바구니가 바뀌었는지 |
+| `forbid` | `["\\d[\\d,]*\\s*원"]` | 답변에 이 정규식과 맞는 표현이 있으면 실패. 도구에 없는 가격·사이즈·재고를 지어내는지 확인할 때 쓴다 |
 
 `search` 안의 키:
 

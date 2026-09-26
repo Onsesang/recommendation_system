@@ -83,6 +83,20 @@ class CheckTests(unittest.TestCase):
             "search": {"either": [{"want": ["fluffy"]}], "keyword": 3},
             "refers": {"tool": "compare_products", "positions": [1, 2], "quantity": 2}}}]}]})
         self.assertEqual(len(errors), 3)
+        removal = _result(calls=[("remove_from_cart", {"product_id": "P3", "quantity": None})], cart_updated=True)
+        spec = {"refers": {"tool": "remove_from_cart", "positions": [3], "quantity": None}, "cart_updated": True}
+        self.assertEqual(check_expectations(spec, removal, ["P1", "P2", "P3"]), [])
+        self.assertEqual(validate_scenarios({"scenarios": [{"id": "R", "turns": [{"message": "m", "expect": spec}]}]}), [])
+        # Removing an item added in an earlier conversation is not a reference to an unseen product.
+        self.assertEqual(check_answer(removal, []), [])
+
+    def test_forbid_patterns(self) -> None:
+        spec = {"forbid": [r"\d[\d,]*\s*원", r"50개[^.]*담았"]}
+        self.assertEqual(check_expectations(spec, _result(message="가격 정보는 없어요."), []), [])
+        failures = check_expectations(spec, _result(message="1번은 29,900원이에요. 50개 모두 담았어요."), [])
+        self.assertEqual(len(failures), 2)
+        errors = validate_scenarios({"scenarios": [{"id": "F", "turns": [{"message": "m", "expect": {"forbid": ["("]}}]}]})
+        self.assertIn("정규식 오류", errors[0])
 
     def test_refers_uses_previously_shown_numbers(self) -> None:
         shown = ["P1", "P2", "P3"]

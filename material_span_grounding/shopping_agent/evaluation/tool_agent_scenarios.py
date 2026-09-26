@@ -43,9 +43,12 @@ RESULTS_ROOT = AGENT_ROOT / "evaluation/results"
 MAX_SENTENCES = 5
 MAX_CHARS = 300
 
-EXPECT_KEYS = {"no_tools", "tools", "search", "refers", "cart_updated"}
+EXPECT_KEYS = {"no_tools", "tools", "search", "refers", "cart_updated", "forbid"}
 SEARCH_KEYS = {"category", "want", "avoid", "not_want", "keyword", "unsupported", "either"}
 REFERRING_TOOLS = {"get_product_detail", "compare_products", "add_to_cart"}
+# Cart items can come from earlier conversations, so removal is exempt from the "never shown" rule.
+REFERS_TOOLS = REFERRING_TOOLS | {"remove_from_cart"}
+QUANTITY_TOOLS = {"add_to_cart", "remove_from_cart"}
 # Scripts other than Hangul and Latin: a stray token like "օրինակ" is unreadable through a screen reader.
 FOREIGN_SCRIPT = re.compile(
     r"[\u0370-\u03FF\u0400-\u04FF\u0530-\u058F\u0590-\u05FF\u0600-\u06FF\u0900-\u097F"
@@ -131,14 +134,26 @@ def _validate_turn(turn: Any, where: str) -> list[str]:
                 errors.append(f"{where}: keyword는 문자열 또는 후보 문자열 목록")
     refers = expect.get("refers")
     if refers is not None:
-        if not isinstance(refers, dict) or refers.get("tool") not in REFERRING_TOOLS:
-            errors.append(f"{where}: refers.tool은 {sorted(REFERRING_TOOLS)} 중 하나")
+        if not isinstance(refers, dict) or refers.get("tool") not in REFERS_TOOLS:
+            errors.append(f"{where}: refers.tool은 {sorted(REFERS_TOOLS)} 중 하나")
         elif not refers.get("positions") or not all(
             isinstance(value, int) and value >= 1 for value in refers["positions"]
         ):
             errors.append(f"{where}: refers.positions는 1 이상 정수 목록")
-        elif "quantity" in refers and (refers["tool"] != "add_to_cart" or not isinstance(refers["quantity"], int)):
-            errors.append(f"{where}: refers.quantity는 add_to_cart에서만 쓰는 정수")
+        elif "quantity" in refers and (
+            refers["tool"] not in QUANTITY_TOOLS
+            or not (isinstance(refers["quantity"], int) or (refers["quantity"] is None and refers["tool"] == "remove_from_cart"))
+        ):
+            errors.append(f"{where}: refers.quantity는 담기·빼기에서 쓰는 정수 (빼기는 전부=null)")
+    forbid = expect.get("forbid", [])
+    if not isinstance(forbid, list):
+        errors.append(f"{where}: forbid는 정규식 문자열 목록")
+    else:
+        for pattern in forbid:
+            try:
+                re.compile(pattern)
+            except (re.error, TypeError) as exc:
+                errors.append(f"{where}: forbid 정규식 오류 {pattern!r}: {exc}")
     if "no_tools" in expect and ({"tools", "search", "refers"} & set(expect)):
         errors.append(f"{where}: no_tools와 도구 기대를 함께 쓸 수 없다")
     return errors
@@ -193,6 +208,10 @@ def check_expectations(expect: dict[str, Any], result: dict[str, Any], shown: li
         failures.extend(_check_refers(expect["refers"], result, shown))
     if "cart_updated" in expect and bool(result.get("cart_updated")) != expect["cart_updated"]:
         failures.append(f"cart_updated={result.get('cart_updated')} (기대 {expect['cart_updated']})")
+    for pattern in expect.get("forbid", []):
+        match = re.search(pattern, result.get("message", ""))
+        if match:
+            failures.append(f"금지 표현 “{match.group(0)}” ({pattern})")
     return failures
 
 

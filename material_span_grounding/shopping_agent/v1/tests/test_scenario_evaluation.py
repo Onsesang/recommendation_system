@@ -69,6 +69,21 @@ class CheckTests(unittest.TestCase):
         failures = check_expectations({"search": {"want": ["thick"], "not_want": ["thin"], "unsupported": True}}, result, [])
         self.assertEqual(len(failures), 3)
 
+    def test_either_keyword_candidates_and_quantity(self) -> None:
+        result = _result(calls=[("search_products", {**SEARCH, "want": [], "avoid": ["thick"], "keywords": ["dark blue", "pants"]})],
+                         products=["P1"])
+        spec = {"search": {"either": [{"avoid": ["thick"]}, {"want": ["thin"]}], "keyword": ["navy", "dark blue"]}}
+        self.assertEqual(check_expectations(spec, result, []), [])
+        spec = {"search": {"either": [{"want": ["thin"]}], "keyword": "navy"}}
+        self.assertEqual(len(check_expectations(spec, result, [])), 2)
+        two = _result(calls=[("add_to_cart", {"product_id": "P1", "quantity": 1})], cart_updated=True)
+        failures = check_expectations({"refers": {"tool": "add_to_cart", "positions": [1], "quantity": 2}}, two, ["P1"])
+        self.assertIn("수량", failures[0])
+        errors = validate_scenarios({"scenarios": [{"id": "X", "turns": [{"message": "m", "expect": {
+            "search": {"either": [{"want": ["fluffy"]}], "keyword": 3},
+            "refers": {"tool": "compare_products", "positions": [1, 2], "quantity": 2}}}]}]})
+        self.assertEqual(len(errors), 3)
+
     def test_refers_uses_previously_shown_numbers(self) -> None:
         shown = ["P1", "P2", "P3"]
         good = _result(calls=[("add_to_cart", {"product_id": "P2", "quantity": 1})], cart_updated=True)
@@ -85,6 +100,15 @@ class CheckTests(unittest.TestCase):
         self.assertIn("OpenAI 실패로 로컬 라우터 fallback", check_answer(_result(mode="router_pipeline"), []))
         unshown = _result(calls=[("compare_products", {"product_ids": ["P1", "P9"]})])
         self.assertTrue(any("보여주지 않은 상품" in value for value in check_answer(unshown, ["P1", "P2"])))
+
+    def test_real_answer_defects_from_draft_run(self) -> None:
+        glitch = "대신 원하시면 설명해 드릴게요. օրինակ으로는 찾고 싶은 옷 종류를 말해 주세요."
+        self.assertTrue(any("다른 언어" in value for value in check_answer(_result(message=glitch), [])))
+        self.assertFalse(any("다른 언어" in value for value in check_answer(_result(message="1번 Allegra K 셔츠예요."), [])))
+        skipped = "1번은 리넨 셔츠예요. 4번은 폴로 셔츠고, 8번은 헨리 셔츠예요."
+        self.assertEqual(answer_warnings(skipped, searched=True), ["번호를 순서대로 소개하지 않음: [1, 4, 8]"])
+        self.assertEqual(answer_warnings(skipped), [])
+        self.assertEqual(answer_warnings("1번, 원피스. 2번, 셔츠. 3번, 치마.", searched=True), [])
 
     def test_length_warnings(self) -> None:
         self.assertEqual(sentence_count("첫째예요. 둘째죠? 셋째!"), 3)

@@ -43,7 +43,7 @@ python -m shopping_agent.evaluation.tool_agent_scenarios --check
 | `no_tools` | `true` | 도구를 부르지 않고 상품도 반환하지 않아야 한다 (인사, 범위 밖) |
 | `tools` | `["view_cart"]` | 나열한 도구가 모두 호출되어야 한다 |
 | `search` | 아래 표 | `search_products`의 마지막 호출 인자를 검사한다 |
-| `refers` | `{"tool": "add_to_cart", "positions": [2]}` | 직전 검색 목록의 해당 번호 상품을 정확히 가리켜야 한다. 도구는 `get_product_detail`, `compare_products`, `add_to_cart` |
+| `refers` | `{"tool": "add_to_cart", "positions": [2]}` | 직전 검색 목록의 해당 번호 상품을 정확히 가리켜야 한다. 도구는 `get_product_detail`, `compare_products`, `add_to_cart`. 담기에는 `"quantity": 2`로 수량도 검사할 수 있다 |
 | `cart_updated` | `true` / `false` | 이번 턴에 장바구니가 바뀌었는지 |
 
 `search` 안의 키:
@@ -54,7 +54,8 @@ python -m shopping_agent.evaluation.tool_agent_scenarios --check
 | `want` | `["thin"]` | 모두 포함해야 한다 (더 있어도 통과) |
 | `avoid` | `["rough"]` | 모두 포함해야 한다 |
 | `not_want` | `["thin"]` | `want`에 있으면 실패 (조건 수정 턴에서 이전 조건이 남았는지) |
-| `keyword` | `"white"` | 영어 keywords에 있어야 한다 |
+| `either` | `[{"avoid": ["thick"]}, {"want": ["thin"]}]` | 나열한 해석 중 하나를 만족하면 통과 ("덜 두꺼운"처럼 여러 해석이 맞는 표현) |
+| `keyword` | `"white"` 또는 `["navy", "dark blue"]` | 영어 keywords에 들어 있어야 한다. 목록이면 그중 하나 (부분 일치, 대소문자 무시) |
 | `unsupported` | `true` | 비침·통기성·보풀처럼 표현 못 하는 조건을 `unsupported_concepts`에 넣어야 한다 |
 
 촉감 값: `soft firm smooth rough non_elastic elastic thin thick flexible stiff warm cool spongy crisp`

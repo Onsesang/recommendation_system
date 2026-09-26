@@ -44,8 +44,13 @@ MAX_SENTENCES = 5
 MAX_CHARS = 300
 
 EXPECT_KEYS = {"no_tools", "tools", "search", "refers", "cart_updated"}
-SEARCH_KEYS = {"category", "want", "avoid", "not_want", "keyword", "unsupported"}
+SEARCH_KEYS = {"category", "want", "avoid", "not_want", "keyword", "unsupported", "either"}
 REFERRING_TOOLS = {"get_product_detail", "compare_products", "add_to_cart"}
+# Scripts other than Hangul and Latin: a stray token like "օրինակ" is unreadable through a screen reader.
+FOREIGN_SCRIPT = re.compile(
+    r"[\u0370-\u03FF\u0400-\u04FF\u0530-\u058F\u0590-\u05FF\u0600-\u06FF\u0900-\u097F"
+    r"\u0E00-\u0E7F\u3040-\u30FF\u4E00-\u9FFF]+"
+)
 JUDGEMENT_COLUMNS = ["판정_조건해석(O/X)", "판정_지칭(O/X)", "판정_근거정직성(O/X)", "판정_말투(1-5)", "메모"]
 
 
@@ -108,6 +113,22 @@ def _validate_turn(turn: Any, where: str) -> list[str]:
                 for value in search.get(key, []):
                     if value not in TACTILE_CLASSES:
                         errors.append(f"{where}: {key}에 없는 촉감 {value}")
+            either = search.get("either", [])
+            if not isinstance(either, list) or any(
+                not isinstance(option, dict) or not option or set(option) - {"want", "avoid"} for option in either
+            ):
+                errors.append(f"{where}: either는 {{want, avoid}} 객체 목록")
+            else:
+                for option in either:
+                    for key, values in option.items():
+                        for value in values:
+                            if value not in TACTILE_CLASSES:
+                                errors.append(f"{where}: either.{key}에 없는 촉감 {value}")
+            keyword = search.get("keyword")
+            if keyword is not None and not (
+                isinstance(keyword, str) or (isinstance(keyword, list) and keyword and all(isinstance(v, str) for v in keyword))
+            ):
+                errors.append(f"{where}: keyword는 문자열 또는 후보 문자열 목록")
     refers = expect.get("refers")
     if refers is not None:
         if not isinstance(refers, dict) or refers.get("tool") not in REFERRING_TOOLS:
@@ -116,6 +137,8 @@ def _validate_turn(turn: Any, where: str) -> list[str]:
             isinstance(value, int) and value >= 1 for value in refers["positions"]
         ):
             errors.append(f"{where}: refers.positions는 1 이상 정수 목록")
+        elif "quantity" in refers and (refers["tool"] != "add_to_cart" or not isinstance(refers["quantity"], int)):
+            errors.append(f"{where}: refers.quantity는 add_to_cart에서만 쓰는 정수")
     if "no_tools" in expect and ({"tools", "search", "refers"} & set(expect)):
         errors.append(f"{where}: no_tools와 도구 기대를 함께 쓸 수 없다")
     return errors
@@ -187,9 +210,17 @@ def _check_search(spec: dict[str, Any], result: dict[str, Any]) -> list[str]:
         problems.append(f"avoid={sorted(avoid)} (기대 포함 {spec['avoid']})")
     if set(spec.get("not_want", [])) & want:
         problems.append(f"want에 {sorted(set(spec['not_want']) & want)} 포함")
+    either = spec.get("either")
+    if either and not any(
+        set(option.get("want", [])) <= want and set(option.get("avoid", [])) <= avoid for option in either
+    ):
+        problems.append(f"want={sorted(want)} avoid={sorted(avoid)} (기대: {either} 중 하나)")
     keyword = spec.get("keyword")
-    if keyword and keyword.casefold() not in [value.casefold() for value in args.get("keywords", [])]:
-        problems.append(f"keywords={args.get('keywords')} (기대 포함 {keyword})")
+    if keyword:
+        candidates = [keyword] if isinstance(keyword, str) else keyword
+        got = " ".join(value.casefold() for value in args.get("keywords", []))
+        if not any(candidate.casefold() in got for candidate in candidates):
+            problems.append(f"keywords={args.get('keywords')} (기대 포함 {candidates} 중 하나)")
     if spec.get("unsupported") and not args.get("unsupported_concepts"):
         problems.append("unsupported_concepts 비어 있음")
     if not result.get("products"):
@@ -205,7 +236,12 @@ def _check_refers(spec: dict[str, Any], result: dict[str, Any], shown: list[str]
     for call in result.get("tool_calls", []):
         if call["name"] == spec["tool"]:
             got = sorted(_referenced_ids(call))
-            return [] if got == expected else [f"{spec['tool']} 대상 {got} ≠ 기대 {positions}번 {expected}"]
+            if got != expected:
+                return [f"{spec['tool']} 대상 {got} ≠ 기대 {positions}번 {expected}"]
+            quantity = call.get("arguments", {}).get("quantity")
+            if "quantity" in spec and quantity != spec["quantity"]:
+                return [f"수량 {quantity} ≠ 기대 {spec['quantity']}"]
+            return []
     return [f"{spec['tool']} 미호출 (호출: {_called(result)})"]
 
 
@@ -217,6 +253,9 @@ def check_answer(result: dict[str, Any], shown: list[str]) -> list[str]:
     message = result.get("message", "")
     if re.search(r"(\*\*|^#|^\s*[-*] |\|)", message, re.M):
         failures.append("마크다운 사용")
+    foreign = FOREIGN_SCRIPT.findall(message)
+    if foreign:
+        failures.append(f"다른 언어 문자 섞임: {foreign}")
     grounded = any(row.get("tactile_target_source") == "review_grounded_overlay" for row in result.get("products", []))
     if not grounded:
         for match in re.finditer(r"리뷰", message):
@@ -239,8 +278,22 @@ def sentence_count(text: str) -> int:
     return len(parts)
 
 
-def answer_warnings(message: str) -> list[str]:
+def mentioned_numbers(message: str) -> list[int]:
+    """Product numbers in the order the answer first mentions them."""
+    seen: list[int] = []
+    for value in re.findall(r"(\d+)번", message):
+        if int(value) not in seen:
+            seen.append(int(value))
+    return seen
+
+
+def answer_warnings(message: str, searched: bool = False) -> list[str]:
     warnings = []
+    if searched:
+        # A search answer should read the list from 1번 in order; skipped numbers confuse a listener.
+        numbers = mentioned_numbers(message)
+        if numbers and numbers != list(range(1, len(numbers) + 1)):
+            warnings.append(f"번호를 순서대로 소개하지 않음: {numbers}")
     sentences = sentence_count(message)
     if sentences > MAX_SENTENCES:
         warnings.append(f"{sentences}문장 (권장 {MAX_SENTENCES} 이하)")
@@ -303,7 +356,7 @@ def run_config(app: Any, scenarios: list[dict[str, Any]], *, model: str, effort:
                     "sentences": sentence_count(message),
                     "passed": not failures,
                     "failures": failures,
-                    "warnings": answer_warnings(message),
+                    "warnings": answer_warnings(message, searched="search_products" in _called(result)),
                     "top_products": [
                         {
                             "number": number,

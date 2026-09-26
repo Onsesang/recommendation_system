@@ -8,6 +8,8 @@ from http.client import HTTPConnection
 from http.server import ThreadingHTTPServer
 from pathlib import Path
 
+import numpy as np
+
 from recommendation_api.tactile_models import TactileIntent
 
 from shopping_agent.v1.config import AgentSettings
@@ -40,6 +42,40 @@ class FullCatalogToolsTests(unittest.TestCase):
         self.assertLess(payload["total_candidates"], self.tools.health()["catalog_products"])
         for item in payload["items"]:
             self.assertEqual(item["category"], "sweater")
+
+    def test_type_exclusion_drops_other_product_types_but_keeps_modifiers(self) -> None:
+        index = self.tools.index
+
+        def kept(category: str, titles: list[str]) -> list[bool]:
+            rows = [index.row_of(asin) for asin in index.asins[:len(titles)]]
+            original = index.lowered_titles.copy()
+            try:
+                for row, title in zip(rows, titles):
+                    index.lowered_titles.iloc[row] = title.lower()
+                index.config["retrieval"]["type_exclusion_min_candidates"] = 0
+                survivors = set(index._drop_other_types(np.array(rows, dtype=np.int32), category).tolist())
+            finally:
+                index.lowered_titles = original
+                index.config["retrieval"]["type_exclusion_min_candidates"] = 200
+            return [row in survivors for row in rows]
+
+        # Reviewed as wrong type in the 2026-09-26 recommendation review.
+        self.assertEqual(kept("dress", ["Crew Socks Casual Dress Socks", "Lace Mask Masquerade Fancy Dress Masks",
+                                        "Floral Wrap Midi Dress with Belt", "Cap Sleeve Summer Dress"]),
+                         [False, False, True, True])
+        self.assertEqual(kept("pants", ["Cotton Hipster Panties Comfortable Briefs", "Leather Belt for Jeans",
+                                        "Jogger Pants with Belt Loops", "Wide Leg Pants with Belt"]),
+                         [False, False, True, True])
+        self.assertEqual(kept("coat", ["Heated Vest Jacket Sleeveless Coat", "Faux Fur Cowl Scarf Neck Warmer",
+                                       "Wool Trench Coat with Belt"]), [False, False, True])
+        self.assertEqual(kept("skirt", ["Chiffon Robe Beach Skirt Swimsuit Cover Up", "Pleated Midi Skirt"]), [False, True])
+        self.assertEqual(kept("jeans", ["Gothic Yoga Leggings Tights Pants Jeans", "Denim Jeans Legging Curvy Fit",
+                                        "Bootcut Stretch Jeans", "Boot Leg Jeans"]), [False, True, True, True])
+        self.assertEqual(kept("sweater", ["Knit Hooded Scarf Pullover Hat", "Elbow Patch Cardigan Sweater",
+                                          "Chain Stitch Crewneck Sweater"]), [False, True, True])
+        self.assertEqual(kept("tshirt", ["Padded T-Shirt Bra Underwire", "Tank with Built-in Bra"]), [False, True])
+        # Categories that are the excluded type keep them.
+        self.assertEqual(kept("underwear", ["Cotton Hipster Panties"]), [True])
 
     def test_search_results_are_deduplicated_by_product_family(self) -> None:
         payload = self.tools.tactile.search("검정색 신축성 있는 바지", limit=25)

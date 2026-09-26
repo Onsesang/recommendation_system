@@ -237,25 +237,37 @@ class FullCatalogIndex:
                 rows = specific_rows
             else:
                 relaxed = True
-        rows = self._drop_accessories(rows, category)
+        rows = self._drop_other_types(rows, category)
         result = (rows, relaxed)
         self._category_cache[category] = result
         return result
 
-    def _drop_accessories(self, rows: np.ndarray, category: str) -> np.ndarray:
-        """Remove jewellery and bags from garment categories.
+    def _drop_other_types(self, rows: np.ndarray, category: str) -> np.ndarray:
+        """Remove listings whose title names a different product type than the request.
 
-        The source taxonomy files listings like "Necklace Sweater Chain" under
-        `sweater`, so a garment request would otherwise surface accessories.
+        The source taxonomy is noisy: socks and masquerade masks sit under `dress`
+        ("Dress Socks", "Fancy Dress Masks"), panties under `pants`, scarves under
+        `sweater`. Each rule in `retrieval.type_exclusion_rules` drops titles matching
+        its pattern for the categories it applies to. A "with ..." phrase is ignored
+        first, so "Trench Coat with Belt" stays a coat.
         """
         retrieval = self.config["retrieval"]
-        pattern = retrieval.get("accessory_exclusion_pattern")
-        if not pattern or category == "accessory" or not rows.size:
+        rules = [
+            rule for rule in retrieval.get("type_exclusion_rules", [])
+            if category not in rule.get("except_categories", [])
+            and ("categories" not in rule or category in rule["categories"])
+        ]
+        if not rules or not rows.size:
             return rows
         titles = pd.Series(self.lowered_titles.to_numpy()[rows], copy=False)
-        keep = ~titles.str.contains(pattern, case=False, regex=True, na=False).to_numpy()
-        kept = rows[keep]
-        minimum = int(retrieval.get("accessory_exclusion_min_candidates", 0))
+        ignore = retrieval.get("type_exclusion_ignore_phrase")
+        if ignore:
+            titles = titles.str.replace(ignore, " ", case=False, regex=True)
+        drop = np.zeros(len(rows), dtype=bool)
+        for rule in rules:
+            drop |= titles.str.contains(rule["pattern"], case=False, regex=True, na=False).to_numpy()
+        kept = rows[~drop]
+        minimum = int(retrieval.get("type_exclusion_min_candidates", 0))
         return kept if kept.size >= minimum else rows
 
     def title_match(self, rows: np.ndarray, keywords: list[str]) -> np.ndarray:

@@ -11,8 +11,64 @@
     "specific_category_min_candidates": 200,
     "title_token_min_length": 3,
     "max_candidate_scan": 825840,
-    "accessory_exclusion_pattern": "\\b(?:necklace|earring|bracelet|anklet|brooch|keychain|chain|pendant|charm|watch|sunglass|handbag|wallet|purse|backpack|sticker|patch|badge)\\b",
-    "accessory_exclusion_min_candidates": 200
+    "type_exclusion_min_candidates": 200,
+    "type_exclusion_rules": [
+      {
+        "name": "jewellery_and_bags",
+        "pattern": "\\b(?:necklace|earring|bracelet|anklet|brooch|keychain|chain(?![\\s-]*(?:stitch|print))|pendant|charm|watch|sunglass|handbag|wallet|purse|backpack|sticker|patches|iron[\\s-]*on|badge)\\b",
+        "except_categories": [
+          "accessory"
+        ]
+      },
+      {
+        "name": "non_garment",
+        "pattern": "\\b(?:socks?|stockings?|hosiery|hats?|beanies?|caps?(?![\\s-]*(?:short[\\s-]*)?sleeve)|berets?|headbands?|headscarf|headwraps?|bandanas?|balaclavas?|earmuffs?|scarf(?![\\s-]*(?:neck|collar|hem|print))|scarves|neck[\\s-]*warmers?|neck[\\s-]*gaiters?|gaiters?|masks?|gloves?|mittens?|shoes?|sneakers?|slippers?|sandals?|boots|leg[\\s-]*warmers?|arm[\\s-]*warmers?)\\b",
+        "except_categories": [
+          "accessory"
+        ]
+      },
+      {
+        "name": "underwear",
+        "pattern": "\\b(?:underwear|underpants|panties|panty|bras?|bralettes?|briefs?|boxers?|thongs?|g-strings?|lingerie|shapewear|girdles?)\\b",
+        "except_categories": [
+          "underwear",
+          "sleepwear",
+          "swimwear",
+          "accessory"
+        ]
+      },
+      {
+        "name": "belt_for_bottoms",
+        "pattern": "\\b(?:belts?(?![\\s-]*loops?)|suspenders?)\\b",
+        "categories": [
+          "pants",
+          "jeans"
+        ]
+      },
+      {
+        "name": "vest_for_coat",
+        "pattern": "\\b(?:vests?|gilets?)\\b",
+        "categories": [
+          "coat",
+          "jacket"
+        ]
+      },
+      {
+        "name": "dress_for_skirt",
+        "pattern": "\\b(?:sun)?dress(?:es)?\\b|\\brobes?\\b|\\bcover[\\s-]*ups?\\b|\\brompers?\\b|\\bjumpsuits?\\b",
+        "categories": [
+          "skirt"
+        ]
+      },
+      {
+        "name": "leggings_for_jeans",
+        "pattern": "^(?!.*\\bdenim\\b).*\\b(?:leggings?|jeggings?|tights)\\b",
+        "categories": [
+          "jeans"
+        ]
+      }
+    ],
+    "type_exclusion_ignore_phrase": "\\b(?:with|w/)\\s+(?:[\\w'-]+\\s+){0,2}[\\w'-]+"
   },
   "relevance": {
     "tactile_match_weight": 0.5,

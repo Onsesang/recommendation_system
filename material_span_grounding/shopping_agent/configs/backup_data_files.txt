@@ -1,0 +1,26 @@
+# Runtime data the backend reads, relative to material_span_grounding/.
+# Traced from a full and a curated agent run on 2026-09-24; directories end with /.
+artifacts/simple_m0_m1/m1_ridge.joblib
+audit_app/data/v2_100/annotations.json
+configs/tactile_ranking.json
+data/dense/reviews_product_dense.jsonl
+data/derived/dense_500_v2_1_targets/manifest.json
+data/derived/dense_500_v2_1_targets/product_material_targets.npz
+data/derived/dense_500_v2_1_targets/products.json
+data/derived/multimodal_catalog_v1/fashionclip_image_embeddings.npz
+data/derived/multimodal_catalog_v1/hybrid_tactile_targets.npz
+data/derived/multimodal_catalog_v1/multimodal_products.json
+data/derived/multimodal_catalog_v1/product_master.json
+data/derived/multimodal_catalog_v1/stage2_manifest.json
+data/derived/multimodal_catalog_v1/stage7_manifest.json
+data/derived/simple_m0_m1/product_vectors.npz
+data/derived/simple_m0_m1/products.json
+data/v2/semantic_verifications.jsonl
+data/vllm/dense_500/v2_1_ai_recall/semantic_verifications.jsonl
+data/vllm/dense_500/v2_1_ai_recall/verification_run.json
+experiments/16_strong_recommender_tactile/artifacts/product_tactile_profiles.parquet
+experiments/16_strong_recommender_tactile/data/item_metadata.parquet
+experiments/16_strong_recommender_tactile/data/smore/image_feat.npy
+data/derived/multimodal_catalog_v1/
+data/recommendation_eval/temporal_v1/results/
+data/recommendation_eval/tactile_v1/

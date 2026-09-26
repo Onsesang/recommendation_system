@@ -4,7 +4,7 @@ set -euo pipefail
 PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 PID_FILE="$PROJECT_ROOT/shopping_agent/server.pid"
 LOG_FILE="$PROJECT_ROOT/shopping_agent/server.log"
-PYTHON_BIN="/home/user/onsesang/miniconda3/envs/texture/bin/python"
+PYTHON_BIN="${SHOPPING_AGENT_PYTHON:-/home/user/onsesang/miniconda3/envs/texture/bin/python}"
 UNIT_NAME="material-shopping-agent-v1.service"
 
 # Prefer the user service manager so the demo survives a terminal/Codex session ending.

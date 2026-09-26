@@ -23,6 +23,7 @@ from typing import Any, Iterator, Mapping
 import numpy as np
 import pandas as pd
 
+from demo_agent.models import StructuredQuery
 from demo_agent.recommender import CATEGORY_SPECS, TACTILE_LABELS_KO
 from demo_agent.tactile_parser import parse_message
 from recommendation_api.tactile_models import TactileIntent
@@ -322,7 +323,8 @@ def intent_terms(intent: TactileIntent) -> tuple[list[tuple[str, str, str, float
     )
     for direction, concepts in groups:
         for concept in concepts:
-            mapped = CONCEPT_TO_LAST2.get(concept)
+            # A model-structured intent names Last2 classes directly.
+            mapped = (concept, "direct") if concept in TACTILE_CLASSES else CONCEPT_TO_LAST2.get(concept)
             if mapped is None:
                 if concept not in unsupported:
                     unsupported.append(concept)
@@ -348,8 +350,22 @@ class FullCatalogTactileProvider:
 
     # -- search -------------------------------------------------------------
 
-    def search(self, query_text: str, *, limit: int) -> dict[str, Any]:
-        parsed = parse_message(query_text)
+    def search(
+        self,
+        query_text: str,
+        *,
+        limit: int,
+        structured: StructuredQuery | None = None,
+        keywords: list[str] | None = None,
+    ) -> dict[str, Any]:
+        """Rank the catalog for a query.
+
+        `structured` replaces the deterministic parser when a model has already
+        resolved the request into Last2 constraints. `keywords` replaces the title
+        tokens taken from `query_text`, which lets a Korean request match the
+        English catalog titles.
+        """
+        parsed = structured or parse_message(query_text)
         rows, category_relaxed = self.index.candidate_rows(parsed.category)
         if not rows.size:
             return {
@@ -383,7 +399,7 @@ class FullCatalogTactileProvider:
             if total_weight
             else np.zeros(len(rows), dtype=np.float32)
         )
-        keywords = title_keywords(query_text)
+        keywords = title_keywords(" ".join(keywords) if keywords is not None else query_text)
         title_component = self.index.title_match(rows, keywords)
         popularity_component = self.index.popularity[rows]
 
@@ -634,7 +650,11 @@ class _LegacyStoreShim:
         self.image_root = index.image_root
 
     def image_path(self, product_id: str) -> Path:
-        return self.index.image_path(product_id)
+        path = self.index.image_path(product_id)
+        # A server without the image cache answers 404; clients fall back to remote_image_url.
+        if not path.is_file():
+            raise KeyError(f"Image not found: {product_id}")
+        return path
 
 
 class _CatalogShim:
@@ -711,6 +731,7 @@ class FullCatalogTools:
                 "title": str(self.index.titles[row]),
                 "category": str(self.index.categories[row]),
                 "image_url": f"/images/{self.index.asins[row]}.jpg",
+                "remote_image_url": str(self.index.image_urls[row]),
                 "train_interaction_count": int(self.index.train_counts[row]),
             }
             for row in window

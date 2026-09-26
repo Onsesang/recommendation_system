@@ -94,7 +94,8 @@ class TactileCatalogService:
         if stage2_path.is_file() and master_path.is_file():
             self.multimodal = MultimodalProductIndex(multimodal_root)
             stage2 = json.loads(stage2_path.read_text(encoding="utf-8"))
-            vectors_path = Path(stage2["outputs"]["vectors"])
+            # Resolve beside the manifest; its absolute path belongs to the build machine.
+            vectors_path = multimodal_root / Path(stage2["outputs"]["vectors"]).name
             if vectors_path.is_file():
                 with np.load(vectors_path, allow_pickle=False) as arrays:
                     design_asins = [str(value) for value in arrays["asins"]]

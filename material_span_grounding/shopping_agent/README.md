@@ -73,6 +73,36 @@ Gemini는 function calling으로 하나를 선택하고, API 키가 없거나 �
 `configs/v1.json`의 학습 예시로 만든 로컬 문자 n-gram 분류기가 같은 도구를 선택한다.
 사용자 문장을 직접 비교하는 조건문으로 라우팅하지 않는다.
 
+## 예비 서버(RTX 3060) 동기화
+
+A100에서 코드를 고친 뒤 한 번 실행한다. 코드 전송 → (선택) 원격 테스트 → 서비스 재시작 →
+health 확인 → 남은 차이 0 확인 순서로 진행하고, 원격 테스트가 실패하면 재시작하지 않는다.
+
+```bash
+./shopping_agent/sync_backup.sh --dry-run   # 바뀔 파일만 확인
+./shopping_agent/sync_backup.sh --test      # 권장: 테스트 통과 시에만 재시작
+./shopping_agent/sync_backup.sh --data      # 런타임 데이터(configs/backup_data_files.txt)도 전송
+./shopping_agent/sync_backup.sh --env       # .env(API 키)도 전송. 예비 서버 고유 값은 덮어씀
+```
+
+사용자 DB(`shopping_agent/data/*.sqlite3`)는 이 스크립트가 옮기지 않는다.
+
+## OpenAI 도구 호출 agent
+
+`SHOPPING_AGENT_LLM_PROVIDER=openai`이고 `configs/v1.json`의 `tool_agent.enabled`가 true이면
+메시지 턴을 `v1/tool_agent.py`의 Responses API 도구 호출 루프가 처리한다. 도구는
+`search_products`, `get_product_detail`, `compare_products`, `add_to_cart`, `view_cart`이고,
+검색 순위·촉감 점수·장바구니는 모두 기존 서비스가 계산한다. 원격 호출이 실패하면 로컬
+라우터 파이프라인으로 자동 전환한다. 장바구니는 대화에서 이미 보여준 상품만 담을 수 있다.
+
+실제 API로 시나리오를 평가한다(12턴, 도구 선택·구조화 조건·장바구니 부작용 자동 판정).
+
+```bash
+python -m shopping_agent.evaluation.tool_agent_scenarios --models gpt-5.4-mini
+```
+
+프론트엔드 변경 사항은 `notion/25_FRONTEND_AGENT_TOOL_LOOP_CHANGES.md`에 있다.
+
 ## LangSmith 준비
 
 모든 agent run은 `trace_id`, 입력, tool call, 모델 버전, 출력 요약을 로컬 JSONL trace로

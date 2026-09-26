@@ -203,6 +203,9 @@ API base URL을 결합한다. `tactile_target_source=image_predicted`인 상품�
 
 ## 7. 대화와 개인화 추천 타입
 
+> 2026-09-25: OpenAI 도구 호출 agent가 추가한 `action` 값과 응답 필드는
+> `notion/25_FRONTEND_AGENT_TOOL_LOOP_CHANGES.md`를 함께 본다.
+
 ```ts
 interface AgentSession {
   session_id: string;

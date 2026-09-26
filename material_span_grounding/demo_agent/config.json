@@ -1,0 +1,19 @@
+{
+  "artifacts": {
+    "metadata": "experiments/16_strong_recommender_tactile/data/item_metadata.parquet",
+    "last2_profiles": "experiments/16_strong_recommender_tactile/artifacts/product_tactile_profiles.parquet",
+    "last2_checkpoint_provenance": "experiments/12_class_multilabel_fashionclip_ft/models/fashionclip_last2.pt",
+    "last2_checkpoint_sha256": "073b542a9d6bd4450aa1f48596c756cc0812b1b5d914945e8f94f7c3fda1934a"
+  },
+  "ranking": {
+    "default_constraint_weight": 1.0,
+    "class_weight_overrides": {},
+    "default_top_k": 12,
+    "maximum_top_k": 40,
+    "specific_category_min_candidates": 24,
+    "initial_catalog_size": 12
+  },
+  "agent": {
+    "maximum_message_characters": 1000
+  }
+}

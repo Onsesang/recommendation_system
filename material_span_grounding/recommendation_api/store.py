@@ -10,14 +10,14 @@ from typing import Any
 import joblib
 import numpy as np
 
-from material_span.simple_m0_m1 import _human_corrected_claims
+from material_span.simple_m0_m1 import TEXTURE_ROOT, _human_corrected_claims
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PRODUCTS = PROJECT_ROOT / "data/derived/simple_m0_m1/products.json"
 DEFAULT_VECTORS = PROJECT_ROOT / "data/derived/simple_m0_m1/product_vectors.npz"
 DEFAULT_MODEL = PROJECT_ROOT / "artifacts/simple_m0_m1/m1_ridge.joblib"
-DEFAULT_IMAGE_ROOT = Path("/home/user/onsesang/texture_project/images_train")
+DEFAULT_IMAGE_ROOT = TEXTURE_ROOT / "images_train"
 DEFAULT_EVALUATION_METRICS = (
     PROJECT_ROOT / "data/recommendation_eval/temporal_v1/results/metrics.json"
 )

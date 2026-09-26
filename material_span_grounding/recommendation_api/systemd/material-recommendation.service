@@ -1,0 +1,14 @@
+[Unit]
+Description=Material review-grounded recommendation API
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/user/onsesang/material_span_grounding
+ExecStart=/home/user/onsesang/miniconda3/envs/texture/bin/python -m recommendation_api.server --host 127.0.0.1 --port 8877
+Environment=PYTHONUNBUFFERED=1
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=default.target

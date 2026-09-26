@@ -72,7 +72,8 @@ class DeterministicLLMProvider:
         prefix = "말씀하신 조건"
         if grounded_context.get("personalization_applied"):
             prefix += "과 저장된 취향"
-        text = f"{prefix}을 반영해 관련도가 높은 상품 {len(products)}개를 찾았습니다."
+        count = int(grounded_context.get("result_count", len(products)))
+        text = f"{prefix}을 반영해 관련도가 높은 상품 {count}개를 찾았습니다."
         if saved:
             text += f" 이번 대화에서 확인된 취향 {saved}개도 자동으로 기억했습니다."
         text += " 각 카드의 추천 이유와 소재 근거를 확인해보세요."

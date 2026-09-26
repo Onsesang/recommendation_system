@@ -105,6 +105,11 @@ class FullCatalogToolsTests(unittest.TestCase):
 
     def test_image_path_resolves_to_a_local_file(self) -> None:
         product_id = self.tools.tactile.search("부드러운 니트", limit=1)["items"][0]["product_id"]
+        if not self.tools.legacy_store.image_root.is_dir():
+            # The backup server serves remote_image_url and keeps no local image cache.
+            with self.assertRaises(KeyError):
+                self.tools.legacy_store.image_path(product_id)
+            return
         self.assertTrue(self.tools.legacy_store.image_path(product_id).is_file())
 
     def test_pagination_is_consistent(self) -> None:

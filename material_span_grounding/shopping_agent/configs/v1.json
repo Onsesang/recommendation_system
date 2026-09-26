@@ -63,6 +63,17 @@
     "response_language": "ko",
     "max_output_tokens": 700
   },
+  "tool_agent": {
+    "enabled": true,
+    "max_steps": 5,
+    "max_output_tokens": 700,
+    "reasoning_effort": "low",
+    "history_messages": 12,
+    "shown_products_memory": 10,
+    "tool_result_products": 8,
+    "tool_output_max_chars": 4000,
+    "structured_intent_confidence": 0.9
+  },
   "conversation_tools": {
     "responses": {
       "respond_greeting": "안녕하세요! 원하는 스타일이나 옷, 중요하게 생각하는 소재와 촉감을 입력해주세요.",

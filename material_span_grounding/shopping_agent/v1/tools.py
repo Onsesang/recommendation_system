@@ -27,7 +27,15 @@ class CurrentTactileProvider:
     def version(self) -> str:
         return "review-image-hybrid-ridge-v1"
 
-    def search(self, query_text: str, *, limit: int) -> dict[str, Any]:
+    def search(
+        self,
+        query_text: str,
+        *,
+        limit: int,
+        structured: Any = None,
+        keywords: list[str] | None = None,
+    ) -> dict[str, Any]:
+        # The curated catalog parses open-vocabulary spans itself; Last2 structure does not apply.
         return self.catalog.search(
             {"query_text": query_text, "page": 1, "page_size": limit}
         )

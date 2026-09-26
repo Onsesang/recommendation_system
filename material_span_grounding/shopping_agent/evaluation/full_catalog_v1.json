@@ -1,0 +1,179 @@
+{
+  "generated_at": "2026-09-15T16:02:02.109909+00:00",
+  "catalog_mode": "full",
+  "catalog_products": 825840,
+  "tactile_provider": "last2-image-predicted-full-catalog-last2-v1",
+  "tactile_source": "image_predicted_last2",
+  "top_k": 30,
+  "config": {
+    "relevance": {
+      "tactile_match_weight": 0.5,
+      "title_match_weight": 0.35,
+      "popularity_weight": 0.15
+    },
+    "concept_fidelity": {
+      "direct_weight": 1.0,
+      "proxy_weight": 0.6
+    },
+    "retrieval": {
+      "specific_category_min_candidates": 200,
+      "title_token_min_length": 3,
+      "max_candidate_scan": 825840,
+      "accessory_exclusion_pattern": "\\b(?:necklace|earring|bracelet|anklet|brooch|keychain|chain|pendant|charm|watch|sunglass|handbag|wallet|purse|backpack|sticker|patch|badge)\\b",
+      "accessory_exclusion_min_candidates": 200
+    }
+  },
+  "summary": {
+    "mean_lift": 0.1882,
+    "min_lift": 0.0714,
+    "positive_cases_with_lift": 8,
+    "positive_cases_total": 8,
+    "mean_negation_gap": 0.4877,
+    "negation_direction_correct": 4,
+    "negation_cases_total": 4,
+    "mean_category_purity": 1.0,
+    "max_duplicate_rate": 0.0
+  },
+  "positive_cases": [
+    {
+      "query": "부드러운 니트 추천해줘",
+      "target_class": "soft",
+      "candidate_pool": 20400,
+      "pool_mean_probability": 0.741,
+      "top_k_mean_probability": 0.8152,
+      "lift": 0.0742,
+      "category": "sweater",
+      "category_purity": 1.0,
+      "duplicate_rate": 0.0,
+      "ranking_mode": "last2_explicit_tactile"
+    },
+    {
+      "query": "두껍고 따뜻한 자켓",
+      "target_class": "thick",
+      "candidate_pool": 11271,
+      "pool_mean_probability": 0.4047,
+      "top_k_mean_probability": 0.8482,
+      "lift": 0.4434,
+      "category": "jacket",
+      "category_purity": 1.0,
+      "duplicate_rate": 0.0,
+      "ranking_mode": "last2_explicit_tactile"
+    },
+    {
+      "query": "얇고 시원한 셔츠 찾아줘",
+      "target_class": "thin",
+      "candidate_pool": 76127,
+      "pool_mean_probability": 0.6106,
+      "top_k_mean_probability": 0.8525,
+      "lift": 0.2419,
+      "category": "shirt",
+      "category_purity": 1.0,
+      "duplicate_rate": 0.0,
+      "ranking_mode": "last2_explicit_tactile"
+    },
+    {
+      "query": "신축성 있는 바지",
+      "target_class": "elastic",
+      "candidate_pool": 43978,
+      "pool_mean_probability": 0.5639,
+      "top_k_mean_probability": 0.6353,
+      "lift": 0.0714,
+      "category": "pants",
+      "category_purity": 1.0,
+      "duplicate_rate": 0.0,
+      "ranking_mode": "last2_explicit_tactile"
+    },
+    {
+      "query": "폭신한 후드",
+      "target_class": "spongy",
+      "candidate_pool": 18467,
+      "pool_mean_probability": 0.5012,
+      "top_k_mean_probability": 0.6012,
+      "lift": 0.0999,
+      "category": "hoodie",
+      "category_purity": 1.0,
+      "duplicate_rate": 0.0,
+      "ranking_mode": "last2_explicit_tactile"
+    },
+    {
+      "query": "매끄러운 원피스",
+      "target_class": "smooth",
+      "candidate_pool": 121857,
+      "pool_mean_probability": 0.5436,
+      "top_k_mean_probability": 0.6432,
+      "lift": 0.0996,
+      "category": "dress",
+      "category_purity": 1.0,
+      "duplicate_rate": 0.0,
+      "ranking_mode": "last2_explicit_tactile"
+    },
+    {
+      "query": "뻣뻣한 청바지",
+      "target_class": "stiff",
+      "candidate_pool": 8603,
+      "pool_mean_probability": 0.4841,
+      "top_k_mean_probability": 0.6993,
+      "lift": 0.2152,
+      "category": "jeans",
+      "category_purity": 1.0,
+      "duplicate_rate": 0.0,
+      "ranking_mode": "last2_explicit_tactile"
+    },
+    {
+      "query": "따뜻한 코트",
+      "target_class": "warm",
+      "candidate_pool": 5312,
+      "pool_mean_probability": 0.5951,
+      "top_k_mean_probability": 0.8548,
+      "lift": 0.2597,
+      "category": "coat",
+      "category_purity": 1.0,
+      "duplicate_rate": 0.0,
+      "ranking_mode": "last2_explicit_tactile"
+    }
+  ],
+  "negation_cases": [
+    {
+      "positive_query": "까슬한 니트",
+      "negated_query": "까슬거리지 않는 니트",
+      "target_class": "rough",
+      "positive_mean_probability": 0.6972,
+      "negated_mean_probability": 0.3691,
+      "negation_gap": 0.328,
+      "direction_correct": true
+    },
+    {
+      "positive_query": "두꺼운 자켓",
+      "negated_query": "두껍지 않은 자켓",
+      "target_class": "thick",
+      "positive_mean_probability": 0.8614,
+      "negated_mean_probability": 0.1088,
+      "negation_gap": 0.7525,
+      "direction_correct": true
+    },
+    {
+      "positive_query": "따뜻한 셔츠",
+      "negated_query": "따뜻하지 않은 셔츠",
+      "target_class": "warm",
+      "positive_mean_probability": 0.8257,
+      "negated_mean_probability": 0.1722,
+      "negation_gap": 0.6535,
+      "direction_correct": true
+    },
+    {
+      "positive_query": "신축성 있는 바지",
+      "negated_query": "잘 늘어나지 않는 바지",
+      "target_class": "elastic",
+      "positive_mean_probability": 0.6353,
+      "negated_mean_probability": 0.4183,
+      "negation_gap": 0.217,
+      "direction_correct": true
+    }
+  ],
+  "runtime_seconds": 6.23,
+  "caveats": [
+    "Last2 확률은 상품 이미지에서 예측한 값이며 구매자 리뷰 근거가 아니다.",
+    "사람이 라벨링한 relevance set이 없으므로 이 수치는 정확도가 아니라 진단용이다.",
+    "lift는 같은 카테고리 후보 풀 평균 대비 상승분이며 절대 품질이 아니다."
+  ]
+}

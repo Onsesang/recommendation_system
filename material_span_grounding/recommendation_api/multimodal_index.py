@@ -20,9 +20,11 @@ class MultimodalProductIndex:
         self.root = Path(root)
         stage2 = json.loads((self.root / "stage2_manifest.json").read_text(encoding="utf-8"))
         stage7 = json.loads((self.root / "stage7_manifest.json").read_text(encoding="utf-8"))
-        products_path = Path(stage7["outputs"]["products"])
-        image_path = Path(stage2["outputs"]["vectors"])
-        tactile_path = Path(stage7["outputs"]["vectors"])
+        # Manifests record absolute paths from the machine that built them; the outputs sit
+        # beside the manifests, so resolve by file name and let the hash check guard content.
+        products_path = self.root / Path(stage7["outputs"]["products"]).name
+        image_path = self.root / Path(stage2["outputs"]["vectors"]).name
+        tactile_path = self.root / Path(stage7["outputs"]["vectors"]).name
         for path, expected in (
             (products_path, stage7["outputs"]["products_sha256"]),
             (image_path, stage2["outputs"]["vectors_sha256"]),

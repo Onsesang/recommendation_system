@@ -1,0 +1,23 @@
+{
+  "status": "complete",
+  "generated_at": "2026-08-22T08:25:40.426774+00:00",
+  "protocol": "deterministic real-catalog structural personalization evaluation v1",
+  "warning": "Structural checks are not human relevance or online A/B metrics.",
+  "cases": 4,
+  "metrics": {
+    "finite_score_rate": 1.0,
+    "score_breakdown_rate": 1.0,
+    "catalog_consistency_rate": 1.0,
+    "same_category_constraint_rate": 1.0,
+    "event_idempotency_pass": true,
+    "chat_preference_saved": true,
+    "behavior_personalization_applied": true,
+    "cart_personalization_applied": true,
+    "hallucinated_product_count": 0,
+    "checkout_enabled": false,
+    "greeting_tool_pass": true,
+    "out_of_scope_tool_pass": true,
+    "non_shopping_search_suppressed": true,
+    "non_shopping_preference_unchanged": true
+  }
+}

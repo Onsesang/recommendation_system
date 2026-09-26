@@ -23,6 +23,8 @@ class AgentApiTests(unittest.TestCase):
             llm_provider="deterministic",
             openai_api_key="",
             gemini_api_key="",
+            # These assertions describe the curated catalog, independent of the local .env.
+            catalog_mode="curated",
         )
         cls.app = AgentApplication(settings)
         cls.server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(cls.app))

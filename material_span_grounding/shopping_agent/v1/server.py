@@ -19,6 +19,7 @@ from .auth import AuthService
 from .config import AGENT_ROOT, AgentSettings
 from .database import AgentDatabase
 from .llm import build_llm_provider
+from .tool_agent import TOOL_NAMES, build_tool_agent
 from .personalization import PersonalizedRanker
 from .preferences import PreferenceService
 from .service import ShoppingAgentService
@@ -100,6 +101,7 @@ class AgentApplication:
             self.llm,
             self.tracer,
             settings.config,
+            tool_agent=build_tool_agent(settings),
         )
 
     def health(self) -> dict[str, Any]:
@@ -126,6 +128,8 @@ class AgentApplication:
                 "automatic_chat_preferences": True,
                 "conversation_tool_routing": True,
                 "conversation_tools": list(self.agent.conversation_tools.names),
+                "agent_mode": "openai_tool_loop" if self.agent.tool_agent else "router_pipeline",
+                "agent_tools": sorted(TOOL_NAMES) if self.agent.tool_agent else [],
                 "behavior_personalization": True,
                 "cart": True,
                 "checkout": False,

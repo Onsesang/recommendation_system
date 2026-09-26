@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
@@ -9,8 +10,10 @@ from typing import Any
 from .common import ROOT, load_json, read_jsonl, save_json, sha256_text
 
 
-TEXTURE_ROOT = Path("/home/user/onsesang/texture_project")
-SEOYOUNG_TRAIN = Path("/home/user/onsesang/seoyoung/data/splits/train.json")
+# Sibling input folders of this repository; ONSESANG_ROOT relocates them on another server.
+ONSESANG_ROOT = Path(os.getenv("ONSESANG_ROOT", "/home/user/onsesang"))
+TEXTURE_ROOT = ONSESANG_ROOT / "texture_project"
+SEOYOUNG_TRAIN = ONSESANG_ROOT / "seoyoung/data/splits/train.json"
 SENTENCE_MODEL = "BAAI/bge-small-en-v1.5"
 
 CATEGORY_RULES = [

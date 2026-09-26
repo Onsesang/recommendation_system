@@ -13,12 +13,12 @@
 | A2 CORS 여러 origin | ✅ `SHOPPING_AGENT_CORS_ORIGINS`, Vercel·localhost:3000 등록 |
 | A3 인증 방식 | ✅ 명세 v1.1에 Bearer 전용 명시 |
 | A4 이미지 규칙 | ✅ 명세 v1.1에 `remote_image_url` 우선 명시 |
-| A5 명세 최종본 | ✅ v1.1 (Base URL만 미정) |
+| A5 명세 최종본 | ✅ v1.1 (Base URL 포함) |
 | A6 rate limit | ✅ 가입 5회/시간, 로그인 10회/10분(IP), 메시지 20회/분·300회/일(사용자), 429 |
 | 공개 주소 실사용 확인 | ✅ 임시 Quick Tunnel로 Vercel 페이지에서 가입~빼기·이미지·CORS 차단 확인 후 터널 닫음 |
 | B7 테스트 계정 | ✅ 6개 삭제 (DB 백업 `data/agent_v1.sqlite3.bak-20260926`) |
 | B5 서버 전환 | ⚠️ 동기화 없음. 명세에 "전환 시 재로그인·새 세션"으로 명시 |
-| A1 고정 HTTPS 주소 | ❌ Cloudflare 계정·도메인 결정 필요 |
+| A1 고정 HTTPS 주소 | ✅ Tailscale Funnel `https://onsesang-pc-server.tail065d88.ts.net`. 외부 사용자 조건(공인 IP)에서 Vercel 페이지 호출·rate limit IP 구분 확인 |
 | B1 FastAPI | ❌ 결정 필요 |
 
 ## 1. 지금 상태

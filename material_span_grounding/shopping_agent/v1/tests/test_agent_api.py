@@ -161,6 +161,12 @@ class AgentApiTests(unittest.TestCase):
             self.assertEqual(response.getheader("Access-Control-Allow-Origin"), origin if allowed else None)
             self.assertIn("Authorization", response.getheader("Access-Control-Allow-Headers"))
             self.assertEqual(response.getheader("Vary"), "Origin")
+        connection = HTTPConnection("127.0.0.1", self.port, timeout=10)
+        connection.request("OPTIONS", "/agent/v1/health", headers={
+            "Origin": "https://onsesang-front.vercel.app", "Access-Control-Request-Method": "GET",
+            "Access-Control-Request-Private-Network": "true"})
+        response = connection.getresponse(); response.read(); connection.close()
+        self.assertEqual(response.getheader("Access-Control-Allow-Private-Network"), "true")
 
     def test_rate_limits_return_429_with_retry_after(self) -> None:
         from shopping_agent.v1.rate_limit import RateLimiter

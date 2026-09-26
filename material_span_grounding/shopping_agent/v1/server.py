@@ -155,6 +155,10 @@ def make_handler(app: AgentApplication):
                 # Echo only a registered origin; other sites get no CORS grant at all.
                 self.send_header("Access-Control-Allow-Origin", origin)
                 self.send_header("Access-Control-Allow-Credentials", "true")
+                if (self.headers.get("Access-Control-Request-Private-Network") or "").casefold() == "true":
+                    # A device on the tailnet resolves the Funnel host to a 100.x address, which Chrome
+                    # treats as a private network and preflights with this header.
+                    self.send_header("Access-Control-Allow-Private-Network", "true")
             self.send_header("Vary", "Origin")
             self.send_header("Access-Control-Expose-Headers", "Retry-After")
             self.send_header("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS")

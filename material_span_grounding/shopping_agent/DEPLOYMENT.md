@@ -1,5 +1,18 @@
 # Shopping Agent v1 — 배포 메모
 
+> 2026-09-26 갱신: 메인 서버는 이 RTX 3060. 공개 주소는 **Tailscale Funnel** 고정 주소
+> `https://onsesang-pc-server.tail065d88.ts.net` (→ `127.0.0.1:8878`). 아래 Quick Tunnel 내용은 이전 방식이다.
+>
+> ```bash
+> tailscale funnel status                 # 공개 상태 확인
+> tailscale funnel --bg 8878              # 켜기 (operator 설정이 되어 있어 sudo 불필요)
+> tailscale funnel --https=443 off        # 끄기
+> ```
+> - Funnel은 실제 사용자 IP를 X-Forwarded-For로 넘기므로 rate limit이 사용자별로 동작한다.
+> - tailnet에 접속한 기기에서는 이 주소가 100.x 내부 IP로 풀려, 크롬이 Vercel 사이트의 호출을
+>   내부 네트워크 접근으로 보고 차단하거나 권한을 물을 수 있다. 외부 사용자와 같은 조건으로 보려면
+>   Tailscale을 끈 기기에서 확인한다.
+
 `/agent-demo`를 Cloudflare Quick Tunnel로 공개한 구성이다. 코드는 변경하지 않았고
 설정 파일(`shopping_agent/.env`)과 tunnel 관리 script만 추가했다.
 

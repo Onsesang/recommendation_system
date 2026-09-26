@@ -1,0 +1,225 @@
+{
+  "description": "검색 순위 가중치 비교 후보. relevance는 configs/full_catalog.json, ranking은 configs/v1.json의 같은 키를 덮어쓴다.",
+  "variants": [
+    {
+      "name": "baseline",
+      "description": "현재 설정: 촉감 0.5, 상품명 0.35, 인기도 0.15",
+      "relevance": {}
+    },
+    {
+      "name": "pop_low",
+      "description": "인기도 축소: 촉감 0.55, 상품명 0.35, 인기도 0.10",
+      "relevance": {
+        "tactile_match_weight": 0.55,
+        "title_match_weight": 0.35,
+        "popularity_weight": 0.1
+      }
+    },
+    {
+      "name": "tactile_up",
+      "description": "촉감 강화: 촉감 0.6, 상품명 0.3, 인기도 0.10",
+      "relevance": {
+        "tactile_match_weight": 0.6,
+        "title_match_weight": 0.3,
+        "popularity_weight": 0.1
+      }
+    },
+    {
+      "name": "title_up",
+      "description": "상품명 강화: 촉감 0.4, 상품명 0.5, 인기도 0.10",
+      "relevance": {
+        "tactile_match_weight": 0.4,
+        "title_match_weight": 0.5,
+        "popularity_weight": 0.1
+      }
+    },
+    {
+      "name": "color",
+      "description": "색상 별도 점수 0.25 추가(색상 요청 시에만), 나머지 현재와 같음",
+      "relevance": {
+        "color_match_weight": 0.25
+      }
+    },
+    {
+      "name": "color_pop_low",
+      "description": "색상 0.25 + 인기도 축소: 촉감 0.5, 상품명 0.3, 인기도 0.05",
+      "relevance": {
+        "tactile_match_weight": 0.5,
+        "title_match_weight": 0.3,
+        "popularity_weight": 0.05,
+        "color_match_weight": 0.25
+      }
+    },
+    {
+      "name": "texture_words",
+      "description": "촉감 소재 단어 점수 0.2 추가 (예: 하늘하늘→chiffon·flowy, 따뜻한→fleece·wool), 나머지 현재와 같음",
+      "relevance": {
+        "tactile_title_weight": 0.2,
+        "tactile_title_terms": {
+          "soft": [
+            "soft",
+            "cozy",
+            "plush",
+            "fleece",
+            "velvet",
+            "cashmere",
+            "modal"
+          ],
+          "smooth": [
+            "satin",
+            "silk",
+            "silky",
+            "smooth"
+          ],
+          "elastic": [
+            "stretch",
+            "stretchy",
+            "spandex",
+            "elastic"
+          ],
+          "thin": [
+            "lightweight",
+            "thin",
+            "chiffon",
+            "gauze"
+          ],
+          "thick": [
+            "thick",
+            "chunky",
+            "heavyweight",
+            "thermal",
+            "quilted"
+          ],
+          "flexible": [
+            "chiffon",
+            "flowy",
+            "flowing",
+            "a-line",
+            "pleated",
+            "swing",
+            "maxi"
+          ],
+          "warm": [
+            "fleece",
+            "wool",
+            "thermal",
+            "sherpa",
+            "fur",
+            "down",
+            "insulated"
+          ],
+          "cool": [
+            "linen",
+            "lightweight",
+            "breathable",
+            "chiffon",
+            "sleeveless"
+          ],
+          "spongy": [
+            "fleece",
+            "sherpa",
+            "plush",
+            "puffer",
+            "quilted"
+          ],
+          "crisp": [
+            "tailored",
+            "structured",
+            "crisp",
+            "blazer"
+          ],
+          "firm": [
+            "structured",
+            "tailored"
+          ]
+        }
+      }
+    },
+    {
+      "name": "texture_color",
+      "description": "소재 단어 0.2 + 색상 0.25",
+      "relevance": {
+        "tactile_title_weight": 0.2,
+        "tactile_title_terms": {
+          "soft": [
+            "soft",
+            "cozy",
+            "plush",
+            "fleece",
+            "velvet",
+            "cashmere",
+            "modal"
+          ],
+          "smooth": [
+            "satin",
+            "silk",
+            "silky",
+            "smooth"
+          ],
+          "elastic": [
+            "stretch",
+            "stretchy",
+            "spandex",
+            "elastic"
+          ],
+          "thin": [
+            "lightweight",
+            "thin",
+            "chiffon",
+            "gauze"
+          ],
+          "thick": [
+            "thick",
+            "chunky",
+            "heavyweight",
+            "thermal",
+            "quilted"
+          ],
+          "flexible": [
+            "chiffon",
+            "flowy",
+            "flowing",
+            "a-line",
+            "pleated",
+            "swing",
+            "maxi"
+          ],
+          "warm": [
+            "fleece",
+            "wool",
+            "thermal",
+            "sherpa",
+            "fur",
+            "down",
+            "insulated"
+          ],
+          "cool": [
+            "linen",
+            "lightweight",
+            "breathable",
+            "chiffon",
+            "sleeveless"
+          ],
+          "spongy": [
+            "fleece",
+            "sherpa",
+            "plush",
+            "puffer",
+            "quilted"
+          ],
+          "crisp": [
+            "tailored",
+            "structured",
+            "crisp",
+            "blazer"
+          ],
+          "firm": [
+            "structured",
+            "tailored"
+          ]
+        },
+        "color_match_weight": 0.25
+      }
+    }
+  ]
+}

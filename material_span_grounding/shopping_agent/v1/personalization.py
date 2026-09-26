@@ -199,7 +199,7 @@ class PersonalizedRanker:
                 reasons.append("대화의 촉감 조건")
             if behavior_design > 0.15:
                 reasons.append("최근 본 상품의 디자인")
-            if behavior_tactile > 0.15:
+            if behavior_tactile > 0.15 and float(weights["behavior_tactile_weight"]) > 0:
                 reasons.append("최근 본 상품의 촉감")
             if cart_score > 0.5:
                 reasons.append("장바구니 상품과의 유사성")

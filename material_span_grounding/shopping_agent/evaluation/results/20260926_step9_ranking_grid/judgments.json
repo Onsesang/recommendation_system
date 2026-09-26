@@ -1,0 +1,904 @@
+{
+  "reviewer": "",
+  "carried_from": [
+    "shopping_agent/evaluation/results/20260926_step4_reco/judgments.json"
+  ],
+  "items": {
+    "product|F1-1|B076QD9NP1": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:01:28+00:00"
+    },
+    "product|F1-1|B01FZAI1LE": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:01:29+00:00"
+    },
+    "product|F1-1|B01F53H2LG": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:01:30+00:00"
+    },
+    "product|F1-1|B01FQ8IEI0": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:01:31+00:00"
+    },
+    "product|F1-1|B01IEXH8AY": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:01:32+00:00"
+    },
+    "product|F1-1|B071XP2L3Q": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:01:34+00:00"
+    },
+    "product|F1-1|B07BT5LDD5": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:01:35+00:00"
+    },
+    "product|F1-1|B01D9VNO5O": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:01:36+00:00"
+    },
+    "product|F1-2|B01FFM9G34": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:01:45+00:00"
+    },
+    "product|F1-2|B01CGE8M6Q": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:01:49+00:00"
+    },
+    "product|F1-2|B077ZK8NDW": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:01:49+00:00"
+    },
+    "product|F1-2|B097RFTKJP": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:01:50+00:00"
+    },
+    "product|F1-2|B07PVMKB4Z": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:01:51+00:00"
+    },
+    "product|F1-2|B07RTWXR89": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:01:53+00:00"
+    },
+    "product|F1-2|B01EQRACPU": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:01:55+00:00"
+    },
+    "product|F1-2|B01M7VD34B": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:01:56+00:00"
+    },
+    "product|F1-2|B073RDDXRB": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:02:00+00:00"
+    },
+    "product|F1-2|B018LRDPQE": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:02:02+00:00"
+    },
+    "product|C1-1|B09CGSB7W2": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:02:22+00:00"
+    },
+    "product|C1-1|B01MZIOHI6": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:02:23+00:00"
+    },
+    "product|C1-1|B08LGRKJML": {
+      "relevance": "PARTIAL",
+      "updated_at": "2026-09-26T08:05:00+00:00",
+      "memo": "코트보다는 조끼 형태의 패딩에 가까워보임."
+    },
+    "product|C1-1|B07YYVJGSS": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:02:39+00:00"
+    },
+    "product|C1-1|B07J4VNV9K": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:03:08+00:00"
+    },
+    "product|C1-1|B01LZIHLFX": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:03:26+00:00"
+    },
+    "product|C1-1|B07H1BT62S": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:03:28+00:00"
+    },
+    "product|C1-1|B09L8DDF4D": {
+      "relevance": "PARTIAL",
+      "updated_at": "2026-09-26T08:04:44+00:00",
+      "memo": "코트보다 패딩에 가까워보임"
+    },
+    "product|C1-1|B082HN46DZ": {
+      "relevance": "PARTIAL",
+      "updated_at": "2026-09-26T08:04:58+00:00",
+      "memo": "코트보다는 조끼 형태의 패딩에 가까워보임."
+    },
+    "product|C1-1|B07YJGXKV6": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:05:07+00:00"
+    },
+    "product|C2-1|B0B617NTHG": {
+      "relevance": "X",
+      "updated_at": "2026-09-26T08:05:31+00:00",
+      "memo": "옷 이미지 없음"
+    },
+    "product|C2-1|B018TZMT60": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:05:38+00:00"
+    },
+    "product|C2-1|B0749CWGQ9": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:05:40+00:00"
+    },
+    "product|C2-1|B00ZOQA2N0": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:05:42+00:00"
+    },
+    "product|C2-1|B08BHMM64V": {
+      "relevance": "PARTIAL",
+      "updated_at": "2026-09-26T08:18:21+00:00",
+      "memo": "사진상으로는 니트 소재인게 잘 안 보임"
+    },
+    "product|C2-1|B00PHH33MS": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:18:24+00:00"
+    },
+    "product|C2-1|B0166E90UY": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:18:25+00:00"
+    },
+    "product|C2-1|B01KP6H0TC": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:18:29+00:00"
+    },
+    "product|C2-1|B01FXJ68NU": {
+      "relevance": "PARTIAL",
+      "updated_at": "2026-09-26T08:18:42+00:00",
+      "memo": "사진상으로는 니트 소재인게 잘 안 보임"
+    },
+    "product|C2-1|B07XFKLP4X": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:18:44+00:00"
+    },
+    "product|C3-1|B071ZDY35V": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:19:01+00:00"
+    },
+    "product|C3-1|B073S4RQQG": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:19:03+00:00"
+    },
+    "product|C3-1|B07MTY6PG9": {
+      "relevance": "PARTIAL",
+      "updated_at": "2026-09-26T08:19:14+00:00",
+      "memo": "청바지인데 잘 늘어나는 소재인지 모르겠음"
+    },
+    "product|C3-1|B07CWPKYZF": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:19:15+00:00"
+    },
+    "product|C3-1|B071CWXWGR": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:19:19+00:00"
+    },
+    "product|C3-1|B082KRHJ3K": {
+      "relevance": "X",
+      "updated_at": "2026-09-26T08:19:28+00:00",
+      "memo": "바지가 아니라 속옷임"
+    },
+    "product|C3-1|B0B1CTNY92": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:19:30+00:00"
+    },
+    "product|C3-1|B073S4VRC1": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:19:31+00:00"
+    },
+    "product|C3-1|B01FYB8U4M": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:19:31+00:00"
+    },
+    "product|C3-1|B08TDM5GMR": {
+      "relevance": "PARTIAL",
+      "updated_at": "2026-09-26T08:23:58+00:00",
+      "memo": "제목 부분이 다른 상품과 비교했을때 비정상적으로 길어. 확인해줘."
+    },
+    "product|C4-1|B01DOXLLDY": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:24:06+00:00"
+    },
+    "product|C4-1|B07NMP5T2P": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:24:07+00:00"
+    },
+    "product|C4-1|B01CO4XD12": {
+      "relevance": "X",
+      "updated_at": "2026-09-26T08:24:16+00:00",
+      "memo": "치마가 아니라 원피스"
+    },
+    "product|C4-1|B07CJ643GL": {
+      "relevance": "X",
+      "updated_at": "2026-09-26T08:24:30+00:00",
+      "memo": "하늘하늘한 치마가 아니라 딱 달라붙는 치마"
+    },
+    "product|C4-1|B01DW3DUE4": {
+      "relevance": "PARTIAL",
+      "updated_at": "2026-09-26T08:24:43+00:00",
+      "memo": "하늘하늘한 치마가 아니라 살짝 달라붙는 치마"
+    },
+    "product|C4-1|B07MT8H914": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:24:44+00:00"
+    },
+    "product|C4-1|B083LNNKX4": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:24:47+00:00"
+    },
+    "product|C4-1|B07PCRML1M": {
+      "relevance": "X",
+      "updated_at": "2026-09-26T08:24:54+00:00",
+      "memo": "하늘하늘한 치마가 아니라 살짝 달라붙는 치마"
+    },
+    "product|C4-1|B01EWVJ5AS": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:24:54+00:00"
+    },
+    "product|C4-1|B085DTT8C5": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:24:55+00:00"
+    },
+    "product|C5-1|B095P7THJQ": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:25:06+00:00"
+    },
+    "product|C5-1|B079897HWC": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:25:08+00:00"
+    },
+    "product|C5-1|B06XDK5FTT": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:25:09+00:00"
+    },
+    "product|C5-1|B017SYVTFA": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:25:12+00:00"
+    },
+    "product|C5-1|B01HH0TYWU": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:25:13+00:00"
+    },
+    "product|C5-1|B08KJGNDC6": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:25:12+00:00"
+    },
+    "product|C5-1|B01E84O3RE": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:25:14+00:00"
+    },
+    "product|C5-1|B08YRFV3PL": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:25:15+00:00"
+    },
+    "product|C5-1|B01LWMZZS6": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:25:16+00:00"
+    },
+    "product|C5-1|B0969LQ26V": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:25:17+00:00"
+    },
+    "product|R1-1|B016QIH69W": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:26:19+00:00"
+    },
+    "product|R1-1|B0B7JWYCH8": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:26:20+00:00"
+    },
+    "product|R1-1|B08WWQRGGK": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:26:21+00:00"
+    },
+    "product|R1-1|B07PV17CDC": {
+      "relevance": "X",
+      "updated_at": "2026-09-26T08:26:28+00:00",
+      "memo": "이미지에 바지 사진 없음"
+    },
+    "product|R1-1|B00CO96K1I": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:26:29+00:00"
+    },
+    "product|R1-1|B07HTBRBBL": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:26:31+00:00"
+    },
+    "product|R1-1|B017OACZ92": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:26:32+00:00"
+    },
+    "product|R1-1|B08K4T16B7": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:26:33+00:00"
+    },
+    "product|R1-1|B010ILYQG4": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:26:34+00:00"
+    },
+    "product|R1-1|B01H6DPTSQ": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:26:35+00:00"
+    },
+    "product|R1-2|B07WNMYPNM": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:26:46+00:00"
+    },
+    "product|R1-2|B08QMWDGXK": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:26:49+00:00"
+    },
+    "product|R1-2|B07Y2QLHP7": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:26:51+00:00"
+    },
+    "product|R1-2|B01JBSR1AS": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:27:01+00:00"
+    },
+    "product|R1-2|B0899DLZFB": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:27:03+00:00"
+    },
+    "product|R1-2|B07MDMT7TJ": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:27:05+00:00"
+    },
+    "product|R1-2|B075RW74C7": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:27:04+00:00"
+    },
+    "product|R1-2|B013MUV3X2": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:27:08+00:00"
+    },
+    "product|R1-2|B07H262HVB": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:27:08+00:00"
+    },
+    "product|R1-2|B00PBXCBJY": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:27:09+00:00"
+    },
+    "product|R1-3|B07287K5X5": {
+      "relevance": "PARTIAL",
+      "updated_at": "2026-09-26T08:27:37+00:00",
+      "memo": "다른 상품과 비교했을 때 남색 말고 다른 색이 많음"
+    },
+    "product|R1-3|B0181RYMRK": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:27:38+00:00"
+    },
+    "product|R1-3|B089FRCYCK": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:27:39+00:00"
+    },
+    "product|R1-3|B07K1CJSS3": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:27:41+00:00"
+    },
+    "product|R1-3|B01CAVFBR8": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:27:41+00:00"
+    },
+    "product|R1-3|B08PF9CT7S": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:27:43+00:00"
+    },
+    "product|R1-3|B08BRTQ8F2": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:27:44+00:00"
+    },
+    "product|R1-3|B099X27NRT": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:27:42+00:00"
+    },
+    "product|R1-3|B07V5R8XKR": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:27:43+00:00"
+    },
+    "product|R1-3|B08VMR9XJJ": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:27:46+00:00"
+    },
+    "product|P1-1|B08BFQ7ZH8": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:27:55+00:00"
+    },
+    "product|P1-1|B014EFUYPW": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:27:56+00:00"
+    },
+    "product|P1-1|B073HZRYRF": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:27:57+00:00"
+    },
+    "product|P1-1|B01A357M4S": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:27:57+00:00"
+    },
+    "product|P1-1|B08CNC4LGJ": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:27:58+00:00"
+    },
+    "product|P1-1|B01468TR2S": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:28:01+00:00"
+    },
+    "product|P1-1|B00CW89766": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:28:01+00:00"
+    },
+    "product|P1-1|B015E5PXYI": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:28:02+00:00"
+    },
+    "product|P1-1|B01NCJV3QR": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:28:04+00:00"
+    },
+    "product|P2-1|B01DB9KB6O": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:28:26+00:00"
+    },
+    "product|P2-1|B01FD6Q91O": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:28:29+00:00"
+    },
+    "product|P2-1|B07MSDW3YD": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:28:30+00:00"
+    },
+    "product|P2-1|B01DELGUHS": {
+      "relevance": "X",
+      "updated_at": "2026-09-26T08:28:38+00:00",
+      "memo": "티셔츠아니고 속옷 사진"
+    },
+    "product|P2-1|B06Y2YWWCM": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:28:40+00:00"
+    },
+    "product|P2-1|B00KBS9R0A": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:28:42+00:00"
+    },
+    "product|P2-1|B01D46UR0O": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:28:43+00:00"
+    },
+    "product|P2-1|B00MFBMU7S": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:28:42+00:00"
+    },
+    "product|P2-1|B0BGWPPZXR": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:28:43+00:00"
+    },
+    "product|P2-1|B08SQ72R9X": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:28:44+00:00"
+    },
+    "product|K1-1|B07GSDC16Y": {
+      "relevance": "X",
+      "updated_at": "2026-09-26T08:29:01+00:00",
+      "memo": "코트가 아니고 neck warmer"
+    },
+    "product|K1-1|B09JW6MZKF": {
+      "relevance": "PARTIAL",
+      "updated_at": "2026-09-26T08:29:14+00:00",
+      "memo": "코트보단 패딩에 더 가까워보임"
+    },
+    "product|K1-1|B07YJHTM3Q": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:29:13+00:00"
+    },
+    "product|K1-1|B07XGKGTMF": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:29:14+00:00"
+    },
+    "product|K1-1|B076D59PGX": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:29:15+00:00"
+    },
+    "product|K1-1|B01MYV66XE": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:29:18+00:00"
+    },
+    "product|K1-1|B07XSWYRRH": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:29:18+00:00"
+    },
+    "product|K1-1|B01NADZ28H": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:29:20+00:00"
+    },
+    "product|K1-1|B07GNZ1GTJ": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:29:21+00:00"
+    },
+    "product|K1-1|B07H25SWM9": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:29:22+00:00"
+    },
+    "product|M1-2|B00W3MP9WM": {
+      "relevance": "PARTIAL",
+      "updated_at": "2026-09-26T08:30:00+00:00",
+      "memo": "청색이 아니라 흰색이라서 앞쪽보다는 뒷쪽에 보여지면 좋을 것 같음"
+    },
+    "product|M1-2|B00W3MP7FQ": {
+      "relevance": "PARTIAL",
+      "updated_at": "2026-09-26T08:30:02+00:00",
+      "memo": "청색이 아니라 흰색이라서 앞쪽보다는 뒷쪽에 보여지면 좋을 것 같음"
+    },
+    "product|M1-2|B00SIMH3Q6": {
+      "relevance": "PARTIAL",
+      "updated_at": "2026-09-26T08:30:03+00:00",
+      "memo": "청색이 아니라 흰색이라서 앞쪽보다는 뒷쪽에 보여지면 좋을 것 같음"
+    },
+    "product|M1-2|B07KQVMQRX": {
+      "memo": "청색이 아니라 흰색이라서 앞쪽보다는 뒷쪽에 보여지면 좋을 것 같음",
+      "updated_at": "2026-09-26T08:30:05+00:00",
+      "relevance": "PARTIAL"
+    },
+    "product|M1-2|B06XDNLX8C": {
+      "relevance": "X",
+      "updated_at": "2026-09-26T08:30:08+00:00"
+    },
+    "product|M1-2|B01N7EQ3QN": {
+      "relevance": "X",
+      "updated_at": "2026-09-26T08:30:19+00:00",
+      "memo": "바지가 아님"
+    },
+    "product|M1-2|B01GRJKC3W": {
+      "relevance": "X",
+      "updated_at": "2026-09-26T08:30:31+00:00"
+    },
+    "product|M1-2|B09BFLNXD5": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:30:32+00:00"
+    },
+    "product|M1-2|B00Q3LVEQE": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:30:35+00:00"
+    },
+    "product|V1-1|B08F1V3KB9": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:30:42+00:00"
+    },
+    "product|V1-1|B07SN294WV": {
+      "relevance": "X",
+      "updated_at": "2026-09-26T08:30:48+00:00",
+      "memo": "바지가 아니라 속옷임"
+    },
+    "product|V1-1|B07HP5BJ7X": {
+      "relevance": "X",
+      "updated_at": "2026-09-26T08:30:53+00:00",
+      "memo": "바지 사진이 없음"
+    },
+    "product|V1-1|B07TRNJ8ND": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:30:54+00:00"
+    },
+    "product|V1-1|B018KT60DI": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:30:55+00:00"
+    },
+    "product|V1-1|B07VR9RVT5": {
+      "relevance": "X",
+      "updated_at": "2026-09-26T08:30:59+00:00",
+      "memo": "바지가 아니라 속옷임"
+    },
+    "product|V1-1|B07HP51X8X": {
+      "relevance": "X",
+      "updated_at": "2026-09-26T08:31:04+00:00",
+      "memo": "바지 사진이 없음"
+    },
+    "product|V1-1|B0983Y8ZBZ": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:31:05+00:00"
+    },
+    "product|V1-1|B01LZ4C5QQ": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:31:06+00:00"
+    },
+    "product|V1-1|B075KSF8SY": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:31:06+00:00"
+    },
+    "product|V2-1|B07BWBP983": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:31:13+00:00"
+    },
+    "product|V2-1|B01DB9KB6O": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:31:13+00:00"
+    },
+    "product|V2-1|B074V5KQNP": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:31:14+00:00"
+    },
+    "product|V2-1|B07TCX1ZTY": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:31:15+00:00"
+    },
+    "product|V2-1|B0886B2NJ3": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:31:17+00:00"
+    },
+    "product|V2-1|B07BTLBSMD": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:31:20+00:00"
+    },
+    "product|V2-1|B01D46USP8": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:31:21+00:00"
+    },
+    "product|V2-1|B07YSSNLSW": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:31:22+00:00"
+    },
+    "product|V2-1|B07X5K44F3": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:31:23+00:00"
+    },
+    "product|V2-1|B01G6EFVES": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:31:24+00:00"
+    },
+    "product|V3-1|B08BZKQ542": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:32:14+00:00"
+    },
+    "product|V3-1|B01GQLGO5Q": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:32:15+00:00"
+    },
+    "product|V3-1|B08F2VNZKL": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:32:14+00:00"
+    },
+    "product|V3-1|B08HQDNBYM": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:32:15+00:00"
+    },
+    "product|V3-1|B0BJZXHJN1": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:32:16+00:00"
+    },
+    "product|V3-1|B07X7K5Q1X": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:32:18+00:00"
+    },
+    "product|V3-1|B019C10SAE": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:32:19+00:00"
+    },
+    "product|V3-1|B07NX2ZBNC": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:32:19+00:00"
+    },
+    "product|V3-1|B07HVYPX2D": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:32:20+00:00"
+    },
+    "product|V3-1|B07WNK5HF8": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:32:21+00:00"
+    },
+    "product|V4-1|B07W3KSDTP": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:32:33+00:00"
+    },
+    "product|V4-1|B09FKL5HQP": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:32:34+00:00"
+    },
+    "product|V4-1|B01IUAJJQW": {
+      "relevance": "X",
+      "updated_at": "2026-09-26T08:32:53+00:00",
+      "memo": "sweaters 아니고 neck warmer"
+    },
+    "product|V4-1|B076LP4FT1": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:33:11+00:00"
+    },
+    "product|V4-1|B01M4NDKM8": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:33:12+00:00"
+    },
+    "product|V4-1|B08BLRW7JC": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:33:14+00:00"
+    },
+    "product|V4-1|B017K4WK3I": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:33:18+00:00"
+    },
+    "product|V4-1|B08F7Q66R4": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:33:20+00:00"
+    },
+    "product|V4-1|B08HGSQH1C": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:33:21+00:00"
+    },
+    "product|V4-1|B0991XRDRF": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:33:22+00:00"
+    },
+    "product|V5-1|B009KE4FMG": {
+      "relevance": "X",
+      "updated_at": "2026-09-26T08:33:38+00:00",
+      "memo": "니트가 아니라 모자"
+    },
+    "product|V5-1|B08BLSDG78": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:33:39+00:00"
+    },
+    "product|V5-1|B015QF17JQ": {
+      "relevance": "X",
+      "updated_at": "2026-09-26T08:33:44+00:00",
+      "memo": "니트가 아니라 모자"
+    },
+    "product|V5-1|B08BLQN3YL": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:33:43+00:00"
+    },
+    "product|V5-1|B08HGSQH1C": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:33:45+00:00"
+    },
+    "product|V5-1|B09FKL5HQP": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:33:47+00:00"
+    },
+    "product|V5-1|B07HG21MXJ": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:33:48+00:00"
+    },
+    "product|V5-1|B073VMFD7R": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:33:49+00:00"
+    },
+    "product|V5-1|B074HFCQH5": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:33:50+00:00"
+    },
+    "product|V5-1|B09CTRCZ6Z": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:33:51+00:00"
+    },
+    "product|V6-1|B076QD9NP1": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:00+00:00"
+    },
+    "product|V6-1|B07V5XW285": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:02+00:00"
+    },
+    "product|V6-1|B06XKYMZPD": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:03+00:00"
+    },
+    "product|V6-1|B07PXQ4MHP": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:04+00:00"
+    },
+    "product|V6-1|B00WLVUBZA": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:05+00:00"
+    },
+    "product|V6-1|B097ZLG8VL": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:07+00:00"
+    },
+    "product|V6-1|B08YK1W17D": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:08+00:00"
+    },
+    "product|V6-1|B0833T5Z2W": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:09+00:00"
+    },
+    "product|V6-1|B08YKCQSG7": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:10+00:00"
+    },
+    "product|V6-1|B09MLZRN46": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:11+00:00"
+    },
+    "product|V8-1|B01DDJQ2DS": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:15+00:00"
+    },
+    "product|V8-1|B07SHD4FBP": {
+      "relevance": "X",
+      "updated_at": "2026-09-26T08:34:23+00:00",
+      "memo": "원피스 아니고 양말"
+    },
+    "product|V8-1|B0169X2W3O": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:24+00:00"
+    },
+    "product|V8-1|B01K4JAG0U": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:25+00:00"
+    },
+    "product|V8-1|B01M9DJ5PM": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:26+00:00"
+    },
+    "product|V8-1|B01FZAI1LE": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:28+00:00"
+    },
+    "product|V8-1|B0731JJFMF": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:28+00:00"
+    },
+    "product|V8-1|B01M4FM1RV": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:29+00:00"
+    },
+    "product|V8-1|B01CXZ47EO": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:30+00:00"
+    },
+    "product|V8-1|B01M63ZSGB": {
+      "memo": "원피스 아니고 마스크",
+      "updated_at": "2026-09-26T08:34:43+00:00",
+      "relevance": "X"
+    },
+    "product|V10-2|B07HP9BD4T": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:45+00:00"
+    },
+    "product|V10-2|B08KWG1FX9": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:46+00:00"
+    },
+    "product|V10-2|B07GXVLWS3": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:47+00:00"
+    },
+    "product|V10-2|B09GKT3QVL": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:48+00:00"
+    },
+    "product|V10-2|B078PBM8DM": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:49+00:00"
+    },
+    "product|V10-2|B07HB3FVGW": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:52+00:00"
+    },
+    "product|V10-2|B0C7CGGN6L": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:53+00:00"
+    },
+    "product|V10-2|B08C9PF79F": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:54+00:00"
+    },
+    "product|V10-2|B0758Z7KRS": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:55+00:00"
+    },
+    "product|V10-2|B08LDCPFW8": {
+      "relevance": "O",
+      "updated_at": "2026-09-26T08:34:56+00:00"
+    }
+  }
+}

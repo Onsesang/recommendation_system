@@ -39,18 +39,19 @@
     "max_dwell_ms": 90000
   },
   "ranking": {
-    "query_relevance_weight": 0.46,
+    "query_relevance_weight": 0.54,
     "explicit_tactile_weight": 0.16,
     "explicit_attribute_weight": 0.08,
     "behavior_design_weight": 0.08,
-    "behavior_tactile_weight": 0.08,
+    "behavior_tactile_weight": 0.0,
     "cart_context_weight": 0.07,
     "category_affinity_weight": 0.03,
     "exploration_weight": 0.04,
     "cross_category_behavior_gate": 0.02,
     "candidate_pool_size": 100,
     "default_result_size": 30,
-    "max_result_size": 50
+    "max_result_size": 50,
+    "behavior_tactile_note": "0 since 2026-09-26: experiment 24 found tactile preference cannot be inferred from interactions; weight moved to query_relevance_weight."
   },
   "memory": {
     "chat_preferences_auto_save": true,

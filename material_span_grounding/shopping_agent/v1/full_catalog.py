@@ -94,6 +94,16 @@ def _clamp(value: float, low: float = 0.0, high: float = 1.0) -> float:
     return max(low, min(high, float(value)))
 
 
+# English title spellings per canonical colour; "navy" titles often say "dark blue".
+COLOR_TITLE_PATTERNS = {
+    "navy": r"\bnavy\b|\bdark[\s-]*blue\b",
+    "gray": r"\bgr[ae]y\b|\bcharcoal\b",
+    "white": r"\bwhite\b|\bivory\b|\boff[\s-]*white\b",
+    "beige": r"\bbeige\b|\bkhaki\b|\bcamel\b|\btan\b",
+    "red": r"\bred\b|\bburgundy\b|\bwine\b",
+}
+
+
 def title_keywords(text: str) -> list[str]:
     """Latin tokens a title can actually be matched against.
 
@@ -270,6 +280,18 @@ class FullCatalogIndex:
         minimum = int(retrieval.get("type_exclusion_min_candidates", 0))
         return kept if kept.size >= minimum else rows
 
+    def color_match(self, rows: np.ndarray, colors: list[str]) -> np.ndarray:
+        """1.0 when a candidate title names any requested colour (English title words), else 0."""
+        patterns = [COLOR_TITLE_PATTERNS.get(color, rf"\b{re.escape(color)}\b") for color in colors]
+        subset = pd.Series(self.lowered_titles.to_numpy()[rows], copy=False)
+        return subset.str.contains("|".join(patterns), regex=True, na=False).to_numpy(dtype=np.float32)
+
+    def any_title_term(self, rows: np.ndarray, terms: list[str]) -> np.ndarray:
+        """1.0 when a candidate title contains any of `terms` as a word, else 0."""
+        pattern = "|".join(rf"\b{re.escape(term.casefold())}\b" for term in dict.fromkeys(terms))
+        subset = pd.Series(self.lowered_titles.to_numpy()[rows], copy=False)
+        return subset.str.contains(pattern, regex=True, na=False).to_numpy(dtype=np.float32)
+
     def title_match(self, rows: np.ndarray, keywords: list[str]) -> np.ndarray:
         """Fraction of query keywords present in each candidate title."""
         if not keywords or not rows.size:
@@ -412,8 +434,29 @@ class FullCatalogTactileProvider:
             else np.zeros(len(rows), dtype=np.float32)
         )
         keywords = title_keywords(" ".join(keywords) if keywords is not None else query_text)
+        # Optional colour component: when `color_match_weight` is set and the request names a
+        # colour, colour is scored on its own instead of being one keyword among several, so
+        # "navy pants" cannot be satisfied by any pants whose title says nothing about navy.
+        colors = [word for word in keywords if word in COLOR_PATTERNS]
+        color_weight = float(weights.get("color_match_weight", 0.0))
+        color_component = None
+        if color_weight > 0 and colors:
+            color_component = self.index.color_match(rows, colors)
+            keywords = [word for word in keywords if word not in colors]
         title_component = self.index.title_match(rows, keywords)
         popularity_component = self.index.popularity[rows]
+        # Optional material-word component: image predictions are often flat across a category
+        # (every skirt looks ~0.7 flexible), so a title that names a matching material or cut
+        # ("chiffon", "fleece", "stretch") is used as extra evidence for a wanted class.
+        texture_weight = float(weights.get("tactile_title_weight", 0.0))
+        texture_terms = [
+            term
+            for constraint in parsed.constraints
+            for term in weights.get("tactile_title_terms", {}).get(constraint.tactile_class, [])
+        ]
+        texture_component = (
+            self.index.any_title_term(rows, texture_terms) if texture_weight > 0 and texture_terms else None
+        )
 
         # Only components that carry a signal for this query take part in the
         # weighted average. A component the query said nothing about must not
@@ -423,6 +466,10 @@ class FullCatalogTactileProvider:
             active.append(("tactile_match", tactile_component, float(weights["tactile_match_weight"])))
         if keywords:
             active.append(("title_match", title_component, float(weights["title_match_weight"])))
+        if color_component is not None:
+            active.append(("color_match", color_component, color_weight))
+        if texture_component is not None:
+            active.append(("tactile_title", texture_component, texture_weight))
         active.append(("popularity", popularity_component, float(weights["popularity_weight"])))
 
         denominator = sum(weight for _, _, weight in active)

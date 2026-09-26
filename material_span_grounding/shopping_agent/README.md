@@ -95,10 +95,14 @@ health 확인 → 남은 차이 0 확인 순서로 진행하고, 원격 테스�
 검색 순위·촉감 점수·장바구니는 모두 기존 서비스가 계산한다. 원격 호출이 실패하면 로컬
 라우터 파이프라인으로 자동 전환한다. 장바구니는 대화에서 이미 보여준 상품만 담을 수 있다.
 
-실제 API로 시나리오를 평가한다(12턴, 도구 선택·구조화 조건·장바구니 부작용 자동 판정).
+실제 API로 시연 시나리오를 평가한다. 시나리오는 `evaluation/demo_scenarios.json`에 있고
+(작성법: `evaluation/SCENARIOS.md`), 도구 선택·구조화 조건·지칭·장바구니 부작용·답변 규칙을
+자동 판정한 뒤 사람이 판정할 검수표(`review.md`, `review.csv`)를 만든다.
 
 ```bash
-python -m shopping_agent.evaluation.tool_agent_scenarios --models gpt-5.4-mini
+python -m shopping_agent.evaluation.tool_agent_scenarios --check
+python -m shopping_agent.evaluation.tool_agent_scenarios \
+    --models gpt-5.4-mini gpt-5.4-nano --reasoning-efforts low --repeats 2
 ```
 
 프론트엔드 변경 사항은 `notion/25_FRONTEND_AGENT_TOOL_LOOP_CHANGES.md`에 있다.

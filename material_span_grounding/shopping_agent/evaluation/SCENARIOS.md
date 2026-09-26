@@ -1,0 +1,88 @@
+# 시연 시나리오 파일 작성법
+
+`demo_scenarios.json`은 시연 대화 세트이자 자동 판정 기준이다. 코드를 고치지 않고 이 파일만
+수정하면 된다. 수정한 뒤에는 API 호출 없이 형식부터 검사한다.
+
+```bash
+python -m shopping_agent.evaluation.tool_agent_scenarios --check
+```
+
+## 구조
+
+```json
+{
+  "scenarios": [
+    {
+      "id": "S3",
+      "title": "촉감 검색 → 담기",
+      "turns": [
+        {
+          "message": "안 까끌하고 얇은 여름 원피스 찾아줘",
+          "note": "dress, want=thin, avoid=rough.",
+          "expect": {"search": {"category": ["dress"], "want": ["thin"], "avoid": ["rough"]}}
+        },
+        {
+          "message": "2번 장바구니에 담아줘",
+          "note": "직전 검색 2번을 담는다.",
+          "expect": {"refers": {"tool": "add_to_cart", "positions": [2]}, "cart_updated": true}
+        }
+      ]
+    }
+  ]
+}
+```
+
+- 한 시나리오는 한 대화 세션이다. 턴은 순서대로 같은 세션에 보내며, 시나리오마다 새 사용자로 시작한다.
+- `note`는 자동 판정에 쓰지 않는다. 검수표에 "기대"로 표시되어 사람이 판정할 때 기준이 된다.
+- `expect`를 비워 두면(`{}`) 공통 규칙만 검사한다.
+
+## expect 키
+
+| 키 | 값 | 판정 |
+|---|---|---|
+| `no_tools` | `true` | 도구를 부르지 않고 상품도 반환하지 않아야 한다 (인사, 범위 밖) |
+| `tools` | `["view_cart"]` | 나열한 도구가 모두 호출되어야 한다 |
+| `search` | 아래 표 | `search_products`의 마지막 호출 인자를 검사한다 |
+| `refers` | `{"tool": "add_to_cart", "positions": [2]}` | 직전 검색 목록의 해당 번호 상품을 정확히 가리켜야 한다. 도구는 `get_product_detail`, `compare_products`, `add_to_cart` |
+| `cart_updated` | `true` / `false` | 이번 턴에 장바구니가 바뀌었는지 |
+
+`search` 안의 키:
+
+| 키 | 예 | 판정 |
+|---|---|---|
+| `category` | `["sweater", "cardigan"]` | 이 중 하나여야 한다. 옷 종류가 불분명하면 `[null]` |
+| `want` | `["thin"]` | 모두 포함해야 한다 (더 있어도 통과) |
+| `avoid` | `["rough"]` | 모두 포함해야 한다 |
+| `not_want` | `["thin"]` | `want`에 있으면 실패 (조건 수정 턴에서 이전 조건이 남았는지) |
+| `keyword` | `"white"` | 영어 keywords에 있어야 한다 |
+| `unsupported` | `true` | 비침·통기성·보풀처럼 표현 못 하는 조건을 `unsupported_concepts`에 넣어야 한다 |
+
+촉감 값: `soft firm smooth rough non_elastic elastic thin thick flexible stiff warm cool spongy crisp`
+
+옷 종류: `shirt tshirt sweater jacket coat pants jeans dress skirt hoodie cardigan top outerwear underwear sleepwear swimwear` 등
+(`demo_agent/models.py`의 `SUPPORTED_CATEGORIES`)
+
+## 모든 턴에 적용되는 공통 규칙
+
+- OpenAI 도구 루프가 실패해 로컬 라우터로 넘어가면 실패
+- 답변에 마크다운(`**`, `#`, 목록, 표)이 있으면 실패
+- 리뷰 근거가 없는 상품인데 "리뷰"를 근거처럼 말하면 실패 ("리뷰 근거는 없어요"는 통과)
+- 보여준 적 없는 상품을 상세·비교·담기 대상으로 쓰면 실패
+- 5문장 또는 300자를 넘으면 경고 (실패는 아님, 스크린리더 길이 기준)
+
+## 실행과 결과
+
+```bash
+# 모델 비교, 설정마다 2회 반복
+python -m shopping_agent.evaluation.tool_agent_scenarios \
+    --models gpt-5.4-mini gpt-5.4-nano --reasoning-efforts low --repeats 2
+
+# 일부 시나리오만
+python -m shopping_agent.evaluation.tool_agent_scenarios --only S3 S5
+```
+
+결과는 `evaluation/results/<시각>/`에 생긴다.
+
+- `review.md`: 턴마다 설정별 답변, 도구 인자, 상위 3개 이미지를 나란히 보여주는 검수표
+- `review.csv`: 같은 내용을 한 행씩. 판정 칸(조건해석, 지칭, 근거정직성, 말투 1~5, 메모)을 채운다
+- `results.json`: 원본 데이터

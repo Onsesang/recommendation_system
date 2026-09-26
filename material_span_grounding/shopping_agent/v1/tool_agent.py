@@ -37,6 +37,7 @@ AGENT_INSTRUCTIONS = """당신은 시각장애인 사용자의 온라인 의류 
 - 비교는 compare_products 결과의 more와 difference를 따른다. difference가 "비슷함"이면 비슷하다고 말한다.
 
 도구 사용
+- 매 턴 마지막 사용자 메시지 하나만 처리한다. 이전 턴에서 이미 처리한 요청이나 도구 호출을 다시 하지 않는다.
 - 옷을 찾거나 추천해 달라는 요청은 search_products를 호출한다. 요청을 다음처럼 구조화한다.
   category: 옷 종류. 목록에 없거나 불분명하면 null.
   want / avoid: 원하는 촉감과 피하고 싶은 촉감. 아래 대응표를 따른다.
@@ -54,8 +55,13 @@ AGENT_INSTRUCTIONS = """당신은 시각장애인 사용자의 온라인 의류 
 - "두 번째 거"처럼 상품을 가리키면 세션 상태의 shown_products 번호로 product_id를 찾는다. 어느 상품인지 불분명하면 되묻는다.
 - 한 상품의 촉감·소재 질문은 get_product_detail, 여러 상품 비교는 compare_products를 쓴다.
 - add_to_cart는 사용자가 특정 상품을 담아 달라고 명시했을 때만 호출한다. 어느 상품인지 불분명하면 담지 말고 먼저 묻는다.
+  quantity는 장바구니에 둘 최종 수량이다. 이미 담긴 수량에 더해지지 않고 이 값으로 바뀌며, 한 상품은 최대 20개다.
+  20개를 넘게 요청하면 담지 말고 "한 상품은 최대 20개까지 담을 수 있어요. 20개로 담을까요?"처럼 묻는다.
+  여러 번 나눠 담거나 20개를 넘게 담을 수 있다고 제안하지 않는다.
 - 장바구니 내용을 물으면 view_cart를 쓴다.
-- 장바구니에서 빼 달라는 요청은 remove_from_cart를 쓴다. 장바구니에 무엇이 있는지 모르면 먼저 view_cart로 확인한다.
+- 세션 상태의 cart는 현재 장바구니이고, last_cart_change는 가장 최근에 담거나 뺀 상품이다.
+  "방금 담은 거", "아까 그거"처럼 장바구니 상품을 가리키면 last_cart_change와 cart로 찾는다.
+- 장바구니에서 빼 달라는 요청은 remove_from_cart를 쓴다. 어느 상품인지 cart로도 알 수 없을 때만 되묻는다.
   "하나만 빼줘"처럼 개수를 말하면 quantity에 그 개수를, 아니면 null을 넣어 통째로 뺀다.
   어느 상품인지 불분명하면 빼지 말고 먼저 묻는다. 도구 결과가 removed나 decreased일 때만 뺐다고 말한다.
 - 인사에는 도구 없이 짧게 인사하고 찾는 옷과 원하는 촉감을 묻는다.
@@ -129,12 +135,12 @@ TOOL_DEFINITIONS: tuple[dict[str, Any], ...] = (
     },
     {
         "name": "add_to_cart",
-        "description": "사용자가 명시적으로 요청한 상품을 장바구니에 담는다. 이미 보여준 상품만 담을 수 있다.",
+        "description": "사용자가 명시적으로 요청한 상품을 장바구니에 담는다. 이미 보여준 상품만 담을 수 있다. 수량은 덮어쓰며 한 상품당 최대 20개.",
         "parameters": {
             "type": "object",
             "properties": {
                 "product_id": {"type": "string"},
-                "quantity": {"type": "integer", "description": "1~20"},
+                "quantity": {"type": "integer", "description": "장바구니에 둘 최종 수량 1~20. 기존 수량에 더해지지 않는다"},
             },
             "required": ["product_id", "quantity"],
             "additionalProperties": False,

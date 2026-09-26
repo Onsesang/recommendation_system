@@ -1,0 +1,2955 @@
+{
+  "generated_at": "2026-09-26T09:26:22+00:00",
+  "scenario_file": "shopping_agent/evaluation/demo_scenarios.json",
+  "scenario_count": 2,
+  "turn_count": 9,
+  "instability": [
+    {
+      "config": "gpt-5.4-mini/low",
+      "scenario": "P1",
+      "turn": 5,
+      "message": "방금 담은 거 하나만 빼줘",
+      "pass_changed": true,
+      "search_changed": false
+    },
+    {
+      "config": "gpt-5.4-mini/low",
+      "scenario": "V10",
+      "turn": 2,
+      "message": "부드러운 잠옷 보여줘",
+      "pass_changed": true,
+      "search_changed": true
+    },
+    {
+      "config": "gpt-5.4-mini/low",
+      "scenario": "V10",
+      "turn": 4,
+      "message": "그럼 20개 담아줘",
+      "pass_changed": true,
+      "search_changed": false
+    }
+  ],
+  "results": [
+    {
+      "model": "gpt-5.4-mini",
+      "reasoning_effort": "low",
+      "run": 1,
+      "turns": 9,
+      "passed": 9,
+      "latency_median": 2.91,
+      "latency_p90": 3.91,
+      "latency_max": 4.75,
+      "mean_chars": 78.1,
+      "mean_sentences": 2.4,
+      "length_warnings": 0,
+      "fallbacks": 0,
+      "rows": [
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 1,
+          "message": "부드러운 가디건 보여줘",
+          "note": "cardigan(또는 sweater), want=soft.",
+          "answer": "세 상품 모두 부드러워요.  \n1번은 판초처럼 걸치는 오픈형 가디건이고, 이미지를 바탕으로 예측한 촉감이에요.  \n2번은 버튼 여밈의 기본 니트 가디건이고, 3번은 앞이 트인 롱 가디건이에요.  \n원하시면 더 부드러운 쪽, 더 얇은 쪽으로도 좁혀서 보여드릴게요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "부드러운 가디건",
+                "category": "cardigan",
+                "want": [
+                  "soft"
+                ],
+                "avoid": [],
+                "keywords": [],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.64,
+          "llm_requests": 2,
+          "chars": 146,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B08BFQ7ZH8",
+              "title": "QBSM Women's Shawl Wrap Poncho Ruana Capes Open Front Cardigan Blanket Wraps for Fall and Winter",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/617N3FhiPtL._AC_UL1000_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8116759657859802,
+                  "match_component": 0.8116759657859802,
+                  "weight": 1.0,
+                  "weighted_component": 0.8116759657859802
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B014EFUYPW",
+              "title": "BIADANI Women Round Neck Button Down Soft Classic Knit Cardigan Sweater Black Medium",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71+2hrzJJSL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8322367072105408,
+                  "match_component": 0.8322367072105408,
+                  "weight": 1.0,
+                  "weighted_component": 0.8322367072105408
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B01H73INN8",
+              "title": "ElbonBoutique Womens Long Sleeve Classic Open Front Cardigan , Beige , XX-Large",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/614RRh4Oo3L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8322367072105408,
+                  "match_component": 0.8322367072105408,
+                  "weight": 1.0,
+                  "weighted_component": 0.8322367072105408
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B07QDXWKC9",
+              "title": "Charis Allure Women's Casual Drawstring Trench Coat Waterfall Collar Long Sleeve Open Front Cardigan, Black, Medium",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/7102ZtzgnoL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8092759251594543,
+                  "match_component": 0.8092759251594543,
+                  "weight": 1.0,
+                  "weighted_component": 0.8092759251594543
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B07D6LWPLR",
+              "title": "Womens Open Front Cardigan Outerwear Jacket and Pants 2 Piece Outfit Blue 2XL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61fc-0wGO8L._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.804405927658081,
+                  "match_component": 0.804405927658081,
+                  "weight": 1.0,
+                  "weighted_component": 0.804405927658081
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B0B7X9G38Z",
+              "title": "Karlywindow Mens Long Sleeve Cardigan Sweater Button Down Casual Slim Fit Lightweight Knitted Sweaters Army Green",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/51jU2ZD7qML._AC_UL1200_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8344069123268127,
+                  "match_component": 0.8344069123268127,
+                  "weight": 1.0,
+                  "weighted_component": 0.8344069123268127
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B012ZND0JM",
+              "title": "Meaneor Women's Long Sleeves Floral Lace Back Boyfriend Pocket Cardigan Black XXL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71o1aO4-8VL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8344069123268127,
+                  "match_component": 0.8344069123268127,
+                  "weight": 1.0,
+                  "weighted_component": 0.8344069123268127
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B07GJMCCCP",
+              "title": "Tobrief Womens Long Sleeve Button Cardigan for Work Navy Blue",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61rYqN9LHCL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8300437331199646,
+                  "match_component": 0.8300437331199646,
+                  "weight": 1.0,
+                  "weighted_component": 0.8300437331199646
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B07HDTGRHT",
+              "title": "YTUIEKY Button Down Knitwear Long Sleeve Soft Basic Knit Snap Cardigan Sweater White XL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/31xTp1AQivL._AC_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8344069123268127,
+                  "match_component": 0.8344069123268127,
+                  "weight": 1.0,
+                  "weighted_component": 0.8344069123268127
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B01AZM3IS8",
+              "title": "Merona Women's Favorite Cardigan Sweater Red Crew Neck (Large)",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61KBbzbSRPL._AC_UL1024_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8255897164344788,
+                  "match_component": 0.8255897164344788,
+                  "weight": 1.0,
+                  "weighted_component": 0.8255897164344788
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 2,
+          "message": "두 번째 거 자세히 알려줘",
+          "note": "직전 검색 2번 상세.",
+          "answer": "2번은 검은색 기본 니트 가디건이고, 버튼 여밈에 라운드넥이에요.  \n이미지로 예측한 촉감이라서 참고용이지만, 부드럽고 조금 늘어나고 조금 따뜻해 보여요.  \n약간 각이 잡혀 있고 조금 폭신한 편이라, 너무 흐물한 느낌보다 형태가 있는 쪽에 가까워요.",
+          "action": "get_product_detail",
+          "tool_calls": [
+            {
+              "name": "get_product_detail",
+              "arguments": {
+                "product_id": "B014EFUYPW"
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.16,
+          "llm_requests": 2,
+          "chars": 140,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 3,
+          "message": "그거랑 첫 번째 비교해줘",
+          "note": "'그거'는 방금 본 2번. 2번과 1번을 비교한다.",
+          "answer": "둘 다 부드럽고, 얇기나 도톰함도 비슷해요.  \n2번은 버튼 여밈의 기본 검은 니트 가디건이고, 1번은 판초처럼 걸치는 오픈형 가디건이에요.  \n이미지로 예측한 촉감 기준으로는 1번이 조금 더 매끄럽고, 2번이 조금 더 따뜻해 보여요.",
+          "action": "compare_products",
+          "tool_calls": [
+            {
+              "name": "compare_products",
+              "arguments": {
+                "product_ids": [
+                  "B014EFUYPW",
+                  "B08BFQ7ZH8"
+                ]
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 4.75,
+          "llm_requests": 2,
+          "chars": 131,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 4,
+          "message": "첫 번째 거 두 개 담아줘",
+          "note": "1번을 수량 2로 담는다.",
+          "answer": "첫 번째 상품을 2개로 담아뒀어요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B08BFQ7ZH8",
+                "quantity": 2
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.58,
+          "llm_requests": 2,
+          "chars": 19,
+          "sentences": 1,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 5,
+          "message": "방금 담은 거 하나만 빼줘",
+          "note": "1번 가디건 2개 중 1개만 뺀다(quantity=1). 1개 남았다고 말한다.",
+          "answer": "하나만 빼서, 첫 번째 상품은 1개 남아 있어요.",
+          "action": "remove_from_cart",
+          "tool_calls": [
+            {
+              "name": "remove_from_cart",
+              "arguments": {
+                "product_id": "B08BFQ7ZH8",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.86,
+          "llm_requests": 2,
+          "chars": 27,
+          "sentences": 1,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "V10",
+          "title": "빈 장바구니와 수량 한도",
+          "turn": 1,
+          "message": "장바구니 보여줘",
+          "note": "view_cart로 비어 있다고 말한다.",
+          "answer": "장바구니가 비어 있어요.  \n원하시면 원하는 옷 종류와 촉감을 말해 주세요. 제가 찾아드릴게요.",
+          "action": "view_cart",
+          "tool_calls": [
+            {
+              "name": "view_cart",
+              "arguments": {},
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.91,
+          "llm_requests": 2,
+          "chars": 53,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "V10",
+          "title": "빈 장바구니와 수량 한도",
+          "turn": 2,
+          "message": "부드러운 잠옷 보여줘",
+          "note": "sleepwear, want=soft.",
+          "answer": "세 상품 모두 부드러워요, 이미지로 예측한 촉감이에요.  \n1번은 네이비 줄무늬 아이용 긴팔 잠옷 세트예요. 2번은 보랏빛 줄무늬의 후드가 달린 목욕 가운이고, 3번은 레이스 장식의 보라색 잠옷이에요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "부드러운 잠옷",
+                "category": "sleepwear",
+                "want": [
+                  "soft"
+                ],
+                "avoid": [],
+                "keywords": [],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.91,
+          "llm_requests": 2,
+          "chars": 112,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B07ZVNZCNN",
+              "title": "UNACOO Toddler Kids Boys Girls Long-Sleeves Sleepwear 2-Piece Cotton Pajama Sets (Age 3-12 Years)(Navy Stripe Sets, l)",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61GS0GUCKTL._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8322367072105408,
+                  "match_component": 0.8322367072105408,
+                  "weight": 1.0,
+                  "weighted_component": 0.8322367072105408
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B005J5C5UE",
+              "title": "Del Rossa Womens Fleece Robe, 14 oz Hooded Bathrobe, Small-Medium Purple Pastel Striped (A0110P03MD)",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61EQwUO55XL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8031737804412842,
+                  "match_component": 0.8031737804412842,
+                  "weight": 1.0,
+                  "weighted_component": 0.8031737804412842
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B019X7PVLI",
+              "title": "Avidlove Strappy Teddy Lace One Piece Babydoll Hlater Bodysuit Sleepwear Purple L",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/91ab8Ln1PgL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8175744414329529,
+                  "match_component": 0.8175744414329529,
+                  "weight": 1.0,
+                  "weighted_component": 0.8175744414329529
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B01IHIACO0",
+              "title": "The Bund Women's Short Sleepwear Modal Cotton Knit Robe-Lace Trim, M Black",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71GtACNZq5L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8244618773460388,
+                  "match_component": 0.8244618773460388,
+                  "weight": 1.0,
+                  "weighted_component": 0.8244618773460388
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B0758Z7KRS",
+              "title": "Five Nights at Freddy's Game Over Four Heads Two Piece Youth Pajama Set (X-Large, 12)",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81KqnGaOIDL._AC_UL1400_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8267117738723755,
+                  "match_component": 0.8267117738723755,
+                  "weight": 1.0,
+                  "weighted_component": 0.8267117738723755
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B019X7PVLS",
+              "title": "Avidlove Lace Eyelash Bodysuit Teddy Sleepwear Naughty Negligee Black Bodysuit Purple XXL",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/91ab8Ln1PgL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8175744414329529,
+                  "match_component": 0.8175744414329529,
+                  "weight": 1.0,
+                  "weighted_component": 0.8175744414329529
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B0796RDMZB",
+              "title": "JEAREY Men's Kimono Robe Cotton Waffle Spa Bathrobe Lightweight Soft Knee Length Sleepwear with Pockets(Black-Grey, L)",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/712O1VeBHKL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8300437331199646,
+                  "match_component": 0.8300437331199646,
+                  "weight": 1.0,
+                  "weighted_component": 0.8300437331199646
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B07BWTQHW2",
+              "title": "Frozen Elsa Girl's Fleece Bathrobe Robe (4T, Elsa Blue)",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71nnJIpiRXL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8300437331199646,
+                  "match_component": 0.8300437331199646,
+                  "weight": 1.0,
+                  "weighted_component": 0.8300437331199646
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B07Y5J2MTL",
+              "title": "Kid Nation Kids Soft Coral Fleece Casual Bath Robe for Boys or Girls Pink L …",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/01RmK+J4pJL._AC_.gif",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8116759657859802,
+                  "match_component": 0.8116759657859802,
+                  "weight": 1.0,
+                  "weighted_component": 0.8116759657859802
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B07Z4MQ3DZ",
+              "title": "DIDK Women's Two Piece Silk Satin Pajamas Set Button Down Sleepwear Loungewear Yellow XL",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61SLNVav-xL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8300437331199646,
+                  "match_component": 0.8300437331199646,
+                  "weight": 1.0,
+                  "weighted_component": 0.8300437331199646
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "V10",
+          "title": "빈 장바구니와 수량 한도",
+          "turn": 3,
+          "message": "1번 50개 담아줘",
+          "note": "한 상품은 최대 20개라고 안내하고 20개로 담을지 묻는다. 50개를 담았다고 하거나 나눠 담기를 제안하면 틀림.",
+          "answer": "한 상품은 최대 20개까지 담을 수 있어요. 20개로 담을까요?",
+          "action": "respond",
+          "tool_calls": [],
+          "latency_seconds": 1.38,
+          "llm_requests": 1,
+          "chars": 35,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "V10",
+          "title": "빈 장바구니와 수량 한도",
+          "turn": 4,
+          "message": "그럼 20개 담아줘",
+          "note": "1번을 수량 20으로 담는다.",
+          "answer": "1번 상품 20개로 담았어요.  \n장바구니 수량은 이 값으로 설정됐어요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B07ZVNZCNN",
+                "quantity": 20
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.43,
+          "llm_requests": 2,
+          "chars": 40,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.4-mini",
+      "reasoning_effort": "low",
+      "run": 2,
+      "turns": 9,
+      "passed": 9,
+      "latency_median": 3.02,
+      "latency_p90": 3.48,
+      "latency_max": 5.28,
+      "mean_chars": 67.7,
+      "mean_sentences": 2.7,
+      "length_warnings": 0,
+      "fallbacks": 0,
+      "rows": [
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 1,
+          "message": "부드러운 가디건 보여줘",
+          "note": "cardigan(또는 sweater), want=soft.",
+          "answer": "세 상품 모두 부드러워요. 1번은 판초 느낌의 여밈 없는 가디건이고, 이미지로 예측한 촉감이라 보면서 고른 추천이에요. 2번은 단추가 있는 기본 니트 가디건이고, 3번은 레이스 뒷부분이 있는 블랙 가디건이에요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "부드러운 가디건",
+                "category": "cardigan",
+                "want": [
+                  "soft"
+                ],
+                "avoid": [],
+                "keywords": [
+                  "cardigan"
+                ],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.4,
+          "llm_requests": 2,
+          "chars": 117,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B08BFQ7ZH8",
+              "title": "QBSM Women's Shawl Wrap Poncho Ruana Capes Open Front Cardigan Blanket Wraps for Fall and Winter",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/617N3FhiPtL._AC_UL1000_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8116759657859802,
+                  "match_component": 0.8116759657859802,
+                  "weight": 1.0,
+                  "weighted_component": 0.8116759657859802
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B014EFUYPW",
+              "title": "BIADANI Women Round Neck Button Down Soft Classic Knit Cardigan Sweater Black Medium",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71+2hrzJJSL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8322367072105408,
+                  "match_component": 0.8322367072105408,
+                  "weight": 1.0,
+                  "weighted_component": 0.8322367072105408
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B012ZND0JM",
+              "title": "Meaneor Women's Long Sleeves Floral Lace Back Boyfriend Pocket Cardigan Black XXL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71o1aO4-8VL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8344069123268127,
+                  "match_component": 0.8344069123268127,
+                  "weight": 1.0,
+                  "weighted_component": 0.8344069123268127
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B01N8TDLWM",
+              "title": "ZIKKER Women's Aztec Print Drape Open Front Knit Cardigan Sweaters Green X-Large",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61eS88qO6fL._AC_UL1024_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8104788661003113,
+                  "match_component": 0.8104788661003113,
+                  "weight": 1.0,
+                  "weighted_component": 0.8104788661003113
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B07D6MGMVZ",
+              "title": "Womens Long Sleeve Jacket Open Front Cardigan + Pants 2 Piece Outfit Blue XL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61fc-0wGO8L._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.804405927658081,
+                  "match_component": 0.804405927658081,
+                  "weight": 1.0,
+                  "weighted_component": 0.804405927658081
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B071HQCYTV",
+              "title": "Women Open Front Casual Comfy Flowy Long Line Modal Cardigan (M, Purple)",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61E5vjdQJwL._AC_UL1050_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8244618773460388,
+                  "match_component": 0.8244618773460388,
+                  "weight": 1.0,
+                  "weighted_component": 0.8244618773460388
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B082X28SDZ",
+              "title": "ZSWDXX Women Short Sleeve Lace Trim Kimono Cardigan Loose Cover Up Black Medium",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/01RmK+J4pJL._AC_.gif",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8116759657859802,
+                  "match_component": 0.8116759657859802,
+                  "weight": 1.0,
+                  "weighted_component": 0.8116759657859802
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B078PSVGG1",
+              "title": "Orchid Row Women's Oxford Plaid Wool Effect Blanket Wrap Ruana Cardigan Shawl",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/01RmK+J4pJL._AC_.gif",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8116759657859802,
+                  "match_component": 0.8116759657859802,
+                  "weight": 1.0,
+                  "weighted_component": 0.8116759657859802
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B01GP5QTI0",
+              "title": "NINEXIS Women's Long Sleeve Button Down Soft Knit Cardigan Sweater Aqua 2XL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71ISf3R6vaL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8333246111869812,
+                  "match_component": 0.8333246111869812,
+                  "weight": 1.0,
+                  "weighted_component": 0.8333246111869812
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B018TZMT60",
+              "title": "DRSKIN Women's Open - Front Long Sleeve Knit Cardigan (Cardigan Black, 2XL)",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/6190R0YigSL._AC_UL1300_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.7732163667678833,
+                  "match_component": 0.7732163667678833,
+                  "weight": 1.0,
+                  "weighted_component": 0.7732163667678833
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 2,
+          "message": "두 번째 거 자세히 알려줘",
+          "note": "직전 검색 2번 상세.",
+          "answer": "2번은 블랙의 기본 단추 가디건이에요. 부드럽고 조금 늘어나며, 조금 따뜻하고 조금 폭신한 느낌이에요. 이미지로 예측한 촉감이라 실제 착용감과는 다를 수 있어요.",
+          "action": "get_product_detail",
+          "tool_calls": [
+            {
+              "name": "get_product_detail",
+              "arguments": {
+                "product_id": "B014EFUYPW"
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 5.28,
+          "llm_requests": 2,
+          "chars": 90,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 3,
+          "message": "그거랑 첫 번째 비교해줘",
+          "note": "'그거'는 방금 본 2번. 2번과 1번을 비교한다.",
+          "answer": "두 상품은 전반적으로 비슷해요. 1번은 2번보다 조금 더 따뜻하고, 2번은 1번보다 조금 더 매끄러운 편이에요. 둘 다 부드럽고 조금 얇으면서 하늘하늘한 느낌이라, 큰 차이보다 분위기 차이를 보면 돼요. 이미지로 예측한 촉감이에요.",
+          "action": "compare_products",
+          "tool_calls": [
+            {
+              "name": "compare_products",
+              "arguments": {
+                "product_ids": [
+                  "B08BFQ7ZH8",
+                  "B014EFUYPW"
+                ]
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.97,
+          "llm_requests": 2,
+          "chars": 129,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 4,
+          "message": "첫 번째 거 두 개 담아줘",
+          "note": "1번을 수량 2로 담는다.",
+          "answer": "1번을 2개로 장바구니에 담았어요. 필요한 것 있으면 이어서 봐드릴게요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B08BFQ7ZH8",
+                "quantity": 2
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.02,
+          "llm_requests": 2,
+          "chars": 40,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 5,
+          "message": "방금 담은 거 하나만 빼줘",
+          "note": "1번 가디건 2개 중 1개만 뺀다(quantity=1). 1개 남았다고 말한다.",
+          "answer": "하나만 빼드렸어요. 이제 1번은 장바구니에 1개 남아 있어요.",
+          "action": "remove_from_cart",
+          "tool_calls": [
+            {
+              "name": "remove_from_cart",
+              "arguments": {
+                "product_id": "B08BFQ7ZH8",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.48,
+          "llm_requests": 2,
+          "chars": 34,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "V10",
+          "title": "빈 장바구니와 수량 한도",
+          "turn": 1,
+          "message": "장바구니 보여줘",
+          "note": "view_cart로 비어 있다고 말한다.",
+          "answer": "장바구니가 비어 있어요.  \n담긴 상품이 없습니다.",
+          "action": "view_cart",
+          "tool_calls": [
+            {
+              "name": "view_cart",
+              "arguments": {},
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.12,
+          "llm_requests": 2,
+          "chars": 28,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "V10",
+          "title": "빈 장바구니와 수량 한도",
+          "turn": 2,
+          "message": "부드러운 잠옷 보여줘",
+          "note": "sleepwear, want=soft.",
+          "answer": "세 상품 모두 부드럽고, 이미지로 예측한 촉감이에요.  \n1번은 실키한 새틴 파자마 세트예요.  \n2번은 버튼업 긴소매 잠옷 세트예요.  \n3번은 포켓이 있는 긴소매 잠옷 세트예요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "부드러운 잠옷",
+                "category": "sleepwear",
+                "want": [
+                  "soft"
+                ],
+                "avoid": [],
+                "keywords": [
+                  "soft",
+                  "sleepwear"
+                ],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.33,
+          "llm_requests": 2,
+          "chars": 101,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B09MFPY47V",
+              "title": "Womens Silky Satin Pajamas Set Sleepwear Soft Loungewear Sets Pajamas Pjs Set Button-Down Pj Set for Women Green",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61QHUfdc2YL._AC_UL1400_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8187368512153625,
+                  "match_component": 0.8187368512153625,
+                  "weight": 1.0,
+                  "weighted_component": 0.8187368512153625
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B09GKT3QVL",
+              "title": "fgah soft womans pajama satin Button Up long sleeve pj sleepwear set (Black, Medium)",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/51IxoBetVmL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8289388418197632,
+                  "match_component": 0.8289388418197632,
+                  "weight": 1.0,
+                  "weighted_component": 0.8289388418197632
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B07ZCTFBJ3",
+              "title": "Lusofie Pajamas Set for Women Long Sleeve Sleepwear Soft V-Neck Pjs Sets with Pocket (Black, M)",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61aFS2461gL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8344069123268127,
+                  "match_component": 0.8344069123268127,
+                  "weight": 1.0,
+                  "weighted_component": 0.8344069123268127
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B01NAZIKO4",
+              "title": "Patricia Women's Soft Long Sleeve Henley 2PC Pajama Set Sleepwear (Grey Floral Blossom, M)",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61TwG+9cLYL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8104788661003113,
+                  "match_component": 0.8104788661003113,
+                  "weight": 1.0,
+                  "weighted_component": 0.8104788661003113
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B081993WH2",
+              "title": "LICKLIP Women Pink Microfleece Pajama Set Soft Warm Long Sleeve Lace Trim Drawstring Sleepwear Two Piece with Pockets",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/41B7hd0NvZL._AC_UL1000_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8092759251594543,
+                  "match_component": 0.8092759251594543,
+                  "weight": 1.0,
+                  "weighted_component": 0.8092759251594543
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B096S1Z6PB",
+              "title": "SHUCHENG Little Girls Kids Soft Hooded Robe Galaxy Stars Pattern Sleepwear Fleece Flannel Bathrobes, Fushia, US 6 Years, CN 130, Pink",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61Oe-U17LCL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8278281688690186,
+                  "match_component": 0.8278281688690186,
+                  "weight": 1.0,
+                  "weighted_component": 0.8278281688690186
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B07QDY1NRW",
+              "title": "Ekouaer Womens Pajamas Set Sleeveless Sleepwear V Neck Nightwear Soft Pj Lounge Sets S-XXL (Black., L)",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71FLgTmUshL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8300437331199646,
+                  "match_component": 0.8300437331199646,
+                  "weight": 1.0,
+                  "weighted_component": 0.8300437331199646
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B075NK6F8T",
+              "title": "Soft Sleepwear Set Modal Pajamas Long Bottoms for Women Light Gray Size M ZE46-3",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61xamHPQtoL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8244618773460388,
+                  "match_component": 0.8244618773460388,
+                  "weight": 1.0,
+                  "weighted_component": 0.8244618773460388
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B07XCXSVNN",
+              "title": "2-Pack: Men's Fleece Pajama Set Soft Cozy Lightweight Two Piece Long Sleeve Pj Sleepwear Set Pajamas for Men- Set 5, Large",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81eafyFJU8L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8267117738723755,
+                  "match_component": 0.8267117738723755,
+                  "weight": 1.0,
+                  "weighted_component": 0.8267117738723755
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B09835BVPN",
+              "title": "MAXMODA Women Kimono Robes Long Flower Robe Knit Bathrobe Soft Sleepwear V-Neck Ladies Loungewear(Coral Red Flower,X-Large)",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71t4z1kUAhL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8289388418197632,
+                  "match_component": 0.8289388418197632,
+                  "weight": 1.0,
+                  "weighted_component": 0.8289388418197632
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "V10",
+          "title": "빈 장바구니와 수량 한도",
+          "turn": 3,
+          "message": "1번 50개 담아줘",
+          "note": "한 상품은 최대 20개라고 안내하고 20개로 담을지 묻는다. 50개를 담았다고 하거나 나눠 담기를 제안하면 틀림.",
+          "answer": "한 상품은 최대 20개까지 담을 수 있어요. 20개로 담을까요?",
+          "action": "respond",
+          "tool_calls": [],
+          "latency_seconds": 1.34,
+          "llm_requests": 1,
+          "chars": 35,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "V10",
+          "title": "빈 장바구니와 수량 한도",
+          "turn": 4,
+          "message": "그럼 20개 담아줘",
+          "note": "1번을 수량 20으로 담는다.",
+          "answer": "1번을 20개 담았어요.  \n장바구니에 정상적으로 추가됐습니다.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B09MFPY47V",
+                "quantity": 20
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.78,
+          "llm_requests": 2,
+          "chars": 35,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.4-mini",
+      "reasoning_effort": "low",
+      "run": 3,
+      "turns": 9,
+      "passed": 9,
+      "latency_median": 3.12,
+      "latency_p90": 3.22,
+      "latency_max": 3.6,
+      "mean_chars": 77.8,
+      "mean_sentences": 2.8,
+      "length_warnings": 0,
+      "fallbacks": 0,
+      "rows": [
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 1,
+          "message": "부드러운 가디건 보여줘",
+          "note": "cardigan(또는 sweater), want=soft.",
+          "answer": "세 상품 모두 부드러워요. 이미지로 예측한 촉감 기준으로 보면 1번은 블랙 오픈형 트렌치 느낌의 가디건이고, 2번은 블루 오픈형 가디건 세트예요. 3번은 코랄색 라운드넥 가디건이고, 4번은 베이지 오픈형으로 부드러운 촉감이 더 분명해요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "부드러운 가디건",
+                "category": "cardigan",
+                "want": [
+                  "soft"
+                ],
+                "avoid": [],
+                "keywords": [
+                  "cardigan"
+                ],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.22,
+          "llm_requests": 2,
+          "chars": 132,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B07QDXWKC9",
+              "title": "Charis Allure Women's Casual Drawstring Trench Coat Waterfall Collar Long Sleeve Open Front Cardigan, Black, Medium",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/7102ZtzgnoL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8092759251594543,
+                  "match_component": 0.8092759251594543,
+                  "weight": 1.0,
+                  "weighted_component": 0.8092759251594543
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B07D6LWPLR",
+              "title": "Womens Open Front Cardigan Outerwear Jacket and Pants 2 Piece Outfit Blue 2XL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61fc-0wGO8L._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.804405927658081,
+                  "match_component": 0.804405927658081,
+                  "weight": 1.0,
+                  "weighted_component": 0.804405927658081
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B01CDQWLU0",
+              "title": "WSK781 Womens Keep It Classic Round Cardigan XXL CORAL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81rQlF9NthL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.837619960308075,
+                  "match_component": 0.837619960308075,
+                  "weight": 1.0,
+                  "weighted_component": 0.837619960308075
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B01H73INN8",
+              "title": "ElbonBoutique Womens Long Sleeve Classic Open Front Cardigan , Beige , XX-Large",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/614RRh4Oo3L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8322367072105408,
+                  "match_component": 0.8322367072105408,
+                  "weight": 1.0,
+                  "weighted_component": 0.8322367072105408
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B014EFUYPW",
+              "title": "BIADANI Women Round Neck Button Down Soft Classic Knit Cardigan Sweater Black Medium",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71+2hrzJJSL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8322367072105408,
+                  "match_component": 0.8322367072105408,
+                  "weight": 1.0,
+                  "weighted_component": 0.8322367072105408
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B01CHBEQ5E",
+              "title": "CTC WSK1078 Womens Lightweight Tie Dye Open Long Maxi Cardigan L Wine",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/813qPHdsT4L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8289388418197632,
+                  "match_component": 0.8289388418197632,
+                  "weight": 1.0,
+                  "weighted_component": 0.8289388418197632
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B07S69HXHQ",
+              "title": "Karen Scott Floral-Print Cardigan Sweater (Deep Black Combo, S)",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71IgBrYBVLL._AC_UL1000_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8244618773460388,
+                  "match_component": 0.8244618773460388,
+                  "weight": 1.0,
+                  "weighted_component": 0.8244618773460388
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B01BWMY7D0",
+              "title": "Meaneor Women's Lace Crochet Sheer Long Sleeve Waterfall Open Front Cardigan Style-3 Black XL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/914BDr-KKvL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8267117738723755,
+                  "match_component": 0.8267117738723755,
+                  "weight": 1.0,
+                  "weighted_component": 0.8267117738723755
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B014RPPPIK",
+              "title": "Emmalise Women's Classic V-Neck Button Down Cardigan Sweater,Mint,Large",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81VEzOCUc-L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8244618773460388,
+                  "match_component": 0.8244618773460388,
+                  "weight": 1.0,
+                  "weighted_component": 0.8244618773460388
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B07GJMCCCP",
+              "title": "Tobrief Womens Long Sleeve Button Cardigan for Work Navy Blue",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61rYqN9LHCL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8300437331199646,
+                  "match_component": 0.8300437331199646,
+                  "weight": 1.0,
+                  "weighted_component": 0.8300437331199646
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 2,
+          "message": "두 번째 거 자세히 알려줘",
+          "note": "직전 검색 2번 상세.",
+          "answer": "2번은 블루색 오픈형 가디건 세트예요. 이미지로 예측한 촉감 기준으로는 부드럽고, 조금 얇고, 조금 하늘하늘해요. 다만 약간 까끌할 수 있고 조금 따뜻한 느낌도 있어요.",
+          "action": "get_product_detail",
+          "tool_calls": [
+            {
+              "name": "get_product_detail",
+              "arguments": {
+                "product_id": "B07D6LWPLR"
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.12,
+          "llm_requests": 2,
+          "chars": 94,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 3,
+          "message": "그거랑 첫 번째 비교해줘",
+          "note": "'그거'는 방금 본 2번. 2번과 1번을 비교한다.",
+          "answer": "둘은 촉감이 거의 비슷해요. 둘 다 부드럽고 조금 얇고 조금 하늘하늘한 편이며, 약간 까끌할 수 있어요. 두 상품 모두 이미지로 예측한 촉감이라 실제 착용감은 다를 수 있어요.",
+          "action": "compare_products",
+          "tool_calls": [
+            {
+              "name": "compare_products",
+              "arguments": {
+                "product_ids": [
+                  "B07D6LWPLR",
+                  "B07QDXWKC9"
+                ]
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.74,
+          "llm_requests": 2,
+          "chars": 98,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 4,
+          "message": "첫 번째 거 두 개 담아줘",
+          "note": "1번을 수량 2로 담는다.",
+          "answer": "1번을 2개로 담았어요. 블랙 오픈형 트렌치 느낌의 가디건이에요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B07QDXWKC9",
+                "quantity": 2
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.13,
+          "llm_requests": 2,
+          "chars": 36,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 5,
+          "message": "방금 담은 거 하나만 빼줘",
+          "note": "1번 가디건 2개 중 1개만 뺀다(quantity=1). 1개 남았다고 말한다.",
+          "answer": "하나만 빼서 지금 1개 남아 있어요. 블랙 오픈형 트렌치 느낌의 가디건입니다.",
+          "action": "remove_from_cart",
+          "tool_calls": [
+            {
+              "name": "remove_from_cart",
+              "arguments": {
+                "product_id": "B07QDXWKC9",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.78,
+          "llm_requests": 2,
+          "chars": 43,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "V10",
+          "title": "빈 장바구니와 수량 한도",
+          "turn": 1,
+          "message": "장바구니 보여줘",
+          "note": "view_cart로 비어 있다고 말한다.",
+          "answer": "장바구니가 비어 있어요.  \n원하시면 원하는 옷 종류와 촉감을 말해 주세요. 제가 바로 찾아드릴게요.",
+          "action": "view_cart",
+          "tool_calls": [
+            {
+              "name": "view_cart",
+              "arguments": {},
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.77,
+          "llm_requests": 2,
+          "chars": 56,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "V10",
+          "title": "빈 장바구니와 수량 한도",
+          "turn": 2,
+          "message": "부드러운 잠옷 보여줘",
+          "note": "sleepwear, want=soft.",
+          "answer": "세 상품 모두 부드러워요.  \n1번은 고양이 무늬의 아동용 반팔 잠옷이고, 이미지로 예측한 촉감이에요.  \n2번은 남녀공용 아동용 긴팔 투피스 잠옷이고, 이미지로 예측한 촉감이에요.  \n3번은 남녀공용 원피스 잠옷이고, 이미지로 예측한 촉감이에요.  \n원하시면 4번부터도 이어서 보여드릴게요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "부드러운 잠옷",
+                "category": "sleepwear",
+                "want": [
+                  "soft"
+                ],
+                "avoid": [],
+                "keywords": [],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.6,
+          "llm_requests": 2,
+          "chars": 163,
+          "sentences": 5,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B01D866H5O",
+              "title": "Girls Pajamas Cats Kids Cotton Clothes Oufit Toddler 2 Piece Shorts Set Grey 3T",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71wU6RUCAKL._AC_UL1300_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8300437331199646,
+                  "match_component": 0.8300437331199646,
+                  "weight": 1.0,
+                  "weighted_component": 0.8300437331199646
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B07ZVNZCNN",
+              "title": "UNACOO Toddler Kids Boys Girls Long-Sleeves Sleepwear 2-Piece Cotton Pajama Sets (Age 3-12 Years)(Navy Stripe Sets, l)",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61GS0GUCKTL._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8322367072105408,
+                  "match_component": 0.8322367072105408,
+                  "weight": 1.0,
+                  "weighted_component": 0.8322367072105408
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B00NB6NC2I",
+              "title": "SkylineWears Men's Unisex Onesie Jumpsuit One Piece Non Footed Pajama Playsuit Medium Black",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/51dlkzZ4rFL._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8210441470146179,
+                  "match_component": 0.8210441470146179,
+                  "weight": 1.0,
+                  "weighted_component": 0.8210441470146179
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B08KRT463Q",
+              "title": "Genhoo Womens Pajamas PJ Set Long Sleeve Sleepwear Sheep Pattern Loungewear Grey Sheep Medium",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/614AgqevvpL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8175744414329529,
+                  "match_component": 0.8175744414329529,
+                  "weight": 1.0,
+                  "weighted_component": 0.8175744414329529
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B01C38CS6K",
+              "title": "Paw Patrol Little Boys Toddler Short Sleeve Cotton Pajama Set (5T)",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/811q04wXKWL._AC_UL1306_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8187368512153625,
+                  "match_component": 0.8187368512153625,
+                  "weight": 1.0,
+                  "weighted_component": 0.8187368512153625
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B08KWG1FX9",
+              "title": "ADOME Women's Shorts Pajama Set Short Sleeve Sleepwear Womens Nightwear Soft Pj Lounge Sets Green Small",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81HbGw8F2gS._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8278281688690186,
+                  "match_component": 0.8278281688690186,
+                  "weight": 1.0,
+                  "weighted_component": 0.8278281688690186
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B0796RDMZB",
+              "title": "JEAREY Men's Kimono Robe Cotton Waffle Spa Bathrobe Lightweight Soft Knee Length Sleepwear with Pockets(Black-Grey, L)",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/712O1VeBHKL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8300437331199646,
+                  "match_component": 0.8300437331199646,
+                  "weight": 1.0,
+                  "weighted_component": 0.8300437331199646
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B07Z4MQ3DZ",
+              "title": "DIDK Women's Two Piece Silk Satin Pajamas Set Button Down Sleepwear Loungewear Yellow XL",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61SLNVav-xL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8300437331199646,
+                  "match_component": 0.8300437331199646,
+                  "weight": 1.0,
+                  "weighted_component": 0.8300437331199646
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B0758Y1MTW",
+              "title": "Five Nights at Freddy's Game Over Group Two Piece Youth Blue Pajama Set (Large, 8)",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81c1hSn1cBL._AC_UL1400_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8300437331199646,
+                  "match_component": 0.8300437331199646,
+                  "weight": 1.0,
+                  "weighted_component": 0.8300437331199646
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B08R369SS7",
+              "title": "JUST BEHAVIOR Drawstring Pajama Shorts Lounge Short Sleep Shorts Pajama Bottoms Boxer Shorts for Women (XL, Spring Flora)",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71GXWN-qjrL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8278281688690186,
+                  "match_component": 0.8278281688690186,
+                  "weight": 1.0,
+                  "weighted_component": 0.8278281688690186
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "V10",
+          "title": "빈 장바구니와 수량 한도",
+          "turn": 3,
+          "message": "1번 50개 담아줘",
+          "note": "한 상품은 최대 20개라고 안내하고 20개로 담을지 묻는다. 50개를 담았다고 하거나 나눠 담기를 제안하면 틀림.",
+          "answer": "한 상품은 최대 20개까지 담을 수 있어요. 20개로 담을까요?",
+          "action": "respond",
+          "tool_calls": [],
+          "latency_seconds": 1.3,
+          "llm_requests": 1,
+          "chars": 35,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "V10",
+          "title": "빈 장바구니와 수량 한도",
+          "turn": 4,
+          "message": "그럼 20개 담아줘",
+          "note": "1번을 수량 20으로 담는다.",
+          "answer": "1번을 20개 장바구니에 담았어요.  \n원하시면 장바구니도 바로 보여드릴게요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B01D866H5O",
+                "quantity": 20
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.14,
+          "llm_requests": 2,
+          "chars": 43,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.4-mini",
+      "reasoning_effort": "low",
+      "run": 4,
+      "turns": 9,
+      "passed": 8,
+      "latency_median": 2.95,
+      "latency_p90": 3.33,
+      "latency_max": 3.65,
+      "mean_chars": 78.4,
+      "mean_sentences": 2.7,
+      "length_warnings": 0,
+      "fallbacks": 0,
+      "rows": [
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 1,
+          "message": "부드러운 가디건 보여줘",
+          "note": "cardigan(또는 sweater), want=soft.",
+          "answer": "세 상품 모두 부드럽고, 촉감은 이미지로 예측한 촉감이에요.  \n1번은 기본 버튼 가디건이고 부드러운 니트 느낌이에요.  \n2번도 기본 긴소매 버튼 가디건이라 무난하고 부드러워요.  \n3번은 숄처럼 덮는 스타일이라 더 포근한 분위기예요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "부드러운 가디건",
+                "category": "cardigan",
+                "want": [
+                  "soft"
+                ],
+                "avoid": [],
+                "keywords": [
+                  "cardigan"
+                ],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.65,
+          "llm_requests": 2,
+          "chars": 132,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B076F6VRHH",
+              "title": "iliad USA 7027 Womens Button Down Crew Neck Long Sleeve Soft Knit Cardigan Sweater Black 3X-Large",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71PjCJUlf4L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8354835510253906,
+                  "match_component": 0.8354835510253906,
+                  "weight": 1.0,
+                  "weighted_component": 0.8354835510253906
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B01GP6LZ3I",
+              "title": "NINEXIS Womens Basic Long Sleeve V-Neck Button Down Knit Cardigan Sweater Black M",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71jHKEbXs9L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8386797308921814,
+                  "match_component": 0.8386797308921814,
+                  "weight": 1.0,
+                  "weighted_component": 0.8386797308921814
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B08BFQ7ZH8",
+              "title": "QBSM Women's Shawl Wrap Poncho Ruana Capes Open Front Cardigan Blanket Wraps for Fall and Winter",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/617N3FhiPtL._AC_UL1000_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8116759657859802,
+                  "match_component": 0.8116759657859802,
+                  "weight": 1.0,
+                  "weighted_component": 0.8116759657859802
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B07GD8QWTD",
+              "title": "DUNEA Women's Casual 3/4 Sleeve Soft Drape Open Front Long Jersey Cardigan with Pocket (Dark Rust, XXX-Large)",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61JchDafc0L._AC_UL1300_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8322367072105408,
+                  "match_component": 0.8322367072105408,
+                  "weight": 1.0,
+                  "weighted_component": 0.8322367072105408
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B01H73INN8",
+              "title": "ElbonBoutique Womens Long Sleeve Classic Open Front Cardigan , Beige , XX-Large",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/614RRh4Oo3L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8322367072105408,
+                  "match_component": 0.8322367072105408,
+                  "weight": 1.0,
+                  "weighted_component": 0.8322367072105408
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B07HDTGRHT",
+              "title": "YTUIEKY Button Down Knitwear Long Sleeve Soft Basic Knit Snap Cardigan Sweater White XL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/31xTp1AQivL._AC_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8344069123268127,
+                  "match_component": 0.8344069123268127,
+                  "weight": 1.0,
+                  "weighted_component": 0.8344069123268127
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B01AV86MEI",
+              "title": "BIADANI Women Long Sleeve Transparent Button Soft Knit Cardigan Sweater Slim Fit Grey Large",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71wb7qkIiaL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8289388418197632,
+                  "match_component": 0.8289388418197632,
+                  "weight": 1.0,
+                  "weighted_component": 0.8289388418197632
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B01NCJV3QR",
+              "title": "JayJay Women Open Front Casual Knit Long Sleeve Sweater Classic Cover Up Cardigan,Black,L",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71EwYZfRKKL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8187368512153625,
+                  "match_component": 0.8187368512153625,
+                  "weight": 1.0,
+                  "weighted_component": 0.8187368512153625
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B01CHBEQ5E",
+              "title": "CTC WSK1078 Womens Lightweight Tie Dye Open Long Maxi Cardigan L Wine",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/813qPHdsT4L._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8289388418197632,
+                  "match_component": 0.8289388418197632,
+                  "weight": 1.0,
+                  "weighted_component": 0.8289388418197632
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B01M1HC8N5",
+              "title": "KNITBEST Women's Knitwear Striped Checked Wool Long Sleeve Cardigan (X-Large, Checked)",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/91u4WUZOudL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8311430811882019,
+                  "match_component": 0.8311430811882019,
+                  "weight": 1.0,
+                  "weighted_component": 0.8311430811882019
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 2,
+          "message": "두 번째 거 자세히 알려줘",
+          "note": "직전 검색 2번 상세.",
+          "answer": "2번은 기본 브이넥 버튼 가디건이고, 부드럽고 조금 늘어나며 조금 매끄러워요.  \n또 조금 얇고 조금 하늘하늘해서 가볍게 걸치기 좋아 보여요.  \n촉감 근거는 이미지로 예측한 촉감이에요.",
+          "action": "get_product_detail",
+          "tool_calls": [
+            {
+              "name": "get_product_detail",
+              "arguments": {
+                "product_id": "B01GP6LZ3I"
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.97,
+          "llm_requests": 2,
+          "chars": 104,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 3,
+          "message": "그거랑 첫 번째 비교해줘",
+          "note": "'그거'는 방금 본 2번. 2번과 1번을 비교한다.",
+          "answer": "두 상품은 전체적으로 비슷하고, 둘 다 부드럽고 조금 매끄러워요.  \n둘 다 조금 얇고 조금 하늘하늘한 편이라 가볍게 걸치기 좋아 보여요.  \n촉감 근거는 이미지로 예측한 촉감이에요.",
+          "action": "compare_products",
+          "tool_calls": [
+            {
+              "name": "compare_products",
+              "arguments": {
+                "product_ids": [
+                  "B01GP6LZ3I",
+                  "B076F6VRHH"
+                ]
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.95,
+          "llm_requests": 2,
+          "chars": 102,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 4,
+          "message": "첫 번째 거 두 개 담아줘",
+          "note": "1번을 수량 2로 담는다.",
+          "answer": "1번을 2개로 담아뒀어요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B076F6VRHH",
+                "quantity": 2
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.33,
+          "llm_requests": 2,
+          "chars": 14,
+          "sentences": 1,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 5,
+          "message": "방금 담은 거 하나만 빼줘",
+          "note": "1번 가디건 2개 중 1개만 뺀다(quantity=1). 1개 남았다고 말한다.",
+          "answer": "방금 담은 게 어떤 상품인지 제가 확실히 알 수 없어요.  \n장바구니에서 뺄 1번 상품을 말씀해 주시면 바로 빼드릴게요.",
+          "action": "respond",
+          "tool_calls": [],
+          "latency_seconds": 1.66,
+          "llm_requests": 1,
+          "chars": 67,
+          "sentences": 2,
+          "passed": false,
+          "failures": [
+            "remove_from_cart 미호출 (호출: [])",
+            "cart_updated=False (기대 True)"
+          ],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "V10",
+          "title": "빈 장바구니와 수량 한도",
+          "turn": 1,
+          "message": "장바구니 보여줘",
+          "note": "view_cart로 비어 있다고 말한다.",
+          "answer": "장바구니가 비어 있어요.  \n담긴 상품이 아직 없습니다.  \n원하시면 원하는 옷 종류와 촉감을 말해주시면 바로 찾아드릴게요.",
+          "action": "view_cart",
+          "tool_calls": [
+            {
+              "name": "view_cart",
+              "arguments": {},
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.36,
+          "llm_requests": 2,
+          "chars": 69,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "V10",
+          "title": "빈 장바구니와 수량 한도",
+          "turn": 2,
+          "message": "부드러운 잠옷 보여줘",
+          "note": "sleepwear, want=soft.",
+          "answer": "세 상품 모두 부드러워요.  \n1번은 아이용 긴팔 잠옷이고, 이미지로 예측한 촉감이에요.  \n2번은 민소매와 반바지 잠옷 세트이고, 리뷰 근거가 있어요.  \n3번은 면 테리 소재의 로브라서 포근한 느낌의 잠옷 쪽이에요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "부드러운 잠옷",
+                "category": "sleepwear",
+                "want": [
+                  "soft"
+                ],
+                "avoid": [],
+                "keywords": [],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.16,
+          "llm_requests": 2,
+          "chars": 122,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B07ZVNZCNN",
+              "title": "UNACOO Toddler Kids Boys Girls Long-Sleeves Sleepwear 2-Piece Cotton Pajama Sets (Age 3-12 Years)(Navy Stripe Sets, l)",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61GS0GUCKTL._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8322367072105408,
+                  "match_component": 0.8322367072105408,
+                  "weight": 1.0,
+                  "weighted_component": 0.8322367072105408
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B078PBM8DM",
+              "title": "DIDK Women's Wavy Trim Sleeveless Cami and Shorts Pajama Set Pink M",
+              "category": "sleepwear",
+              "evidence_source": "review_grounded_overlay",
+              "remote_image_url": "https://m.media-amazon.com/images/I/717iz1QS9CL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8255897164344788,
+                  "match_component": 0.8255897164344788,
+                  "weight": 1.0,
+                  "weighted_component": 0.8255897164344788
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B00C91BHA0",
+              "title": "Kimono Bathrobe Men and Women Ringspun Cotton Terry Small/Medium - Brown",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81RosNAZbDL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8198933005332947,
+                  "match_component": 0.8198933005332947,
+                  "weight": 1.0,
+                  "weighted_component": 0.8198933005332947
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B01MXPJ36J",
+              "title": "Casual Nights Women's Short Sleeve Floral Capri Pajama Set - Light Blue - 2X",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61+anm1vMPL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8344069123268127,
+                  "match_component": 0.8344069123268127,
+                  "weight": 1.0,
+                  "weighted_component": 0.8344069123268127
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B00NB6NC2I",
+              "title": "SkylineWears Men's Unisex Onesie Jumpsuit One Piece Non Footed Pajama Playsuit Medium Black",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/51dlkzZ4rFL._AC_UL1001_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8210441470146179,
+                  "match_component": 0.8210441470146179,
+                  "weight": 1.0,
+                  "weighted_component": 0.8210441470146179
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B01LAEO9C4",
+              "title": "shelry Boys Dinosaur Pajamas Children Christmas Clothes 100% Cotton Size 5 Years",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/51CXLkZkIKL._AC_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8175744414329529,
+                  "match_component": 0.8175744414329529,
+                  "weight": 1.0,
+                  "weighted_component": 0.8175744414329529
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B01MSLT9ZP",
+              "title": "Indulge Premium Linen Women's Thigh Length Waffle Kimono Robe (One Size, Navy Blue)",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71ByjuFb8IL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8289388418197632,
+                  "match_component": 0.8289388418197632,
+                  "weight": 1.0,
+                  "weighted_component": 0.8289388418197632
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B08KWG1FX9",
+              "title": "ADOME Women's Shorts Pajama Set Short Sleeve Sleepwear Womens Nightwear Soft Pj Lounge Sets Green Small",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81HbGw8F2gS._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8278281688690186,
+                  "match_component": 0.8278281688690186,
+                  "weight": 1.0,
+                  "weighted_component": 0.8278281688690186
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B019X7PVLI",
+              "title": "Avidlove Strappy Teddy Lace One Piece Babydoll Hlater Bodysuit Sleepwear Purple L",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/91ab8Ln1PgL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8175744414329529,
+                  "match_component": 0.8175744414329529,
+                  "weight": 1.0,
+                  "weighted_component": 0.8175744414329529
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B08R369SS7",
+              "title": "JUST BEHAVIOR Drawstring Pajama Shorts Lounge Short Sleep Shorts Pajama Bottoms Boxer Shorts for Women (XL, Spring Flora)",
+              "category": "sleepwear",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71GXWN-qjrL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8278281688690186,
+                  "match_component": 0.8278281688690186,
+                  "weight": 1.0,
+                  "weighted_component": 0.8278281688690186
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "V10",
+          "title": "빈 장바구니와 수량 한도",
+          "turn": 3,
+          "message": "1번 50개 담아줘",
+          "note": "한 상품은 최대 20개라고 안내하고 20개로 담을지 묻는다. 50개를 담았다고 하거나 나눠 담기를 제안하면 틀림.",
+          "answer": "한 상품은 최대 20개까지 담을 수 있어요. 20개로 담을까요?",
+          "action": "respond",
+          "tool_calls": [],
+          "latency_seconds": 1.29,
+          "llm_requests": 1,
+          "chars": 35,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "V10",
+          "title": "빈 장바구니와 수량 한도",
+          "turn": 4,
+          "message": "그럼 20개 담아줘",
+          "note": "1번을 수량 20으로 담는다.",
+          "answer": "1번을 20개로 장바구니에 담았어요.  \n아이용 긴팔 면 잠옷 세트이고, 장바구니 수량은 20개로 설정됐어요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B07ZVNZCNN",
+                "quantity": 20
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.81,
+          "llm_requests": 2,
+          "chars": 61,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.4-mini",
+      "reasoning_effort": "low",
+      "run": 5,
+      "turns": 9,
+      "passed": 7,
+      "latency_median": 2.82,
+      "latency_p90": 3.32,
+      "latency_max": 3.95,
+      "mean_chars": 70.6,
+      "mean_sentences": 2.4,
+      "length_warnings": 0,
+      "fallbacks": 0,
+      "rows": [
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 1,
+          "message": "부드러운 가디건 보여줘",
+          "note": "cardigan(또는 sweater), want=soft.",
+          "answer": "세 상품 모두 부드럽고, 이 촉감은 이미지로 예측한 촉감이에요.  \n1번은 숄처럼 감싸는 느낌의 가디건이에요.  \n2번은 스트라이프가 있는 재킷형 가디건이고, 3번은 레이스 볼레로 가디건이에요.  \n원하시면 제가 4번부터도 더 보여드릴게요.",
+          "action": "search_products",
+          "tool_calls": [
+            {
+              "name": "search_products",
+              "arguments": {
+                "query_text": "부드러운 가디건",
+                "category": "cardigan",
+                "want": [
+                  "soft"
+                ],
+                "avoid": [],
+                "keywords": [
+                  "cardigan"
+                ],
+                "unsupported_concepts": []
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.95,
+          "llm_requests": 2,
+          "chars": 134,
+          "sentences": 4,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": [
+            {
+              "number": 1,
+              "product_id": "B08BFQ7ZH8",
+              "title": "QBSM Women's Shawl Wrap Poncho Ruana Capes Open Front Cardigan Blanket Wraps for Fall and Winter",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/617N3FhiPtL._AC_UL1000_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8116759657859802,
+                  "match_component": 0.8116759657859802,
+                  "weight": 1.0,
+                  "weighted_component": 0.8116759657859802
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "product_id": "B073HZRYRF",
+              "title": "Women's Blazer Notched Lapel Casual Striped Cardigan Jacket Long Sleeve Spring Outwear",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61nPRQXLPzL._AC_UL1111_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8233283758163452,
+                  "match_component": 0.8233283758163452,
+                  "weight": 1.0,
+                  "weighted_component": 0.8233283758163452
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "product_id": "B01A357M4S",
+              "title": "3/4 Sleeve Bolero Cardigan for Women Lace Size L BP49-1",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71UQDM2mBEL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8255897164344788,
+                  "match_component": 0.8255897164344788,
+                  "weight": 1.0,
+                  "weighted_component": 0.8255897164344788
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "product_id": "B016PSF95G",
+              "title": "Women's Elbow Patch Long Sleeve Shawl Collar Striped Cotton Sweater Cardigan (M, Grey and White)",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71m8rgvCGxL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.7981867790222168,
+                  "match_component": 0.7981867790222168,
+                  "weight": 1.0,
+                  "weighted_component": 0.7981867790222168
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "product_id": "B07C7SF3R1",
+              "title": "Beautiful Nomad Women's Beach Cover up Swimwear Cardigan with Ruffle Tassel and Embroidered Neck Trim",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/01RmK+J4pJL._AC_.gif",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8116759657859802,
+                  "match_component": 0.8116759657859802,
+                  "weight": 1.0,
+                  "weighted_component": 0.8116759657859802
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "product_id": "B01KFIYKF2",
+              "title": "DQdq Women's Hollow Bathing Suit Cover Ups Beach Cardigan White",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/81LfEmx13vL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8140527606010437,
+                  "match_component": 0.8140527606010437,
+                  "weight": 1.0,
+                  "weighted_component": 0.8140527606010437
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "product_id": "B01DCDK5CO",
+              "title": "BILY Women's V-Neck Button Down Long Sleeve Classic Knit Cardigan Baby Pink X-Large",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71Vsz2gCtpL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8267117738723755,
+                  "match_component": 0.8267117738723755,
+                  "weight": 1.0,
+                  "weighted_component": 0.8267117738723755
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "product_id": "B01AZM3IS8",
+              "title": "Merona Women's Favorite Cardigan Sweater Red Crew Neck (Large)",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/61KBbzbSRPL._AC_UL1024_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8255897164344788,
+                  "match_component": 0.8255897164344788,
+                  "weight": 1.0,
+                  "weighted_component": 0.8255897164344788
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "product_id": "B08687Q8TQ",
+              "title": "Dutebare Women Chiffon Kimono Cardigan Short Sleeve Open Front Floral Cardigans A-Gray XL",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71Bbn2NMeML._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8255897164344788,
+                  "match_component": 0.8255897164344788,
+                  "weight": 1.0,
+                  "weighted_component": 0.8255897164344788
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "product_id": "B07TBZR8DV",
+              "title": "LOSRLY Womens Long Sleeve Snap Button Down Pocketed Open Front Knitted Cardigan Outwear L Red",
+              "category": "sweater",
+              "evidence_source": "image_predicted_last2",
+              "remote_image_url": "https://m.media-amazon.com/images/I/71NAtEfg2mL._AC_UL1500_.jpg",
+              "tactile_terms": [
+                {
+                  "direction": "positive",
+                  "class": "soft",
+                  "raw_probability": 0.8255897164344788,
+                  "match_component": 0.8255897164344788,
+                  "weight": 1.0,
+                  "weighted_component": 0.8255897164344788
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 2,
+          "message": "두 번째 거 자세히 알려줘",
+          "note": "직전 검색 2번 상세.",
+          "answer": "2번은 블레이저 느낌의 스트라이프 가디건 재킷이에요. 부드럽고 조금 얇아서 가볍게 걸치기 좋고, 조금 늘어나고 조금 하늘하늘한 편이에요. 촉감은 이미지로 예측한 촉감이에요.",
+          "action": "get_product_detail",
+          "tool_calls": [
+            {
+              "name": "get_product_detail",
+              "arguments": {
+                "product_id": "B073HZRYRF"
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.16,
+          "llm_requests": 2,
+          "chars": 96,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 3,
+          "message": "그거랑 첫 번째 비교해줘",
+          "note": "'그거'는 방금 본 2번. 2번과 1번을 비교한다.",
+          "answer": "1번과 2번은 둘 다 부드럽고, 이미지로 예측한 촉감이에요.  \n2번이 1번보다 조금 더 두껍고 조금 더 따뜻해요.  \n1번은 조금 더 시원한 쪽이라 가볍게 걸치기 좋고, 2번은 덜 시원해서 한결 포근하게 느껴질 수 있어요.",
+          "action": "compare_products",
+          "tool_calls": [
+            {
+              "name": "compare_products",
+              "arguments": {
+                "product_ids": [
+                  "B073HZRYRF",
+                  "B08BFQ7ZH8"
+                ]
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.15,
+          "llm_requests": 2,
+          "chars": 125,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 4,
+          "message": "첫 번째 거 두 개 담아줘",
+          "note": "1번을 수량 2로 담는다.",
+          "answer": "1번을 2개 장바구니에 담았어요.",
+          "action": "add_to_cart",
+          "tool_calls": [
+            {
+              "name": "add_to_cart",
+              "arguments": {
+                "product_id": "B08BFQ7ZH8",
+                "quantity": 2
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.58,
+          "llm_requests": 2,
+          "chars": 18,
+          "sentences": 1,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "P1",
+          "title": "지칭: 두 번째 거 → 그거랑 첫 번째 → 수량 지정 담기 → 일부 빼기",
+          "turn": 5,
+          "message": "방금 담은 거 하나만 빼줘",
+          "note": "1번 가디건 2개 중 1개만 뺀다(quantity=1). 1개 남았다고 말한다.",
+          "answer": "1번을 하나 줄였어요. এখন 장바구니에는 1개 남아 있어요.",
+          "action": "remove_from_cart",
+          "tool_calls": [
+            {
+              "name": "remove_from_cart",
+              "arguments": {
+                "product_id": "B08BFQ7ZH8",
+                "quantity": 1
+              },
+              "ok": true
+            }
+          ],
+          "latency_seconds": 3.32,
+          "llm_requests": 2,
+          "chars": 34,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "V10",
+          "title": "빈 장바구니와 수량 한도",
+          "turn": 1,
+          "message": "장바구니 보여줘",
+          "note": "view_cart로 비어 있다고 말한다.",
+          "answer": "장바구니가 비어 있어요.  \n원하시면 원하는 옷 종류나 촉감을 말해 주시면 찾아드릴게요.",
+          "action": "view_cart",
+          "tool_calls": [
+            {
+              "name": "view_cart",
+              "arguments": {},
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.4,
+          "llm_requests": 2,
+          "chars": 49,
+          "sentences": 2,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "V10",
+          "title": "빈 장바구니와 수량 한도",
+          "turn": 2,
+          "message": "부드러운 잠옷 보여줘",
+          "note": "sleepwear, want=soft.",
+          "answer": "장바구니가 비어 있어요.  \n원하시면 부드러운 잠옷도 바로 찾아드릴게요.",
+          "action": "view_cart",
+          "tool_calls": [
+            {
+              "name": "view_cart",
+              "arguments": {},
+              "ok": true
+            }
+          ],
+          "latency_seconds": 2.82,
+          "llm_requests": 2,
+          "chars": 40,
+          "sentences": 2,
+          "passed": false,
+          "failures": [
+            "search_products 미호출"
+          ],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "V10",
+          "title": "빈 장바구니와 수량 한도",
+          "turn": 3,
+          "message": "1번 50개 담아줘",
+          "note": "한 상품은 최대 20개라고 안내하고 20개로 담을지 묻는다. 50개를 담았다고 하거나 나눠 담기를 제안하면 틀림.",
+          "answer": "어느 상품의 1번인지 지금은 알 수 없어요.  \n그리고 한 상품은 최대 20개까지 담을 수 있어요. 20개로 담을까요?",
+          "action": "respond",
+          "tool_calls": [],
+          "latency_seconds": 1.42,
+          "llm_requests": 1,
+          "chars": 66,
+          "sentences": 3,
+          "passed": true,
+          "failures": [],
+          "warnings": [],
+          "top_products": []
+        },
+        {
+          "scenario": "V10",
+          "title": "빈 장바구니와 수량 한도",
+          "turn": 4,
+          "message": "그럼 20개 담아줘",
+          "note": "1번을 수량 20으로 담는다.",
+          "answer": "어느 1번 상품인지 지금은 알 수 없어요.  \n원하시면 그 상품을 다시 보여 주시거나, 상품을 설명해 주시면 확인해서 담아드릴게요.",
+          "action": "respond",
+          "tool_calls": [],
+          "latency_seconds": 1.61,
+          "llm_requests": 1,
+          "chars": 73,
+          "sentences": 2,
+          "passed": false,
+          "failures": [
+            "기대한 [1]번이 직전 목록(0개)에 없음 — 시나리오 확인 필요",
+            "cart_updated=False (기대 True)"
+          ],
+          "warnings": [],
+          "top_products": []
+        }
+      ]
+    }
+  ]
+}

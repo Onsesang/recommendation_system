@@ -209,6 +209,9 @@ class ToolAgentServiceTests(unittest.TestCase):
             {"id": "resp_4", "output": [_answer("장바구니에서 뺐어요.")]},
         ]
         result = self.app.agent.message(self.user_id, session_id, "그거 전부 빼줘")
+        instructions = post.call_args_list[2].args[1]["instructions"]
+        self.assertIn('"last_cart_change":{"action":"decreased"', instructions)
+        self.assertIn(f'"product_id":"{product_id}"', instructions.split('"cart":')[1])
         self.assertTrue(result["cart_updated"])
         self.assertNotIn(product_id, [row["product_id"] for row in self.app.database.list_cart(self.user_id)])
         events = [row["event_type"] for row in self.app.database.list_events(self.user_id)]
@@ -225,6 +228,32 @@ class ToolAgentServiceTests(unittest.TestCase):
         result = self.app.agent.message(self.user_id, session_id, "그거 빼줘")
         self.assertFalse(result["cart_updated"])
         self.assertFalse(result["tool_calls"][0]["ok"])
+
+    @patch("shopping_agent.v1.tool_agent._post_json")
+    def test_add_to_cart_caps_quantity_and_overwrites(self, post) -> None:
+        session_id = self.session()
+        post.side_effect = [
+            {"id": "resp_s1", "output": [_call("search_products", SEARCH_ARGUMENTS)]},
+            {"id": "resp_s2", "output": [_answer("1번은 얇아요.")]},
+        ]
+        first = self.app.agent.message(self.user_id, session_id, "얇은 원피스")["products"][0]["product_id"]
+        post.side_effect = [
+            {"id": "resp_a1", "output": [_call("add_to_cart", {"product_id": first, "quantity": 50})]},
+            {"id": "resp_a2", "output": [_answer("한 상품은 최대 20개까지 담을 수 있어요.")]},
+        ]
+        result = self.app.agent.message(self.user_id, session_id, "1번 50개 담아줘")
+        self.assertFalse(result["cart_updated"])
+        self.assertFalse(result["tool_calls"][0]["ok"])
+        error_output = post.call_args_list[3].args[1]["input"][-1]["output"]
+        self.assertIn("20개", error_output)
+        for quantity in (3, 2):
+            post.side_effect = [
+                {"id": f"resp_q{quantity}", "output": [_call("add_to_cart", {"product_id": first, "quantity": quantity})]},
+                {"id": f"resp_r{quantity}", "output": [_answer("담았어요.")]},
+            ]
+            self.app.agent.message(self.user_id, session_id, f"1번 {quantity}개 담아줘")
+        quantities = {row["product_id"]: row["quantity"] for row in self.app.database.list_cart(self.user_id)}
+        self.assertEqual(quantities[first], 2)  # overwritten, not 3 + 2
 
     @patch("shopping_agent.v1.tool_agent._post_json")
     def test_greeting_answers_without_tools(self, post) -> None:

@@ -270,6 +270,12 @@ class ShoppingAgentService:
 
     # -- OpenAI tool loop -----------------------------------------------------
 
+    def _cart_title(self, product_id: str) -> str:
+        try:
+            return str(self.tools.public_product(product_id).get("title", ""))[:80]
+        except KeyError:
+            return ""
+
     def _tool_agent_turn(
         self,
         *,
@@ -291,10 +297,18 @@ class ShoppingAgentService:
             for row in history
             if row["role"] in {"user", "assistant"}
         ]
+        cart = self.database.list_cart(user_id)
         session_context = {
             "shown_products": turn.shown_products(),
             "last_search": state.get("last_search"),
-            "cart_item_count": len(self.database.list_cart(user_id)),
+            "cart_item_count": len(cart),
+            # Lets "방금 담은 거" resolve without an extra view_cart round trip.
+            "cart": [
+                {"product_id": row["product_id"], "title": self._cart_title(row["product_id"]),
+                 "quantity": row["quantity"]}
+                for row in cart[:10]
+            ],
+            "last_cart_change": state.get("last_cart_change"),
         }
         instructions = (
             AGENT_INSTRUCTIONS
@@ -331,6 +345,8 @@ class ShoppingAgentService:
                 "last_action": action,
             }
         )
+        if turn.last_cart_change is not None:
+            state["last_cart_change"] = turn.last_cart_change
         if searched:
             # Only a search changes the stored intent, as in the router pipeline.
             state["intent"] = intent
@@ -525,6 +541,7 @@ class _ToolTurn:
         self.unsupported_concepts: list[str] = []
         self.referenced_ids: list[str] = []
         self.cart_updated = False
+        self.last_cart_change: dict[str, Any] | None = None
         self._preferences_extracted = False
 
     # -- session memory -------------------------------------------------------
@@ -703,7 +720,7 @@ class _ToolTurn:
         if not service.tools.product_exists(product_id):
             raise KeyError(f"Unknown product_id: {product_id}")
         if not 1 <= int(quantity) <= 20:
-            raise ValueError("quantity must be between 1 and 20")
+            raise ValueError("한 상품은 1~20개까지만 담을 수 있습니다. 나눠 담아도 20개를 넘길 수 없습니다.")
         service.database.add_cart_item(self.user_id, product_id, int(quantity))
         service.database.record_event(
             self.user_id,
@@ -716,7 +733,10 @@ class _ToolTurn:
         self.cart_updated = True
         self._reference(product_id)
         title = str(service.tools.public_product(product_id).get("title", ""))[:120]
-        return {"status": "added", "product_id": product_id, "title": title, "quantity": int(quantity)}
+        self.last_cart_change = {"action": "added", "product_id": product_id, "title": title[:80],
+                                 "quantity": int(quantity)}
+        return {"status": "added", "product_id": product_id, "title": title, "quantity": int(quantity),
+                "note": "장바구니 수량은 이 값으로 설정됨(합산 아님), 한 상품당 최대 20개"}
 
     def remove_from_cart(self, *, product_id: str, quantity: int | None) -> dict[str, Any]:
         service = self.service
@@ -747,6 +767,8 @@ class _ToolTurn:
             title = str(service.tools.public_product(product_id).get("title", ""))[:120]
         except KeyError:
             title = ""
+        self.last_cart_change = {"action": "decreased" if remaining else "removed", "product_id": product_id,
+                                 "title": title[:80], "quantity": remaining}
         return {
             "status": "decreased" if remaining else "removed",
             "product_id": product_id,

@@ -525,7 +525,7 @@ li { margin: 2px 0; }
 <table>
 <tr><th style="width:24%">항목</th><th>메인</th><th>예비</th></tr>
 <tr><td>Base URL</td><td><code>https://onsesang-pc-server.tail065d88.ts.net</code></td><td><code>https://onsesang-a100.tail065d88.ts.net</code></td></tr>
-<tr><td>사용자 DB</td><td>원본</td><td><b>메인 DB를 10분마다 복사</b>(매시 :00, :10, :20 …)</td></tr>
+<tr><td>사용자 DB</td><td>원본</td><td><b>메인 DB를 10분마다 복사</b>(매시 :00, :10, :20 …). 내용이 바뀌었을 때만 교체하며, 그때 예비 서버가 약 10초 재시작합니다</td></tr>
 <tr><td>CORS 등록 origin</td><td colspan="2">두 서버 같음 (<code>https://onsesang-front.vercel.app</code>, <code>localhost:3000</code>, <code>127.0.0.1:3000</code>)</td></tr>
 </table>
 
@@ -544,7 +544,7 @@ li { margin: 2px 0; }
 <table>
 <tr><th style="width:26%">상황</th><th>처리</th></tr>
 <tr><td>메인에 연결 자체가 안 됨 (fetch 실패)</td><td>예비로 전환</td></tr>
-<tr><td>메인이 502/503/504를 주고 본문이 이 API의 <code>error</code> JSON이 아님</td><td>예비로 전환 (Funnel은 살아 있고 백엔드가 꺼진 경우)</td></tr>
+<tr><td>메인이 5xx를 주고 본문이 이 API의 <code>error</code> JSON이 아님</td><td>예비로 전환. 백엔드 앞단이 대신 답한 경우로, 백엔드가 꺼졌거나 재시작 중입니다(Funnel은 502, 같은 주소 프록시는 500). 이 API의 백엔드는 오류도 항상 <code>error</code> JSON으로 답합니다</td></tr>
 <tr><td>그 외 HTTP 오류 (400, 401, 404, 429, <code>error</code> JSON이 있는 500)</td><td>전환하지 않음. 서버가 답한 것이므로 해당 오류로 처리</td></tr>
 <tr><td>시간 초과 (대화 60초 등)</td><td>전환하지 않음. 느린 것이지 꺼진 것이 아닐 수 있음</td></tr>
 </table>

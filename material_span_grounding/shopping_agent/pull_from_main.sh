@@ -25,6 +25,8 @@ PYTHON="${LOCAL_PYTHON:-$HOME/onsesang/miniconda3/envs/shopping_backend/bin/pyth
 UNIT="${LOCAL_UNIT:-shopping-agent.service}"
 DB_PATH="shopping_agent/data/agent_v1.sqlite3"
 REMOTE_SNAPSHOT="shopping_agent/data/.snapshot_for_fallback.sqlite3"
+# Content hash of the last snapshot applied here; an identical snapshot is not applied again.
+LAST_SNAPSHOT_HASH="shopping_agent/data/.last_snapshot.sha256"
 
 CODE_DIRS=(shopping_agent recommendation_api demo_agent material_span configs notion)
 EXCLUDES=(
@@ -40,7 +42,7 @@ TESTS=(
   shopping_agent.v1.tests.test_llm shopping_agent.v1.tests.test_tactile_phrases
 )
 
-DRY_RUN=0 WITH_CODE=1 WITH_DATA=0 WITH_ENV=0 WITH_DB=0 WITH_TEST=1
+DRY_RUN=0 WITH_CODE=1 WITH_DATA=0 WITH_ENV=0 WITH_DB=0 WITH_TEST=1 DB_CHANGED=0
 for arg in "$@"; do
   case "$arg" in
     --dry-run) DRY_RUN=1 ;;
@@ -110,13 +112,33 @@ dst = sqlite3.connect('$REMOTE_SNAPSHOT')
 src.backup(dst); dst.close(); src.close()\""
   rsync -a "$HOST:$REMOTE_ROOT/$REMOTE_SNAPSHOT" "$DB_PATH.incoming"
   ssh -o BatchMode=yes "$HOST" "rm -f ${REMOTE_ROOT:?}/${REMOTE_SNAPSHOT:?}"
-  "$PYTHON" -c "import sqlite3,sys; c=sqlite3.connect(sys.argv[1]); assert c.execute('pragma integrity_check').fetchone()[0]=='ok'" "$DB_PATH.incoming"
-  systemctl --user stop "$UNIT"
-  trap 'systemctl --user start "$UNIT"' EXIT  # never leave the service stopped on an error
-  [[ -f "$DB_PATH" ]] && cp -p "$DB_PATH" "$DB_PATH.before-pull"
-  rm -f "$DB_PATH-wal" "$DB_PATH-shm"
-  mv "$DB_PATH.incoming" "$DB_PATH"
-  echo "db replaced (previous copy: $DB_PATH.before-pull)"
+  # Hash the SQL dump rather than the file: the same rows can be laid out in different pages.
+  INCOMING_HASH="$("$PYTHON" -c "
+import hashlib, sqlite3, sys
+c = sqlite3.connect(sys.argv[1])
+assert c.execute('pragma integrity_check').fetchone()[0] == 'ok', 'snapshot failed integrity_check'
+h = hashlib.sha256()
+for line in c.iterdump():
+    h.update(line.encode()); h.update(b'\\n')
+print(h.hexdigest())" "$DB_PATH.incoming")"
+  if [[ -f "$DB_PATH" && -f "$LAST_SNAPSHOT_HASH" && "$(cat "$LAST_SNAPSHOT_HASH")" == "$INCOMING_HASH" ]]; then
+    rm -f "$DB_PATH.incoming"
+    echo "db unchanged since the last copy; kept as is"
+  else
+    DB_CHANGED=1
+    systemctl --user stop "$UNIT"
+    trap 'systemctl --user start "$UNIT"' EXIT  # never leave the service stopped on an error
+    [[ -f "$DB_PATH" ]] && cp -p "$DB_PATH" "$DB_PATH.before-pull"
+    rm -f "$DB_PATH-wal" "$DB_PATH-shm"
+    mv "$DB_PATH.incoming" "$DB_PATH"
+    echo "$INCOMING_HASH" > "$LAST_SNAPSHOT_HASH"
+    echo "db replaced (previous copy: $DB_PATH.before-pull)"
+  fi
+fi
+
+if (( ! WITH_CODE && ! WITH_DATA && ! WITH_ENV && ! DB_CHANGED )); then
+  echo "nothing changed; $UNIT not restarted"
+  exit 0
 fi
 
 echo "== restart $UNIT"

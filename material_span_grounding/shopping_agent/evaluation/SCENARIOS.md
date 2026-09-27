@@ -33,6 +33,8 @@ python -m shopping_agent.evaluation.tool_agent_scenarios --check
 ```
 
 - 한 시나리오는 한 대화 세션이다. 턴은 순서대로 같은 세션에 보내며, 시나리오마다 새 사용자로 시작한다.
+- 시연용 30문장 세트는 `demo_30.json`(`--scenarios shopping_agent/evaluation/demo_30.json`), 회귀용 48턴은 `demo_scenarios.json`이다.
+- `criterion`(선택)은 HTML 요약에서 이 턴을 어느 판단 기준으로 셀지 정한다: `search refers cart no_tools forbid other`. 없으면 `expect`의 첫 키를 따른다.
 - `note`는 자동 판정에 쓰지 않는다. 검수표에 "기대"로 표시되어 사람이 판정할 때 기준이 된다.
 - `expect`를 비워 두면(`{}`) 공통 규칙만 검사한다.
 
@@ -68,8 +70,9 @@ python -m shopping_agent.evaluation.tool_agent_scenarios --check
 
 - OpenAI 도구 루프가 실패해 로컬 라우터로 넘어가면 실패
 - 답변에 마크다운(`**`, `#`, 목록, 표)이 있으면 실패
-- 리뷰 근거가 없는 상품인데 "리뷰"를 근거처럼 말하면 실패 ("리뷰 근거는 없어요"는 통과)
+- 리뷰 근거가 없는 상품인데 "리뷰"를 근거처럼 말하면 실패. 문장 단위로 보며, 부정("리뷰 근거는 없어요")이나 확인 제안("리뷰 근거가 있는지 볼까요?")이 있는 문장은 통과
 - 보여준 적 없는 상품을 상세·비교·담기 대상으로 쓰면 실패
+- 답변에 상품 ID(B0…)가 있으면 경고 (스크린리더가 열 글자를 읽는다)
 - 5문장 또는 300자를 넘으면 경고 (실패는 아님, 스크린리더 길이 기준)
 
 ## 실행과 결과
@@ -85,6 +88,9 @@ python -m shopping_agent.evaluation.tool_agent_scenarios --only S3 S5
 
 결과는 `evaluation/results/<시각>/`에 생긴다.
 
+- `review.html`: 대화형 검수표. 설정별 답변, 도구 인자, 검색 상위 3개와 지칭·담기 대상 상품 사진(초록=기대 상품, 빨강=다른 상품),
+  턴마다 OpenAI 요청·응답 원문(응답 ID, 모델 스냅샷, function_call, 도구가 돌려준 값, 토큰). 사진은 data URI로 들어가 파일 하나로 열린다
+  (썸네일 캐시 `results/.image_cache/`). 결론 문단은 `--render <run>/results.json --note note.txt`로 맨 위에 넣는다
 - `review.md`: 턴마다 설정별 답변, 도구 인자, 상위 3개 이미지를 나란히 보여주는 검수표
 - `review.csv`: 같은 내용을 한 행씩. 판정 칸(조건해석, 지칭, 근거정직성, 말투 1~5, 메모)을 채운다
 - `results.json`: 원본 데이터

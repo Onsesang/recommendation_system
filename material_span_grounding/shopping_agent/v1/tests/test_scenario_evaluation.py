@@ -5,14 +5,17 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from shopping_agent.evaluation.tool_agent_scenarios import (
     DEFAULT_SCENARIOS,
     answer_warnings,
     check_answer,
+    claims_review,
     check_expectations,
     instability,
     load_scenarios,
+    refresh_answer_checks,
     sentence_count,
     summarize,
     validate_scenarios,
@@ -125,6 +128,20 @@ class CheckTests(unittest.TestCase):
         self.assertEqual(answer_warnings("1번, 원피스. 2번, 셔츠. 3번, 치마.", searched=True), [])
         self.assertEqual(answer_warnings("1번부터 3번까지 비슷해요. 1번은 원피스, 2번은 셔츠, 3번은 치마예요.", searched=True), [])
 
+    def test_review_mentions_are_judged_per_sentence(self) -> None:
+        # Honest answers from the 30-turn demo run that the old 20-character window flagged.
+        self.assertFalse(claims_review(
+            "아니요, 방금 말한 촉감은 구매자 리뷰가 아니라 이미지로 예측한 촉감이에요. "
+            "리뷰 근거라고 말할 수 있는 상품은 따로 표시될 때만 그렇게 말씀드릴 수 있어요."
+        ))
+        self.assertFalse(claims_review("원하시면 1번/2번 상세를 확인해서, 리뷰 근거가 있는지까지 같이 정리해 드릴까요?"))
+        self.assertTrue(claims_review("구매자 리뷰에 따르면 1번이 더 얇아요."))
+        self.assertTrue(claims_review("리뷰 근거는 없어요. 그래도 리뷰에서 부드럽다고 해요."))
+
+    def test_product_ids_read_aloud_warn(self) -> None:
+        self.assertEqual(answer_warnings("장바구니에 2번(1개, B07BW95ZRQ)이 있어요."), ["상품 ID를 읽어 줌: ['B07BW95ZRQ']"])
+        self.assertEqual(answer_warnings("장바구니에 2번 셔츠가 있어요."), [])
+
     def test_numbers_and_grade_words_fail(self) -> None:
         self.assertIn("수치 노출: “0.81”", check_answer(_result(message="부드러움이 0.81이에요."), []))
         self.assertIn("수치 노출: “80%”", check_answer(_result(message="80% 확률로 얇아요."), []))
@@ -167,9 +184,16 @@ class ReportTests(unittest.TestCase):
         self.assertEqual(len(unstable), 1)
         self.assertTrue(unstable[0]["pass_changed"] and unstable[0]["search_changed"])
         report = {"generated_at": "now", "scenario_file": "f.json", "instability": unstable, "results": runs}
-        with tempfile.TemporaryDirectory() as directory:
+        with tempfile.TemporaryDirectory() as directory, mock.patch(
+            "shopping_agent.evaluation.html_report.embed_images",
+            return_value={"https://example.com/p1.jpg": "data:image/jpeg;base64,AA=="},
+        ):
             out = Path(directory)
             write_reports(out, report)
+            page = (out / "review.html").read_text()
+            self.assertIn('src="data:image/jpeg;base64,AA=="', page)
+            self.assertIn("m · low · #2", page)
+            self.assertIn("원함 <b>얇음(thin)</b>", page)
             self.assertEqual(json.loads((out / "results.json").read_text())["results"][0]["passed"], 1)
             markdown = (out / "review.md").read_text()
             self.assertIn("m/low #2", markdown)
@@ -179,6 +203,14 @@ class ReportTests(unittest.TestCase):
                 rows = list(csv.reader(handle))
             self.assertEqual(len(rows), 3)
             self.assertIn("판정_말투(1-5)", rows[0])
+
+    def test_refresh_answer_checks_reapplies_text_rules(self) -> None:
+        row = self._row(passed=False)
+        row.update(answer="리뷰가 아니라 이미지로 예측한 촉감이에요.", failures=["이미지 예측을 리뷰 근거처럼 표현"])
+        run = {"model": "m", "reasoning_effort": "low", "run": 1, "rows": [row]}
+        refresh_answer_checks({"results": [run]})
+        self.assertTrue(row["passed"])
+        self.assertEqual(run["passed"], 1)
 
 
 if __name__ == "__main__":

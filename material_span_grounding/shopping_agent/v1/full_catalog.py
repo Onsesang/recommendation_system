@@ -514,29 +514,30 @@ class FullCatalogTactileProvider:
             active.append(("color_match", color_component, color_weight))
         if texture_component is not None:
             active.append(("tactile_title", texture_component, texture_weight))
-        active.append(("popularity", popularity_component, float(weights["popularity_weight"])))
+        popularity_weight = float(weights["popularity_weight"])
+        if popularity_weight > 0:
+            active.append(("popularity", popularity_component, popularity_weight))
 
         denominator = sum(weight for _, _, weight in active)
         relevance = np.zeros(len(rows), dtype=np.float32)
         for _, component, weight in active:
             relevance += weight * component
-        relevance = (relevance / denominator).astype(np.float32)
+        # With popularity switched off, a request with neither tactile terms nor keywords has no signal.
+        relevance = (relevance / denominator if denominator else relevance).astype(np.float32)
         if gender in GENDERS:
             unknown = self.index.genders[rows] == GENDER_UNKNOWN
             relevance[unknown] *= float(weights.get("gender_unknown_factor", 1.0))
         ranking_mode = "last2_explicit_tactile" if total_weight else "title_and_popularity"
-        active_weights = {name: weight / denominator for name, _, weight in active}
+        active_weights = {name: weight / denominator for name, _, weight in active if denominator}
 
         # Variant products (same title, different ASIN) would otherwise fill the
         # page, so oversample and keep the best-ranked row per title.
         limit = max(1, int(limit))
         oversample = int(min(len(rows), limit * self.DEDUPLICATION_OVERSAMPLE))
         top = np.argpartition(-relevance, oversample - 1)[:oversample]
-        ordered = top[
-            np.lexsort(
-                (self.index.asins[rows[top]], -self.index.popularity[rows[top]], -relevance[top])
-            )
-        ]
+        # Ties go to the more popular product, unless popularity is switched off.
+        tie_popularity = -self.index.popularity[rows[top]] if popularity_weight > 0 else np.zeros(len(top))
+        ordered = top[np.lexsort((self.index.asins[rows[top]], tie_popularity, -relevance[top]))]
 
         seen: set[str] = set()
         order: list[int] = []

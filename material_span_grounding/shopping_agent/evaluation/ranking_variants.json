@@ -1,5 +1,5 @@
 {
-  "description": "검색 순위 가중치 비교 후보. relevance는 configs/full_catalog.json, ranking은 configs/v1.json의 같은 키를 덮어쓴다.",
+  "description": "검색 순위 가중치 비교 후보. relevance는 configs/full_catalog.json, ranking은 configs/v1.json의 ranking, tool_agent는 configs/v1.json의 tool_agent의 같은 키를 덮어쓴다.",
   "variants": [
     {
       "name": "baseline",
@@ -219,6 +219,28 @@
           ]
         },
         "color_match_weight": 0.25
+      }
+    },
+    {
+      "name": "no_pop_no_personal_top3",
+      "description": "인기도·개인화 재정렬 없이 촉감 0.5 + 상품명 0.35만으로 정렬하고 상위 3개만 보여준다",
+      "relevance": {
+        "popularity_weight": 0.0
+      },
+      "ranking": {
+        "query_relevance_weight": 1.0,
+        "explicit_tactile_weight": 0.0,
+        "explicit_attribute_weight": 0.0,
+        "behavior_design_weight": 0.0,
+        "behavior_tactile_weight": 0.0,
+        "cart_context_weight": 0.0,
+        "category_affinity_weight": 0.0,
+        "exploration_weight": 0.0,
+        "default_result_size": 3
+      },
+      "tool_agent": {
+        "tool_result_products": 3,
+        "shown_products_memory": 3
       }
     }
   ]

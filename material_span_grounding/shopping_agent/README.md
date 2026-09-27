@@ -113,6 +113,17 @@ python -m shopping_agent.evaluation.tool_agent_scenarios \
 
 프론트엔드 변경 사항은 `notion/25_FRONTEND_AGENT_TOOL_LOOP_CHANGES.md`에 있다.
 
+## 추천 평가 데이터
+
+추천 성능 검증, 가중치 조정, 추천 로직 비교는 `data/recommendable_fashion_v1/`로만 한다. 에이전트가 추천할 수 있는
+상품(옷 + 실제 사진 + Last2 촉감 예측, 483,779개)과 그 상품의 이벤트만 남긴 공식 split이다. 주얼리·신발·가방처럼
+에이전트가 추천하지 않는 상품이 정답에 섞이면 촉감 효과가 희석되기 때문이다. 기준과 평가 집단은 그 폴더의 README에 있다.
+
+```bash
+python -m shopping_agent.evaluation.recommendable_data          # 만들기
+python -m shopping_agent.evaluation.recommendable_data --check  # 검사
+```
+
 ## LangSmith 준비
 
 모든 agent run은 `trace_id`, 입력, tool call, 모델 버전, 출력 요약을 로컬 JSONL trace로

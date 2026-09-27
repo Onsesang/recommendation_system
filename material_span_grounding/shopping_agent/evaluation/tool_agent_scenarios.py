@@ -54,6 +54,8 @@ FOREIGN_SCRIPT = re.compile(
     r"[\u0370-\u03FF\u0400-\u04FF\u0530-\u058F\u0590-\u05FF\u0600-\u06FF\u0900-\u097F"
     r"\u0E00-\u0E7F\u3040-\u30FF\u4E00-\u9FFF]+"
 )
+# Review question a turn belongs to in the HTML summary; omitted, it follows the first expectation set.
+CRITERIA = ("search", "refers", "cart", "no_tools", "forbid", "other")
 JUDGEMENT_COLUMNS = ["판정_조건해석(O/X)", "판정_지칭(O/X)", "판정_근거정직성(O/X)", "판정_말투(1-5)", "메모"]
 
 
@@ -94,6 +96,8 @@ def _validate_turn(turn: Any, where: str) -> list[str]:
     errors = []
     if not isinstance(turn.get("message"), str) or not turn["message"].strip():
         errors.append(f"{where}: message가 없다")
+    if turn.get("criterion") not in (None, *CRITERIA):
+        errors.append(f"{where}: criterion은 {list(CRITERIA)} 중 하나")
     expect = turn.get("expect", {})
     if not isinstance(expect, dict):
         return errors + [f"{where}: expect는 객체여야 한다"]
@@ -282,13 +286,8 @@ def check_answer(result: dict[str, Any], shown: list[str]) -> list[str]:
     if grade:
         failures.append(f"등급어 사용: “{grade.group(0)}”")
     grounded = any(row.get("tactile_target_source") == "review_grounded_overlay" for row in result.get("products", []))
-    if not grounded:
-        for match in re.finditer(r"리뷰", message):
-            # "리뷰 근거는 없고", "리뷰 근거가 아니라" are the honest disclaimers the agent should give.
-            window = message[match.start(): match.start() + 20]
-            if not re.search(r"(?:없|아니|아닌|않)", window):
-                failures.append("이미지 예측을 리뷰 근거처럼 표현")
-                break
+    if not grounded and claims_review(message):
+        failures.append("이미지 예측을 리뷰 근거처럼 표현")
     visible = set(shown) | {row["product_id"] for row in result.get("products", [])}
     for call in result.get("tool_calls", []):
         if call["name"] in REFERRING_TOOLS:
@@ -296,6 +295,33 @@ def check_answer(result: dict[str, Any], shown: list[str]) -> list[str]:
             if unknown:
                 failures.append(f"보여주지 않은 상품 지칭: {call['name']} {unknown}")
     return failures
+
+
+# A sentence that mentions 리뷰 but denies it ("리뷰 근거는 없고", "리뷰가 아니라") or only offers to
+# check it ("리뷰 근거가 있는지 확인해 드릴까요?") is honest; any other mention presents a review.
+REVIEW_HONEST = re.compile(r"없|아니|아닌|않|있는지|있을 때|때만|\?")
+
+
+def claims_review(message: str) -> bool:
+    for sentence in re.split(r"(?<=[.!?])\s+|\n+", message):
+        if "리뷰" in sentence and not REVIEW_HONEST.search(sentence):
+            return True
+    return False
+
+
+def refresh_answer_checks(report: dict[str, Any]) -> None:
+    """Re-run the checks that depend only on the answer text, so a rule fix applies to a saved run."""
+    for result in report["results"]:
+        for row in result["rows"]:
+            grounded = any(item.get("evidence_source") == "review_grounded_overlay" for item in row["top_products"])
+            failures = [value for value in row["failures"] if value != "이미지 예측을 리뷰 근거처럼 표현"]
+            if not grounded and claims_review(row["answer"]):
+                failures.append("이미지 예측을 리뷰 근거처럼 표현")
+            row["failures"] = failures
+            row["passed"] = not failures
+            searched = "search_products" in _called(row)
+            row["warnings"] = answer_warnings(row["answer"], searched=searched)
+        result.update(summarize(result["rows"]))
 
 
 def sentence_count(text: str) -> int:
@@ -328,6 +354,10 @@ def answer_warnings(message: str, searched: bool = False) -> list[str]:
         numbers = mentioned_numbers(message)
         if numbers and numbers != list(range(1, len(numbers) + 1)):
             warnings.append(f"번호를 순서대로 소개하지 않음: {numbers}")
+    product_ids = re.findall(r"\bB0[0-9A-Z]{8}\b", message)
+    if product_ids:
+        # Read aloud, an ASIN is ten meaningless characters; the agent should say "2번" instead.
+        warnings.append(f"상품 ID를 읽어 줌: {product_ids}")
     sentences = sentence_count(message)
     if sentences > MAX_SENTENCES:
         warnings.append(f"{sentences}문장 (권장 {MAX_SENTENCES} 이하)")
@@ -339,9 +369,77 @@ def answer_warnings(message: str, searched: bool = False) -> list[str]:
 # --------------------------------------------------------------------------- run
 
 
-def _tool_loop(settings: AgentSettings, model: str, effort: str | None) -> OpenAIToolLoop:
+class RecordingToolLoop(OpenAIToolLoop):
+    """The production tool loop, with every OpenAI request and response kept for the review sheet.
+
+    Nothing is changed on the way: the payload goes to the Responses API as is and the
+    response comes back as is. The record shows the reviewer that each tool call in a turn
+    was a `function_call` the model returned, and what the tool sent back to the model.
+    """
+
+    def __init__(self, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
+        self.records: list[dict[str, Any]] = []
+
+    def _request(self, payload: dict[str, Any]) -> dict[str, Any]:
+        record: dict[str, Any] = {
+            "requested_model": payload.get("model"),
+            "previous_response_id": payload.get("previous_response_id"),
+            "tool_choice": payload.get("tool_choice", "auto"),
+            "sent": _sent_summary(payload.get("input", [])),
+        }
+        started = time.perf_counter()
+        try:
+            response = super()._request(payload)
+        except Exception as exc:
+            record.update(seconds=round(time.perf_counter() - started, 2), error=str(exc)[:300])
+            self.records.append(record)
+            raise
+        usage = response.get("usage") or {}
+        record.update(
+            seconds=round(time.perf_counter() - started, 2),
+            response_id=response.get("id"),
+            response_model=response.get("model"),
+            usage={
+                "input_tokens": usage.get("input_tokens"),
+                "output_tokens": usage.get("output_tokens"),
+                "reasoning_tokens": (usage.get("output_tokens_details") or {}).get("reasoning_tokens"),
+            },
+            returned=[_returned_item(item) for item in response.get("output", []) if isinstance(item, dict)],
+        )
+        self.records.append(record)
+        return response
+
+
+def _sent_summary(items: list[dict[str, Any]]) -> dict[str, Any]:
+    """What this request gave the model: the conversation, or the outputs of the tools it called."""
+    outputs = [item for item in items if item.get("type") == "function_call_output"]
+    if outputs:
+        return {"tool_outputs": [str(item.get("output", ""))[:1500] for item in outputs]}
+    if items and items[0].get("role") == "user" and "직전 답변" in str(items[0].get("content", "")):
+        return {"rewrite_request": str(items[0]["content"])[:200]}
+    user_turns = [item for item in items if item.get("role") == "user"]
+    return {
+        "history_messages": len(items),
+        "last_user_message": str(user_turns[-1].get("content", "")) if user_turns else "",
+    }
+
+
+def _returned_item(item: dict[str, Any]) -> dict[str, Any]:
+    kind = item.get("type")
+    if kind == "function_call":
+        return {"type": kind, "name": item.get("name"), "arguments": item.get("arguments")}
+    if kind == "message":
+        text = " ".join(
+            str(part.get("text") or "") for part in item.get("content", []) if isinstance(part, dict)
+        )
+        return {"type": kind, "text": text}
+    return {"type": kind}
+
+
+def _tool_loop(settings: AgentSettings, model: str, effort: str | None) -> RecordingToolLoop:
     config = settings.config["tool_agent"]
-    return OpenAIToolLoop(
+    return RecordingToolLoop(
         api_key=settings.openai_api_key,
         model=model,
         timeout=int(settings.config["llm"]["timeout_seconds"]),
@@ -351,8 +449,32 @@ def _tool_loop(settings: AgentSettings, model: str, effort: str | None) -> OpenA
     )
 
 
-def run_config(app: Any, scenarios: list[dict[str, Any]], *, model: str, effort: str | None, run: int) -> dict[str, Any]:
-    app.agent.tool_agent = _tool_loop(app.settings, model, effort)
+def load_variants(path: Path, names: list[str]) -> list[dict[str, Any]]:
+    variants = {row["name"]: row for row in json.loads(path.read_text(encoding="utf-8"))["variants"]}
+    missing = [name for name in names if name not in variants]
+    if missing:
+        raise ValueError(f"없는 순위 설정: {missing} (있는 것: {sorted(variants)})")
+    return [variants[name] for name in names]
+
+
+def apply_variant(app: Any, variant: dict[str, Any] | None, base: dict[str, Any]) -> None:
+    """Overwrite the live config dicts in place; the search, ranker and agent hold references to them."""
+    targets = {
+        "relevance": app.tools.tactile.config["relevance"],
+        "ranking": app.settings.config["ranking"],
+        "tool_agent": app.settings.config["tool_agent"],
+    }
+    for key, target in targets.items():
+        target.clear()
+        target.update(json.loads(json.dumps(base[key])))
+        if variant:
+            target.update(variant.get(key, {}))
+
+
+def run_config(app: Any, scenarios: list[dict[str, Any]], *, model: str, effort: str | None, run: int,
+               variant: str | None = None) -> dict[str, Any]:
+    loop = _tool_loop(app.settings, model, effort)
+    app.agent.tool_agent = loop
     rows = []
     for scenario in scenarios:
         # A fresh user per scenario keeps carts and learned preferences from leaking between scenarios.
@@ -363,6 +485,7 @@ def run_config(app: Any, scenarios: list[dict[str, Any]], *, model: str, effort:
         session_id = app.agent.create_session(user_id)["session_id"]
         shown: list[str] = []
         for turn_no, turn in enumerate(scenario["turns"], 1):
+            loop.records = []
             started = time.perf_counter()
             try:
                 result = app.agent.message(user_id, session_id, turn["message"])
@@ -381,7 +504,13 @@ def run_config(app: Any, scenarios: list[dict[str, Any]], *, model: str, effort:
                     "turn": turn_no,
                     "message": turn["message"],
                     "note": turn.get("note", ""),
+                    "expect": turn.get("expect", {}),
+                    "criterion": turn.get("criterion"),
                     "answer": message,
+                    "llm_model": result.get("provenance", {}).get("llm_model"),
+                    "agent_mode": result.get("provenance", {}).get("agent_mode"),
+                    "cart_updated": bool(result.get("cart_updated")),
+                    "openai_requests": loop.records,
                     "action": result.get("action"),
                     "tool_calls": result.get("tool_calls", []),
                     "latency_seconds": round(elapsed, 2),
@@ -400,6 +529,7 @@ def run_config(app: Any, scenarios: list[dict[str, Any]], *, model: str, effort:
                             "category": row.get("category"),
                             "evidence_source": row.get("tactile_target_source"),
                             "remote_image_url": row.get("remote_image_url"),
+                            "train_count": row.get("train_interaction_count"),
                             "tactile_terms": row.get("score_breakdown", {}).get("tactile_terms", []),
                         }
                         # Ten covers every number the agent can refer to (shown_products_memory);
@@ -410,7 +540,7 @@ def run_config(app: Any, scenarios: list[dict[str, Any]], *, model: str, effort:
             )
             if "search_products" in _called(result) and result.get("products"):
                 shown = [row["product_id"] for row in result["products"]]
-    return {"model": model, "reasoning_effort": effort, "run": run, **summarize(rows), "rows": rows}
+    return {"model": model, "reasoning_effort": effort, "variant": variant, "run": run, **summarize(rows), "rows": rows}
 
 
 def _percentile(values: list[float], fraction: float) -> float:
@@ -435,7 +565,8 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def _config_key(result: dict[str, Any]) -> str:
-    return f"{result['model']}/{result['reasoning_effort'] or 'default'}"
+    key = f"{result['model']}/{result['reasoning_effort'] or 'default'}"
+    return f"{key}/{result['variant']}" if result.get("variant") else key
 
 
 def label(result: dict[str, Any]) -> str:
@@ -603,6 +734,9 @@ def write_reports(out_dir: Path, report: dict[str, Any]) -> None:
     (out_dir / "results.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     write_markdown(out_dir / "review.md", report)
     write_csv(out_dir / "review.csv", report)
+    from shopping_agent.evaluation.html_report import write_html
+
+    write_html(out_dir / "review.html", report)
 
 
 # --------------------------------------------------------------------------- cli
@@ -625,13 +759,22 @@ def main() -> None:
         help="예: low none. config는 configs/v1.json의 tool_agent.reasoning_effort",
     )
     parser.add_argument("--repeats", type=int, default=1, help="같은 설정을 반복 실행해 흔들림을 본다")
+    parser.add_argument(
+        "--variants", nargs="+",
+        help="evaluation/ranking_variants.json의 순위 설정 이름. 설정마다 같은 대화를 돌려 비교한다 (예: baseline no_pop_no_personal_top3)",
+    )
     parser.add_argument("--out-dir", type=Path, help="기본값: evaluation/results/<시각>")
     parser.add_argument("--check", action="store_true", help="시나리오 파일만 검사하고 끝낸다 (API 호출 없음)")
-    parser.add_argument("--render", type=Path, help="기존 results.json에서 review.md·review.csv만 다시 만든다")
+    parser.add_argument("--render", type=Path, help="기존 results.json에서 review.md·csv·html만 다시 만든다")
+    parser.add_argument("--note", type=Path, help="검수 결론 텍스트 파일. review.html 맨 위에 넣는다 (빈 줄로 문단 구분)")
     args = parser.parse_args()
 
     if args.render:
-        write_reports(args.render.parent, json.loads(args.render.read_text(encoding="utf-8")))
+        report = json.loads(args.render.read_text(encoding="utf-8"))
+        refresh_answer_checks(report)
+        if args.note:
+            report["note"] = args.note.read_text(encoding="utf-8").strip()
+        write_reports(args.render.parent, report)
         print(args.render.parent)
         return
 
@@ -656,26 +799,39 @@ def main() -> None:
     default_effort = settings.config["tool_agent"].get("reasoning_effort") or None
     efforts = [default_effort if value == "config" else value for value in args.reasoning_efforts]
     app = AgentApplication(settings)
+    from shopping_agent.evaluation.ranking_variants import DEFAULT_VARIANTS
+
+    variants = load_variants(DEFAULT_VARIANTS, args.variants) if args.variants else [None]
+    base = {
+        "relevance": json.loads(json.dumps(app.tools.tactile.config["relevance"])),
+        "ranking": json.loads(json.dumps(app.settings.config["ranking"])),
+        "tool_agent": json.loads(json.dumps(app.settings.config["tool_agent"])),
+    }
 
     results = []
     for model in args.models:
         for effort in efforts:
-            for run in range(1, args.repeats + 1):
-                result = run_config(app, scenarios, model=model, effort=effort, run=run)
-                results.append(result)
-                print(
-                    f"{label(result)}: {result['passed']}/{result['turns']} passed, "
-                    f"median {result['latency_median']}s, max {result['latency_max']}s, "
-                    f"length warnings {result['length_warnings']}",
-                    flush=True,
-                )
-                for row in result["rows"]:
-                    if not row["passed"]:
-                        print(f"  FAIL {row['scenario']}-{row['turn']} {row['message']!r}: {row['failures']}")
+            for variant in variants:
+                apply_variant(app, variant, base)
+                for run in range(1, args.repeats + 1):
+                    result = run_config(app, scenarios, model=model, effort=effort, run=run,
+                                        variant=variant["name"] if variant else None)
+                    results.append(result)
+                    print(
+                        f"{label(result)}: {result['passed']}/{result['turns']} passed, "
+                        f"median {result['latency_median']}s, max {result['latency_max']}s, "
+                        f"length warnings {result['length_warnings']}",
+                        flush=True,
+                    )
+                    for row in result["rows"]:
+                        if not row["passed"]:
+                            print(f"  FAIL {row['scenario']}-{row['turn']} {row['message']!r}: {row['failures']}")
+    apply_variant(app, None, base)
     temporary.cleanup()
 
     report = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "variants": {variant["name"]: variant.get("description", "") for variant in variants if variant},
         "scenario_file": _display_path(args.scenarios),
         "scenario_count": len(scenarios),
         "turn_count": turns,

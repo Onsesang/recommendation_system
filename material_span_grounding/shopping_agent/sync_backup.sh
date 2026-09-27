@@ -13,6 +13,15 @@
 # Needs the `onsesang3060` ssh alias, which reaches the server through Tailscale.
 set -euo pipefail
 
+# Since 2026-09-26 the RTX 3060 is the main server and the A100 the fallback, and the A100
+# still has the `onsesang3060` alias: run there, this script would overwrite the main
+# server's code and restart it. The fallback pulls with pull_from_main.sh instead.
+if [[ "${ALLOW_LEGACY_PUSH:-0}" != 1 ]]; then
+  echo "sync_backup.sh is retired: on the fallback server run ./shopping_agent/pull_from_main.sh" >&2
+  echo "(set ALLOW_LEGACY_PUSH=1 only if you really mean to push this machine's code to \$SYNC_HOST)" >&2
+  exit 1
+fi
+
 PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 HOST="${SYNC_HOST:-onsesang3060}"
 REMOTE_ROOT="${SYNC_REMOTE_ROOT:-onsesang/material_span_grounding}"

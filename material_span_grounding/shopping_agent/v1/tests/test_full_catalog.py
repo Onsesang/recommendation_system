@@ -277,6 +277,43 @@ class AgeAndBrowseTests(unittest.TestCase):
             self.assertNotRegex(title, pattern)
 
 
+class TitleMatchTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.tools = FullCatalogTools()
+
+    def _hits(self, mode: str, keyword: str, titles: list[str]) -> list[bool]:
+        index = self.tools.index
+        relevance = index.config["relevance"]
+        before = relevance.get("title_match_mode")
+        relevance["title_match_mode"] = mode
+        try:
+            # Score real rows whose titles are swapped for the test titles.
+            rows = np.arange(len(titles))
+            saved = index.lowered_titles
+            index.lowered_titles = pd.Series([t.casefold() for t in titles])
+            try:
+                return [bool(value) for value in index.title_match(rows, [keyword])]
+            finally:
+                index.lowered_titles = saved
+        finally:
+            relevance["title_match_mode"] = before
+
+    def test_word_mode_keeps_endings_but_not_other_words(self) -> None:
+        titles = ["Men's Workout Shorts", "Work Pants for Men", "Workwear Jacket", "Knitted Cardigan",
+                  "Cotton Sweatshirt", "Basic T-Shirt", "Cable Knit Sweater", "Linen Dresses"]
+        self.assertEqual(self._hits("word", "work", titles[:3]), [False, True, True])
+        self.assertEqual(self._hits("word", "knit", [titles[3], titles[6]]), [True, True])
+        self.assertEqual(self._hits("word", "shirt", [titles[4], titles[5]]), [False, True])
+        self.assertEqual(self._hits("word", "dress", [titles[7]]), [True])
+        self.assertEqual(self._hits("word", "fit", ["Slim Fitted Blazer", "Outfit Set"]), [True, False])
+
+    def test_service_uses_word_mode_and_substring_stays_available(self) -> None:
+        # Chosen 2026-09-27 (evaluation/results/20260927_step14a/b); substring is kept for comparison runs.
+        self.assertEqual(self.tools.index.config["relevance"]["title_match_mode"], "word")
+        self.assertEqual(self._hits("substring", "work", ["Men's Workout Shorts"]), [True])
+
+
 class ConceptMappingTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:

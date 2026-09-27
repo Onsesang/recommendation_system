@@ -129,6 +129,11 @@ def _title_genders(lowered_titles: pd.Series, categories: np.ndarray) -> np.ndar
     return genders
 
 
+# Endings a title word may add to a query keyword in word mode: plural, -ed/-ing (with one
+# doubled consonant: knit -> knitted, fit -> fitting) and -wear (work -> workwear).
+_TITLE_WORD_ENDINGS = r"(?:s|es|[a-z]?ed|[a-z]?ing|wear)?"
+
+
 def _read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -388,13 +393,26 @@ class FullCatalogIndex:
         return subset.str.contains(pattern, regex=True, na=False).to_numpy(dtype=np.float32)
 
     def title_match(self, rows: np.ndarray, keywords: list[str]) -> np.ndarray:
-        """Fraction of query keywords present in each candidate title."""
+        """Fraction of query keywords present in each candidate title.
+
+        `relevance.title_match_mode` picks how a keyword counts as present:
+          substring  anywhere in the title ("work" also hits "Workout", "shirt" hits "Sweatshirt")
+          word       as a word, allowing common endings only ("knit" hits "knitted" and
+                     "knitwear", "work" hits "works" and "workwear" but not "workout")
+        """
         if not keywords or not rows.size:
             return np.zeros(len(rows), dtype=np.float32)
         subset = pd.Series(self.lowered_titles.to_numpy()[rows], copy=False)
+        word_mode = self.config["relevance"].get("title_match_mode", "substring") == "word"
         hits = np.zeros(len(rows), dtype=np.float32)
         for keyword in keywords:
-            hits += subset.str.contains(keyword, regex=False, na=False).to_numpy(dtype=np.float32)
+            found = subset.str.contains(keyword, regex=False, na=False).to_numpy()
+            if word_mode and found.any():
+                # The regex runs only on titles that contain the keyword at all (fast substring pass).
+                candidates = np.flatnonzero(found)
+                pattern = rf"\b{re.escape(keyword)}{_TITLE_WORD_ENDINGS}\b"
+                found[candidates] = subset.iloc[candidates].str.contains(pattern, regex=True, na=False).to_numpy()
+            hits += found.astype(np.float32)
         return hits / float(len(keywords))
 
 

@@ -242,6 +242,43 @@
         "tool_result_products": 3,
         "shown_products_memory": 3
       }
+    },
+    {
+      "name": "word",
+      "description": "상품명 단어 단위 매칭, 가중치는 현재와 같음(촉감 0.5, 상품명 0.35, 인기도 0.15)",
+      "relevance": {
+        "title_match_mode": "word"
+      }
+    },
+    {
+      "name": "word_pop10",
+      "description": "단어 매칭 + 인기도 0.10 (촉감 0.53, 상품명 0.37)",
+      "relevance": {
+        "title_match_mode": "word",
+        "tactile_match_weight": 0.53,
+        "title_match_weight": 0.37,
+        "popularity_weight": 0.1
+      }
+    },
+    {
+      "name": "word_pop05",
+      "description": "단어 매칭 + 인기도 0.05 (촉감 0.56, 상품명 0.39)",
+      "relevance": {
+        "title_match_mode": "word",
+        "tactile_match_weight": 0.56,
+        "title_match_weight": 0.39,
+        "popularity_weight": 0.05
+      }
+    },
+    {
+      "name": "word_pop0",
+      "description": "단어 매칭 + 인기도 0 (촉감 0.59, 상품명 0.41)",
+      "relevance": {
+        "title_match_mode": "word",
+        "tactile_match_weight": 0.59,
+        "title_match_weight": 0.41,
+        "popularity_weight": 0.0
+      }
     }
   ]
 }

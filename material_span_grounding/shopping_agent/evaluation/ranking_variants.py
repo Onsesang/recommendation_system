@@ -107,17 +107,23 @@ def evaluate(variants: list[dict[str, Any]], turns: list[dict[str, Any]], app: A
         tools_config["relevance"].update(variant.get("relevance", {}))
         ranking_config.clear(); ranking_config.update(copy.deepcopy(base_ranking))
         ranking_config.update(variant.get("ranking", {}))
-        rows_out, judged, colour, fit = [], [], [], []
+        rows_out, judged, colour, fit, zero_review, unjudged = [], [], [], [], [], 0
         for turn in turns:
             row, arguments = turn["row"], turn["arguments"]
             turn_id = f"{row['scenario']}-{row['turn']}"
             ranked = rank_turn(app, user_id, arguments, limit)
             want, avoid = arguments.get("want", []), arguments.get("avoid", [])
             colors = [word for word in title_keywords(" ".join(arguments.get("keywords", []))) if word in COLOR_PATTERNS]
-            for item in ranked[:TOP_K]:
+            for position, item in enumerate(ranked[:TOP_K], 1):
                 label = labels.get(product_key(turn_id, item["product_id"]))
                 if label in SCORE:
                     judged.append(SCORE[label])
+                else:
+                    unjudged += 1
+                if position <= 3:
+                    # No purchase history at all: the step-13 run showed these crowd out known
+                    # products once popularity weighs nothing.
+                    zero_review.append(float(int(item.get("train_interaction_count") or 0) == 0))
                 if colors:
                     colour.append(color_hit(str(item.get("title", "")), colors))
                 satisfied = tactile_fit(item, want, avoid)
@@ -145,6 +151,7 @@ def evaluate(variants: list[dict[str, Any]], turns: list[dict[str, Any]], app: A
                 "judged_top5": len(judged), "judged_precision": mean(judged),
                 "color_hit_rate": mean([float(value) for value in colour]), "color_samples": len(colour),
                 "tactile_fit_rate": mean([float(value) for value in fit]), "tactile_samples": len(fit),
+                "zero_review_top3_share": mean(zero_review), "unjudged_top5": unjudged,
             },
             "turns": len(rows_out), "passed": len(rows_out), "rows": rows_out,
         })

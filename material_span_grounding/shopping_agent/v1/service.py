@@ -635,8 +635,10 @@ class _ToolTurn:
         keywords: list[str],
         unsupported_concepts: list[str],
         gender: str | None = None,
+        for_kids: bool = False,
     ) -> dict[str, Any]:
         service = self.service
+        for_kids = for_kids is True
         category = category if category in SUPPORTED_CATEGORIES else None
         # The model sets gender only when the message says whose clothes these are;
         # otherwise the onboarding answer applies. "any" searches both sides.
@@ -669,7 +671,8 @@ class _ToolTurn:
         )
         pool_size = int(service.config["ranking"]["candidate_pool_size"])
         search = service.tools.tactile.search(
-            query_text, limit=pool_size, structured=structured, keywords=keywords, gender=effective_gender
+            query_text, limit=pool_size, structured=structured, keywords=keywords,
+            gender=effective_gender, for_kids=for_kids,
         )
         result_size = self.limit or int(service.config["ranking"]["default_result_size"])
         self.ranked = service.ranker.rank(
@@ -682,6 +685,7 @@ class _ToolTurn:
             "avoid": avoid,
             "keywords": keywords,
             "gender": gender,
+            "for_kids": for_kids,
         }
         requested = [*want, *avoid]
         rows = self.ranked["results"][: int(self.settings["tool_result_products"])]
@@ -696,6 +700,7 @@ class _ToolTurn:
             "category": category,
             "category_relaxed": bool(search.get("category_relaxed", False)),
             "gender": effective_gender,
+            "for_kids": for_kids,
             "unsupported_concepts": self.unsupported_concepts,
             "common_tactile_top3": common,
             "products": [

@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import json
 import re
+import threading
 import time
 from pathlib import Path
 from typing import Any, Iterator, Mapping
@@ -23,7 +24,7 @@ from typing import Any, Iterator, Mapping
 import numpy as np
 import pandas as pd
 
-from demo_agent.models import StructuredQuery
+from demo_agent.models import SUPPORTED_CATEGORIES, StructuredQuery
 from demo_agent.recommender import CATEGORY_SPECS, TACTILE_LABELS_KO
 from demo_agent.tactile_parser import parse_message
 from recommendation_api.tactile_models import TactileIntent
@@ -84,12 +85,35 @@ _TITLE_KEY_TOKENS = 8
 # Who a listing is for, from title words ("Women's", "Men's", "Girls", "Unisex"). Kids'
 # listings count with their side. Dresses and skirts with no such word are treated as
 # women's. The catalog has no department field, so about 29% of listings stay unknown.
+# Metadata categories the product list shows: the broad categories behind every supported
+# garment category (same definition as evaluation/recommendable_data.py).
+GARMENT_CATEGORIES = tuple(sorted({
+    broad
+    for category in SUPPORTED_CATEGORIES
+    if category != "accessory" and category in CATEGORY_SPECS
+    for broad in CATEGORY_SPECS[category].broad_categories
+} - {"accessory"}))
+
 GENDERS = ("women", "men")
 GENDER_UNKNOWN, GENDER_WOMEN, GENDER_MEN, GENDER_UNISEX = 0, 1, 2, 3
 _WOMEN_TITLE = r"\b(?:women|woman|womens|ladies|lady|girls?|female|maternity|juniors?)\b"
 _MEN_TITLE = r"\b(?:men|mens|man|boys?|male|gentlemen)\b"
 _UNISEX_TITLE = r"\bunisex\b"
 _WOMEN_ONLY_CATEGORIES = ("dress", "skirt")
+
+
+# Kids' and baby listings, from title words, unless the title also names an adult audience
+# ("for Women Girls"). Searches leave them out unless the request is for a child.
+_KIDS_TITLE = (
+    r"\b(?:baby|babies|infants?|newborns?|toddlers?|kids?|child|children|girls?|boys?|youth|preschool)\b"
+)
+_ADULT_TITLE = r"\b(?:women|woman|womens|ladies|lady|men|mens|adults?)\b"
+
+
+def _kids_titles(lowered_titles: pd.Series) -> np.ndarray:
+    kids = lowered_titles.str.contains(_KIDS_TITLE, regex=True, na=False).to_numpy()
+    adult = lowered_titles.str.contains(_ADULT_TITLE, regex=True, na=False).to_numpy()
+    return kids & ~adult
 
 
 def _title_genders(lowered_titles: pd.Series, categories: np.ndarray) -> np.ndarray:
@@ -194,6 +218,8 @@ class FullCatalogIndex:
 
         self.lowered_titles = pd.Series(self.titles, copy=False).str.casefold()
         self.genders = _title_genders(self.lowered_titles, self.categories)
+        self.kids = _kids_titles(self.lowered_titles)
+        self._browse_rows: np.ndarray | None = None
         self._class_index = {name: i for i, name in enumerate(TACTILE_CLASSES)}
         self._asin_to_row = {asin: row for row, asin in enumerate(self.asins.tolist())}
         self._category_cache: dict[str, tuple[np.ndarray, bool]] = {}
@@ -314,6 +340,34 @@ class FullCatalogIndex:
         minimum = int(retrieval.get("type_exclusion_min_candidates", 0))
         return kept if kept.size >= minimum else rows
 
+    def for_age(self, rows: np.ndarray, for_kids: bool) -> np.ndarray:
+        """Kids' listings only when the request is for a child; adult listings otherwise."""
+        return rows[self.kids[rows]] if for_kids else rows[~self.kids[rows]]
+
+    def browse_rows(self) -> np.ndarray:
+        """Rows for the product list: adult clothing with a photo.
+
+        The metadata category is a noisy heuristic (rings and polishing cloths sit under
+        `top` and `underwear`), so the type-exclusion rules that apply to every garment
+        category are applied here too. Computed once, on first use (a few seconds).
+        """
+        if self._browse_rows is None:
+            rows = np.flatnonzero(self.has_image & np.isin(self.categories, GARMENT_CATEGORIES) & ~self.kids)
+            retrieval = self.config["retrieval"]
+            rules = [
+                rule for rule in retrieval.get("type_exclusion_rules", [])
+                if "categories" not in rule and set(rule.get("except_categories", [])) <= {"accessory"}
+            ]
+            titles = pd.Series(self.lowered_titles.to_numpy()[rows], copy=False)
+            ignore = retrieval.get("type_exclusion_ignore_phrase")
+            if ignore:
+                titles = titles.str.replace(ignore, " ", case=False, regex=True)
+            drop = np.zeros(len(rows), dtype=bool)
+            for rule in rules:
+                drop |= titles.str.contains(rule["pattern"], case=False, regex=True, na=False).to_numpy()
+            self._browse_rows = rows[~drop].astype(np.int32)
+        return self._browse_rows
+
     def for_gender(self, rows: np.ndarray, gender: str | None) -> np.ndarray:
         """Drop listings marked for the other gender; unisex and unknown ones stay."""
         if gender not in GENDERS:
@@ -433,6 +487,7 @@ class FullCatalogTactileProvider:
         structured: StructuredQuery | None = None,
         keywords: list[str] | None = None,
         gender: str | None = None,
+        for_kids: bool = False,
     ) -> dict[str, Any]:
         """Rank the catalog for a query.
 
@@ -440,11 +495,12 @@ class FullCatalogTactileProvider:
         resolved the request into Last2 constraints. `keywords` replaces the title
         tokens taken from `query_text`, which lets a Korean request match the
         English catalog titles. `gender` ("women"/"men") drops the other side's listings
-        and ranks listings whose title does not say slightly lower.
+        and ranks listings whose title does not say slightly lower. Kids' listings are left
+        out unless `for_kids`, which searches only them.
         """
         parsed = structured or parse_message(query_text)
         rows, category_relaxed = self.index.candidate_rows(parsed.category)
-        rows = self.index.for_gender(rows, gender)
+        rows = self.index.for_gender(self.index.for_age(rows, for_kids), gender)
         if not rows.size:
             return {
                 "items": [],
@@ -572,6 +628,7 @@ class FullCatalogTactileProvider:
             "category_relaxed": category_relaxed,
             "ranking_mode": ranking_mode,
             "gender": gender if gender in GENDERS else None,
+            "for_kids": bool(for_kids),
             "title_keywords": keywords,
             "catalog_size": len(self.index),
         }
@@ -780,6 +837,8 @@ class FullCatalogTools:
 
     def __init__(self, config: dict[str, Any] | None = None) -> None:
         self.index = FullCatalogIndex(config)
+        # The product list takes a few seconds to build; do it now so the first visitor does not wait.
+        threading.Thread(target=self.index.browse_rows, name="browse-rows", daemon=True).start()
         self.catalog = _CatalogShim(self.index)
         self.legacy_store = _LegacyStoreShim(self.index)
         self.tactile = FullCatalogTactileProvider(self.index)
@@ -829,7 +888,7 @@ class FullCatalogTools:
     def list_products(self, *, page: int, page_size: int, gender: str | None = None) -> dict[str, Any]:
         page = max(1, int(page))
         page_size = max(1, min(int(page_size), 100))
-        rows = self.index.for_gender(self.index.rows_with_image, gender)
+        rows = self.index.for_gender(self.index.browse_rows(), gender)
         score = self.index.popularity[rows]
         if gender in GENDERS:
             # Same rule as search: listings whose title does not say whose they are rank a little lower.

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import tempfile
 import threading
 import unittest
@@ -23,6 +24,8 @@ from shopping_agent.v1.full_catalog import (
     TACTILE_CLASSES,
     UNSUPPORTED_CONCEPTS,
     FullCatalogTools,
+    GARMENT_CATEGORIES,
+    _kids_titles,
     _title_genders,
     intent_terms,
     title_keywords,
@@ -88,7 +91,9 @@ class FullCatalogToolsTests(unittest.TestCase):
         placeholder = int((~index.has_image).sum())
         self.assertGreater(placeholder, 10_000)  # Amazon's shared "no image" GIF
         listing = self.tools.list_products(page=1, page_size=100)
-        self.assertEqual(listing["total"], len(index.asins) - placeholder)
+        # The list shows adult clothing only (AgeAndBrowseTests), and never a photo-less listing.
+        self.assertTrue(index.has_image[index.browse_rows()].all())
+        self.assertLessEqual(listing["total"], len(index.asins) - placeholder)
         self.assertFalse(any(item["remote_image_url"].endswith(".gif") for item in listing["items"]))
         for category in (None, "pants", "dress"):
             rows, _ = index.candidate_rows(category)
@@ -232,6 +237,44 @@ class GenderTests(unittest.TestCase):
         self.assertEqual(men["gender"], "men")
         self.assertLess(men["total"], everything["total"])
         self.assertNotIn(GENDER_WOMEN, self._genders_of(men["items"]))
+
+
+class AgeAndBrowseTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.tools = FullCatalogTools()
+
+    def test_kids_titles_unless_an_adult_audience_is_named(self) -> None:
+        titles = pd.Series([
+            "toddler baby girl outfit", "girls' crop top hoodie", "kids sweatshirt",
+            "necklace for women girls", "men's hoodie", "floral midi dress",
+        ])
+        self.assertEqual(_kids_titles(titles).tolist(), [True, True, True, False, False, False])
+
+    def test_searches_leave_kids_out_unless_asked(self) -> None:
+        index = self.tools.index
+        adult = self.tools.tactile.search("니트", limit=60, keywords=["sweater"])
+        kids = self.tools.tactile.search("니트", limit=60, keywords=["sweater"], for_kids=True)
+        self.assertFalse(any(index.kids[index.row_of(item["product_id"])] for item in adult["items"]))
+        self.assertTrue(kids["items"])
+        self.assertTrue(all(index.kids[index.row_of(item["product_id"])] for item in kids["items"]))
+
+    def test_product_list_shows_adult_clothing_only(self) -> None:
+        index = self.tools.index
+        page = self.tools.list_products(page=1, page_size=100)
+        rows = [index.row_of(item["product_id"]) for item in page["items"]]
+        self.assertTrue(all(index.categories[row] in GARMENT_CATEGORIES for row in rows))
+        self.assertFalse(any(index.kids[row] for row in rows))
+        jewelry = re.compile(r"\b(?:earrings?|rings?|necklaces?|bracelets?|polishing cloth|septum)\b")
+        self.assertEqual([index.titles[row] for row in rows if jewelry.search(index.titles[row].casefold())], [])
+        self.assertLess(page["total"], len(index.rows_with_image))
+
+    def test_accessory_rule_catches_plurals_but_not_garment_details(self) -> None:
+        pattern = self.tools.index.config["retrieval"]["type_exclusion_rules"][0]["pattern"]
+        for title in ("stud earrings set", "septum nose rings", "band ring for women", "polishing cloth for silver"):
+            self.assertRegex(title, pattern)
+        for title in ("men's ring spun cotton t-shirt", "o-ring bikini set", "ringer tee"):
+            self.assertNotRegex(title, pattern)
 
 
 class ConceptMappingTests(unittest.TestCase):

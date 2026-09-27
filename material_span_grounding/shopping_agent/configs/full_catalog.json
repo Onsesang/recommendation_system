@@ -15,7 +15,7 @@
     "type_exclusion_rules": [
       {
         "name": "jewellery_and_bags",
-        "pattern": "\\b(?:necklace|earring|bracelet|anklet|brooch|keychain|chain(?![\\s-]*(?:stitch|print))|pendant|charm|watch|sunglass|handbag|wallet|purse|backpack|sticker|patches|iron[\\s-]*on|badge)\\b",
+        "pattern": "\\b(?:necklaces?|earrings?|bracelets?|anklets?|brooch(?:es)?|keychains?|chains?(?![\\s-]*(?:stitch|print))|pendants?|charms?|watch(?:es)?|sunglass(?:es)?|handbags?|wallets?|purses?|backpacks?|stickers?|patches|iron[\\s-]*on|badges?|(?<!\\b[od][\\s-])rings?(?![\\s-]*spun)|septum|piercings?|ear[\\s-]*cuffs?|jewell?ery|polishing[\\s-]*cloth)\\b",
         "except_categories": [
           "accessory"
         ]

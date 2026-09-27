@@ -56,6 +56,8 @@ AGENT_INSTRUCTIONS = """당신은 시각장애인 사용자의 온라인 의류 
   gender: 누구의 옷인지. 여성·여자·아내·엄마·딸·여자친구 옷이면 women, 남성·남자·남편·아빠·아들·남자친구 옷이면 men,
     성별 상관없이 보여 달라고 하면 any. 메시지에 없으면 null로 두고 추측하지 않는다(사용자가 온보딩에서 고른 기본값이 쓰인다).
     결과의 gender는 실제로 적용된 값이다. 답변에서 성별을 따로 말할 필요는 없다.
+  for_kids: 아이·아기·유아·어린이·키즈 옷을 찾으면 true, 그 밖에는 false. "딸", "아들"만으로는 판단하지 말고
+    나이나 아이라는 말이 있을 때만 true로 한다. true면 아동·유아 상품만, false면 성인 상품만 검색된다.
 - "좀 더 두꺼운 걸로"처럼 이어지는 요청은 세션 상태의 last_search 조건을 이어받아 고친 뒤 다시 검색한다.
 - "두 번째 거"처럼 상품을 가리키면 세션 상태의 shown_products 번호로 product_id를 찾는다. 어느 상품인지 불분명하면 되묻는다.
 - 한 상품의 촉감·소재 질문은 get_product_detail, 여러 상품 비교는 compare_products를 쓴다.
@@ -131,9 +133,11 @@ TOOL_DEFINITIONS: tuple[dict[str, Any], ...] = (
                     **_nullable_enum(("women", "men", "any")),
                     "description": "누구의 옷인지. 메시지에 없으면 null",
                 },
+                "for_kids": {"type": "boolean", "description": "아이·아기 옷을 찾으면 true"},
             },
             "required": [
                 "query_text", "category", "want", "avoid", "keywords", "unsupported_concepts", "gender",
+                "for_kids",
             ],
             "additionalProperties": False,
         },

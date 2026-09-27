@@ -35,9 +35,10 @@ class CurrentTactileProvider:
         structured: Any = None,
         keywords: list[str] | None = None,
         gender: str | None = None,
+        for_kids: bool = False,
     ) -> dict[str, Any]:
         # The curated catalog parses open-vocabulary spans itself; Last2 structure does not apply.
-        # It has no gender labels, so `gender` is accepted and ignored.
+        # It has no gender or age labels, so `gender` and `for_kids` are accepted and ignored.
         return self.catalog.search(
             {"query_text": query_text, "page": 1, "page_size": limit}
         )

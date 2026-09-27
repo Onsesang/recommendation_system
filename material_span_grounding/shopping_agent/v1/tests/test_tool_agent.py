@@ -412,6 +412,20 @@ class ToolAgentServiceTests(unittest.TestCase):
         self.assertIsNone(applied)
 
     @patch("shopping_agent.v1.tool_agent._post_json")
+    def test_kids_are_searched_only_when_asked(self, post) -> None:
+        index = self.app.tools.index
+        session_id = self.session()
+        args = {**SEARCH_ARGUMENTS, "category": "sweater", "want": ["soft"], "avoid": [], "keywords": ["sweater"]}
+        for for_kids in (False, True):
+            post.side_effect = [
+                {"id": "r1", "output": [_call("search_products", {**args, "gender": "any", "for_kids": for_kids})]},
+                {"id": "r2", "output": [_answer("찾았습니다.")]},
+            ]
+            result = self.app.agent.message(self.user_id, session_id, "7살 아이 니트" if for_kids else "니트")
+            labels = {bool(index.kids[index.row_of(row["product_id"])]) for row in result["products"]}
+            self.assertEqual(labels, {for_kids})
+
+    @patch("shopping_agent.v1.tool_agent._post_json")
     def test_remote_failure_falls_back_to_local_router(self, post) -> None:
         post.side_effect = RuntimeError("LLM API request failed: timeout")
         result = self.app.agent.message(self.user_id, self.session(), "부드러운 바지 찾아줘")

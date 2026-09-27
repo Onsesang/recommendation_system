@@ -74,7 +74,8 @@
   "relevance": {
     "tactile_match_weight": 0.5,
     "title_match_weight": 0.35,
-    "popularity_weight": 0.15
+    "popularity_weight": 0.15,
+    "gender_unknown_factor": 0.9
   },
   "concept_fidelity": {
     "direct_weight": 1.0,

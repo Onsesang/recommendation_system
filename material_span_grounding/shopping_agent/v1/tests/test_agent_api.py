@@ -117,7 +117,7 @@ class AgentApiTests(unittest.TestCase):
         token = created["access_token"]
         status, initial, _ = self.request("GET", "/agent/v1/onboarding", token=token)
         self.assertEqual(status, 200)
-        self.assertEqual(initial["answers"], {"categories": [], "tactile": [], "voice": []})
+        self.assertEqual(initial["answers"], {"gender": [], "categories": [], "tactile": [], "voice": []})
         self.assertFalse(initial["completed"])
         self.assertIsNone(initial["updated_at"])
 
@@ -127,7 +127,7 @@ class AgentApiTests(unittest.TestCase):
         self.assertEqual(saved["answers"]["categories"], ["knit", "pants"])
         self.assertTrue(saved["completed"])
         status, replaced, _ = self.request("PUT", "/agent/v1/onboarding", {"answers": {"voice": []}}, token)
-        self.assertEqual(replaced["answers"], {"categories": [], "tactile": [], "voice": []})
+        self.assertEqual(replaced["answers"], {"gender": [], "categories": [], "tactile": [], "voice": []})
         self.assertFalse(replaced["completed"])
         self.assertEqual(replaced["created_at"], saved["created_at"])
         self.assertEqual(self.request("GET", "/agent/v1/onboarding", token=token)[1], replaced)
@@ -138,9 +138,15 @@ class AgentApiTests(unittest.TestCase):
             {"answers": {"tactile": ["Soft Touch"]}},
             {"answers": {}, "completed": "yes"},
             {"completed": True},
+            {"answers": {"gender": ["women", "men"]}},
+            {"answers": {"gender": ["kids"]}},
         ):
             self.assertEqual(self.request("PUT", "/agent/v1/onboarding", body, token)[0], 400, body)
         self.assertEqual(self.request("PUT", "/agent/v1/onboarding", {"answers": {}})[0], 401)
+        status, gendered, _ = self.request("PUT", "/agent/v1/onboarding", {"answers": {"gender": ["any"]}}, token)
+        self.assertEqual((status, gendered["answers"]["gender"]), (200, ["any"]))
+        self.assertEqual(self.request("GET", "/agent/v1/products?gender=kids", token=token)[0], 400)
+        self.assertEqual(self.request("GET", "/agent/v1/products?gender=men", token=token)[0], 200)
         self.assertEqual(self.auth_request("GET", "/agent/v1/onboarding")[1]["completed"], False)
 
     def test_onboarding_tactile_picks_become_explicit_preferences(self) -> None:

@@ -42,6 +42,12 @@ class ShoppingAgentService:
         self.conversation_tools = ConversationToolRegistry(config)
         self.tool_agent = tool_agent
 
+    def default_gender(self, user_id: str) -> str | None:
+        """Whose clothes the user picked in onboarding: "women", "men", or None for either."""
+        saved = self.database.get_onboarding(user_id)
+        picked = (saved or {}).get("answers", {}).get("gender") or []
+        return picked[0] if picked and picked[0] in {"women", "men"} else None
+
     def create_session(self, user_id: str) -> dict[str, Any]:
         return self.database.create_agent_session(user_id)
 
@@ -147,7 +153,9 @@ class ShoppingAgentService:
             if current.category and current.category.casefold() not in text.casefold():
                 search_text = f"{current.category} {text}"
             pool_size = int(self.config["ranking"]["candidate_pool_size"])
-            search = self.tools.tactile.search(search_text, limit=pool_size)
+            search = self.tools.tactile.search(
+                search_text, limit=pool_size, gender=self.default_gender(user_id)
+            )
             self.tracer.tool(
                 trace,
                 name="catalog_tactile_search",
@@ -626,9 +634,15 @@ class _ToolTurn:
         avoid: list[str],
         keywords: list[str],
         unsupported_concepts: list[str],
+        gender: str | None = None,
     ) -> dict[str, Any]:
         service = self.service
         category = category if category in SUPPORTED_CATEGORIES else None
+        # The model sets gender only when the message says whose clothes these are;
+        # otherwise the onboarding answer applies. "any" searches both sides.
+        gender = gender if gender in {"women", "men", "any"} else None
+        effective_gender = service.default_gender(self.user_id) if gender is None else gender
+        effective_gender = None if effective_gender == "any" else effective_gender
         avoid = list(dict.fromkeys(avoid))
         want = [value for value in dict.fromkeys(want) if value not in avoid]
         self.remember_preferences({"category": category, "want": want, "avoid": avoid})
@@ -655,7 +669,7 @@ class _ToolTurn:
         )
         pool_size = int(service.config["ranking"]["candidate_pool_size"])
         search = service.tools.tactile.search(
-            query_text, limit=pool_size, structured=structured, keywords=keywords
+            query_text, limit=pool_size, structured=structured, keywords=keywords, gender=effective_gender
         )
         result_size = self.limit or int(service.config["ranking"]["default_result_size"])
         self.ranked = service.ranker.rank(
@@ -667,6 +681,7 @@ class _ToolTurn:
             "want": want,
             "avoid": avoid,
             "keywords": keywords,
+            "gender": gender,
         }
         requested = [*want, *avoid]
         rows = self.ranked["results"][: int(self.settings["tool_result_products"])]
@@ -680,6 +695,7 @@ class _ToolTurn:
             "result_count": len(self.ranked["results"]),
             "category": category,
             "category_relaxed": bool(search.get("category_relaxed", False)),
+            "gender": effective_gender,
             "unsupported_concepts": self.unsupported_concepts,
             "common_tactile_top3": common,
             "products": [

@@ -9,15 +9,21 @@ from http.server import ThreadingHTTPServer
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 
 from recommendation_api.tactile_models import TactileIntent
 
 from shopping_agent.v1.config import AgentSettings
 from shopping_agent.v1.full_catalog import (
     CONCEPT_TO_LAST2,
+    GENDER_MEN,
+    GENDER_UNISEX,
+    GENDER_UNKNOWN,
+    GENDER_WOMEN,
     TACTILE_CLASSES,
     UNSUPPORTED_CONCEPTS,
     FullCatalogTools,
+    _title_genders,
     intent_terms,
     title_keywords,
 )
@@ -170,6 +176,62 @@ class FullCatalogToolsTests(unittest.TestCase):
             row["product_id"] for row in second["items"]
         }
         self.assertEqual(overlap, set())
+
+
+class GenderTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.tools = FullCatalogTools()
+
+    def test_title_words_decide_gender(self) -> None:
+        titles = pd.Series([
+            "women's soft knit", "womens cardigan", "men's hoodie", "boys fleece",
+            "unisex beanie", "men and women tee", "floral midi", "plain tee",
+        ]).str.casefold()
+        categories = np.array(["sweater", "sweater", "top", "top", "accessory", "top", "dress", "top"])
+        self.assertEqual(
+            _title_genders(titles, categories).tolist(),
+            [GENDER_WOMEN, GENDER_WOMEN, GENDER_MEN, GENDER_MEN,
+             GENDER_UNISEX, GENDER_UNISEX, GENDER_WOMEN, GENDER_UNKNOWN],
+        )
+
+    def _genders_of(self, items) -> set[int]:
+        index = self.tools.index
+        return {int(index.genders[index.row_of(item["product_id"])]) for item in items}
+
+    def test_search_drops_the_other_genders_listings(self) -> None:
+        for gender, other in (("men", GENDER_WOMEN), ("women", GENDER_MEN)):
+            payload = self.tools.tactile.search("니트", limit=50, keywords=["sweater"], gender=gender)
+            self.assertEqual(payload["gender"], gender)
+            self.assertTrue(payload["items"])
+            self.assertNotIn(other, self._genders_of(payload["items"]))
+        both = self.tools.tactile.search("니트", limit=50, keywords=["sweater"])
+        self.assertIsNone(both["gender"])
+        self.assertTrue({GENDER_WOMEN, GENDER_MEN} <= self._genders_of(both["items"]))
+
+    def test_unlabelled_listings_rank_a_little_lower(self) -> None:
+        index = self.tools.index
+        factor = index.config["relevance"]["gender_unknown_factor"]
+        both = self.tools.tactile.search("티셔츠", limit=300, keywords=["shirt"])
+        men = {item["product_id"]: item["relevance_score"]
+               for item in self.tools.tactile.search("티셔츠", limit=300, keywords=["shirt"], gender="men")["items"]}
+        checked = set()
+        for item in both["items"]:
+            label = int(index.genders[index.row_of(item["product_id"])])
+            if item["product_id"] not in men or label not in (GENDER_MEN, GENDER_UNKNOWN):
+                continue
+            expected = item["relevance_score"] * (factor if label == GENDER_UNKNOWN else 1.0)
+            self.assertAlmostEqual(men[item["product_id"]], expected, places=5)
+            checked.add(label)
+        self.assertEqual(checked, {GENDER_MEN, GENDER_UNKNOWN})
+
+    def test_product_list_filters_by_gender(self) -> None:
+        everything = self.tools.list_products(page=1, page_size=100)
+        men = self.tools.list_products(page=1, page_size=100, gender="men")
+        self.assertIsNone(everything["gender"])
+        self.assertEqual(men["gender"], "men")
+        self.assertLess(men["total"], everything["total"])
+        self.assertNotIn(GENDER_WOMEN, self._genders_of(men["items"]))
 
 
 class ConceptMappingTests(unittest.TestCase):

@@ -81,6 +81,30 @@ _TOKEN_PATTERN = re.compile(r"[a-z0-9]+")
 _TITLE_KEY_TOKENS = 8
 
 
+# Who a listing is for, from title words ("Women's", "Men's", "Girls", "Unisex"). Kids'
+# listings count with their side. Dresses and skirts with no such word are treated as
+# women's. The catalog has no department field, so about 29% of listings stay unknown.
+GENDERS = ("women", "men")
+GENDER_UNKNOWN, GENDER_WOMEN, GENDER_MEN, GENDER_UNISEX = 0, 1, 2, 3
+_WOMEN_TITLE = r"\b(?:women|woman|womens|ladies|lady|girls?|female|maternity|juniors?)\b"
+_MEN_TITLE = r"\b(?:men|mens|man|boys?|male|gentlemen)\b"
+_UNISEX_TITLE = r"\bunisex\b"
+_WOMEN_ONLY_CATEGORIES = ("dress", "skirt")
+
+
+def _title_genders(lowered_titles: pd.Series, categories: np.ndarray) -> np.ndarray:
+    titles = lowered_titles
+    women = titles.str.contains(_WOMEN_TITLE, regex=True, na=False).to_numpy()
+    men = titles.str.contains(_MEN_TITLE, regex=True, na=False).to_numpy()
+    unisex = titles.str.contains(_UNISEX_TITLE, regex=True, na=False).to_numpy() | (women & men)
+    genders = np.full(len(titles), GENDER_UNKNOWN, dtype=np.int8)
+    genders[women] = GENDER_WOMEN
+    genders[men] = GENDER_MEN
+    genders[unisex] = GENDER_UNISEX
+    genders[(genders == GENDER_UNKNOWN) & np.isin(categories, _WOMEN_ONLY_CATEGORIES)] = GENDER_WOMEN
+    return genders
+
+
 def _read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -169,6 +193,7 @@ class FullCatalogIndex:
             raise ValueError("Last2 probabilities must be finite and within [0, 1]")
 
         self.lowered_titles = pd.Series(self.titles, copy=False).str.casefold()
+        self.genders = _title_genders(self.lowered_titles, self.categories)
         self._class_index = {name: i for i, name in enumerate(TACTILE_CLASSES)}
         self._asin_to_row = {asin: row for row, asin in enumerate(self.asins.tolist())}
         self._category_cache: dict[str, tuple[np.ndarray, bool]] = {}
@@ -289,6 +314,13 @@ class FullCatalogIndex:
         minimum = int(retrieval.get("type_exclusion_min_candidates", 0))
         return kept if kept.size >= minimum else rows
 
+    def for_gender(self, rows: np.ndarray, gender: str | None) -> np.ndarray:
+        """Drop listings marked for the other gender; unisex and unknown ones stay."""
+        if gender not in GENDERS:
+            return rows
+        other = GENDER_MEN if gender == "women" else GENDER_WOMEN
+        return rows[self.genders[rows] != other]
+
     def color_match(self, rows: np.ndarray, colors: list[str]) -> np.ndarray:
         """1.0 when a candidate title names any requested colour (English title words), else 0."""
         patterns = [COLOR_TITLE_PATTERNS.get(color, rf"\b{re.escape(color)}\b") for color in colors]
@@ -400,16 +432,19 @@ class FullCatalogTactileProvider:
         limit: int,
         structured: StructuredQuery | None = None,
         keywords: list[str] | None = None,
+        gender: str | None = None,
     ) -> dict[str, Any]:
         """Rank the catalog for a query.
 
         `structured` replaces the deterministic parser when a model has already
         resolved the request into Last2 constraints. `keywords` replaces the title
         tokens taken from `query_text`, which lets a Korean request match the
-        English catalog titles.
+        English catalog titles. `gender` ("women"/"men") drops the other side's listings
+        and ranks listings whose title does not say slightly lower.
         """
         parsed = structured or parse_message(query_text)
         rows, category_relaxed = self.index.candidate_rows(parsed.category)
+        rows = self.index.for_gender(rows, gender)
         if not rows.size:
             return {
                 "items": [],
@@ -486,6 +521,9 @@ class FullCatalogTactileProvider:
         for _, component, weight in active:
             relevance += weight * component
         relevance = (relevance / denominator).astype(np.float32)
+        if gender in GENDERS:
+            unknown = self.index.genders[rows] == GENDER_UNKNOWN
+            relevance[unknown] *= float(weights.get("gender_unknown_factor", 1.0))
         ranking_mode = "last2_explicit_tactile" if total_weight else "title_and_popularity"
         active_weights = {name: weight / denominator for name, _, weight in active}
 
@@ -532,6 +570,7 @@ class FullCatalogTactileProvider:
             "category": parsed.category,
             "category_relaxed": category_relaxed,
             "ranking_mode": ranking_mode,
+            "gender": gender if gender in GENDERS else None,
             "title_keywords": keywords,
             "catalog_size": len(self.index),
         }
@@ -786,11 +825,16 @@ class FullCatalogTools:
             },
         }
 
-    def list_products(self, *, page: int, page_size: int) -> dict[str, Any]:
+    def list_products(self, *, page: int, page_size: int, gender: str | None = None) -> dict[str, Any]:
         page = max(1, int(page))
         page_size = max(1, min(int(page_size), 100))
-        rows = self.index.rows_with_image
-        order = rows[np.lexsort((self.index.asins[rows], -self.index.popularity[rows]))]
+        rows = self.index.for_gender(self.index.rows_with_image, gender)
+        score = self.index.popularity[rows]
+        if gender in GENDERS:
+            # Same rule as search: listings whose title does not say whose they are rank a little lower.
+            factor = float(self.index.config["relevance"].get("gender_unknown_factor", 1.0))
+            score = np.where(self.index.genders[rows] == GENDER_UNKNOWN, score * factor, score)
+        order = rows[np.lexsort((self.index.asins[rows], -score))]
         total = len(order)
         start = (page - 1) * page_size
         window = order[start : start + page_size]
@@ -814,6 +858,7 @@ class FullCatalogTools:
             "total_pages": total_pages,
             "has_previous": page > 1,
             "has_next": page < total_pages,
+            "gender": gender if gender in GENDERS else None,
         }
 
     def product_exists(self, product_id: str) -> bool:

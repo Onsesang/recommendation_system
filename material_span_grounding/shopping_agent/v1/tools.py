@@ -34,8 +34,10 @@ class CurrentTactileProvider:
         limit: int,
         structured: Any = None,
         keywords: list[str] | None = None,
+        gender: str | None = None,
     ) -> dict[str, Any]:
         # The curated catalog parses open-vocabulary spans itself; Last2 structure does not apply.
+        # It has no gender labels, so `gender` is accepted and ignored.
         return self.catalog.search(
             {"query_text": query_text, "page": 1, "page_size": limit}
         )
@@ -93,7 +95,7 @@ class ShoppingTools:
             "multimodal": self.catalog.multimodal_health(),
         }
 
-    def list_products(self, *, page: int, page_size: int) -> dict[str, Any]:
+    def list_products(self, *, page: int, page_size: int, gender: str | None = None) -> dict[str, Any]:
         return self.catalog.catalog(page=page, page_size=page_size)
 
     def product_exists(self, product_id: str) -> bool:

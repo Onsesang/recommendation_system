@@ -30,7 +30,8 @@ from .tracing import TraceRecorder
 
 
 MAX_BODY_BYTES = 256 * 1024
-ONBOARDING_GROUPS = ("categories", "tactile", "voice")
+ONBOARDING_GROUPS = ("gender", "categories", "tactile", "voice")
+GENDER_CHOICES = ("women", "men", "any")
 ONBOARDING_OPTION = re.compile(r"^[a-z0-9_-]{1,32}$")
 STATIC_ROOT = Path(__file__).resolve().parent / "static"
 COOKIE_NAME = "shopping_agent_session"
@@ -58,6 +59,8 @@ def _onboarding_answers(value: Any) -> dict[str, list[str]]:
         if any(not isinstance(item, str) or not ONBOARDING_OPTION.match(item) for item in items):
             raise ValueError(f"answers.{group} items must match {ONBOARDING_OPTION.pattern}")
         answers[group] = list(dict.fromkeys(items))
+    if len(answers["gender"]) > 1 or set(answers["gender"]) - set(GENDER_CHOICES):
+        raise ValueError("answers.gender must hold at most one of women, men, any")
     return answers
 
 
@@ -309,12 +312,18 @@ def make_handler(app: AgentApplication):
                 elif path == "/agent/v1/auth/me":
                     self._json(HTTPStatus.OK, {"user": self._user()})
                 elif path == "/agent/v1/products":
-                    self._user()
+                    user = self._user()
+                    gender = query.get("gender", [None])[0]
+                    if gender is not None and gender not in GENDER_CHOICES:
+                        raise ValueError("gender must be women, men, or any")
+                    if gender is None:
+                        gender = app.agent.default_gender(user["user_id"])
                     self._json(
                         HTTPStatus.OK,
                         app.tools.list_products(
                             page=_int(query, "page", 1),
                             page_size=_int(query, "page_size", 30),
+                            gender=None if gender == "any" else gender,
                         ),
                     )
                 elif path.startswith("/agent/v1/products/"):
@@ -342,16 +351,12 @@ def make_handler(app: AgentApplication):
                     self._json(HTTPStatus.OK, {"items": [_session_summary(row) for row in rows]})
                 elif path == "/agent/v1/onboarding":
                     user = self._user()
-                    saved = app.database.get_onboarding(user["user_id"])
-                    self._json(
-                        HTTPStatus.OK,
-                        saved or {
-                            "answers": {group: [] for group in ONBOARDING_GROUPS},
-                            "completed": False,
-                            "created_at": None,
-                            "updated_at": None,
-                        },
-                    )
+                    saved = app.database.get_onboarding(user["user_id"]) or {
+                        "answers": {}, "completed": False, "created_at": None, "updated_at": None,
+                    }
+                    # Answers saved before a group existed come back with that group empty.
+                    answers = {group: saved["answers"].get(group, []) for group in ONBOARDING_GROUPS}
+                    self._json(HTTPStatus.OK, {**saved, "answers": answers})
                 elif path.startswith("/agent/v1/sessions/"):
                     user = self._user()
                     session_id = path.removeprefix("/agent/v1/sessions/")

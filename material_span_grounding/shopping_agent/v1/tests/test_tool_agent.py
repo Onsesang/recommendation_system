@@ -377,6 +377,40 @@ class ToolAgentServiceTests(unittest.TestCase):
         result = self.app.agent.message(self.user_id, self.session(), "1번 부드러워?")
         self.assertEqual(result["preferences_saved"], [])
 
+    def _labels(self, products) -> set[int]:
+        index = self.app.tools.index
+        return {int(index.genders[index.row_of(row["product_id"])]) for row in products}
+
+    @patch("shopping_agent.v1.tool_agent._post_json")
+    def test_gender_comes_from_the_message_else_from_onboarding(self, post) -> None:
+        from shopping_agent.v1.full_catalog import GENDER_MEN, GENDER_WOMEN
+
+        login = self.app.auth.register(email="gender@example.com", password="password123", display_name="성별")
+        user_id = login.user["user_id"]
+        session_id = self.app.agent.create_session(user_id)["session_id"]
+        args = {**SEARCH_ARGUMENTS, "category": "sweater", "want": ["soft"], "avoid": [], "keywords": ["sweater"]}
+
+        def search(gender, text):
+            post.side_effect = [
+                {"id": "r1", "output": [_call("search_products", {**args, "gender": gender})]},
+                {"id": "r2", "output": [_answer("찾았습니다.")]},
+            ]
+            result = self.app.agent.message(user_id, session_id, text)
+            tool_output = json.loads(post.call_args_list[-1].args[1]["input"][0]["output"])
+            return result, tool_output["gender"]
+
+        self.app.database.save_onboarding(user_id, {"gender": ["women"]}, completed=True)
+        result, applied = search(None, "부드러운 니트 찾아줘")
+        self.assertEqual(applied, "women")
+        self.assertNotIn(GENDER_MEN, self._labels(result["products"]))
+        # "남편 니트" overrides the onboarding answer for this search only.
+        result, applied = search("men", "남편이 입을 부드러운 니트")
+        self.assertEqual(applied, "men")
+        self.assertNotIn(GENDER_WOMEN, self._labels(result["products"]))
+        self.assertEqual(result["tool_calls"][0]["arguments"]["gender"], "men")
+        result, applied = search("any", "성별 상관없이 부드러운 니트")
+        self.assertIsNone(applied)
+
     @patch("shopping_agent.v1.tool_agent._post_json")
     def test_remote_failure_falls_back_to_local_router(self, post) -> None:
         post.side_effect = RuntimeError("LLM API request failed: timeout")

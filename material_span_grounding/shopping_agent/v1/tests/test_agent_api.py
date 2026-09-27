@@ -82,6 +82,97 @@ class AgentApiTests(unittest.TestCase):
         status, _, _ = self.request("GET", "/agent/v1/products")
         self.assertEqual(status, 401)
 
+    def test_session_list_shows_only_conversations_with_messages(self) -> None:
+        status, created, _ = self.request(
+            "POST", "/agent/v1/auth/register",
+            {"email": "sessions@example.com", "password": "password123", "display_name": "목록"},
+        )
+        self.assertEqual(status, 201)
+        token = created["access_token"]
+        empty = self.request("POST", "/agent/v1/sessions", {}, token)[1]["session_id"]
+        first = self.request("POST", "/agent/v1/sessions", {}, token)[1]["session_id"]
+        self.request("POST", f"/agent/v1/sessions/{first}/messages", {"message": "부드러운  니트\n찾아줘"}, token)
+        second = self.request("POST", "/agent/v1/sessions", {}, token)[1]["session_id"]
+        self.request("POST", f"/agent/v1/sessions/{second}/messages", {"message": "얇은 원피스 찾아줘"}, token)
+
+        status, listing, _ = self.request("GET", "/agent/v1/sessions", token=token)
+        self.assertEqual(status, 200)
+        self.assertEqual([row["session_id"] for row in listing["items"]], [second, first])
+        self.assertNotIn(empty, [row["session_id"] for row in listing["items"]])
+        self.assertEqual(listing["items"][1]["title"], "부드러운 니트 찾아줘")
+        self.assertEqual(listing["items"][0]["message_count"], 2)
+        self.assertTrue(listing["items"][0]["last_message"])
+        self.assertEqual(len(self.request("GET", "/agent/v1/sessions?limit=1", token=token)[1]["items"]), 1)
+        self.assertEqual(self.request("GET", "/agent/v1/sessions?limit=0", token=token)[0], 400)
+        # Other users never see these conversations.
+        others = self.auth_request("GET", "/agent/v1/sessions")[1]["items"]
+        self.assertFalse({first, second} & {row["session_id"] for row in others})
+        self.assertEqual(self.request("GET", "/agent/v1/sessions")[0], 401)
+
+    def test_onboarding_round_trip_and_validation(self) -> None:
+        status, created, _ = self.request(
+            "POST", "/agent/v1/auth/register",
+            {"email": "onboarding@example.com", "password": "password123", "display_name": "온보딩"},
+        )
+        token = created["access_token"]
+        status, initial, _ = self.request("GET", "/agent/v1/onboarding", token=token)
+        self.assertEqual(status, 200)
+        self.assertEqual(initial["answers"], {"categories": [], "tactile": [], "voice": []})
+        self.assertFalse(initial["completed"])
+        self.assertIsNone(initial["updated_at"])
+
+        answers = {"categories": ["knit", "pants", "knit"], "tactile": ["soft"], "voice": ["tts"]}
+        status, saved, _ = self.request("PUT", "/agent/v1/onboarding", {"answers": answers, "completed": True}, token)
+        self.assertEqual(status, 200)
+        self.assertEqual(saved["answers"]["categories"], ["knit", "pants"])
+        self.assertTrue(saved["completed"])
+        status, replaced, _ = self.request("PUT", "/agent/v1/onboarding", {"answers": {"voice": []}}, token)
+        self.assertEqual(replaced["answers"], {"categories": [], "tactile": [], "voice": []})
+        self.assertFalse(replaced["completed"])
+        self.assertEqual(replaced["created_at"], saved["created_at"])
+        self.assertEqual(self.request("GET", "/agent/v1/onboarding", token=token)[1], replaced)
+
+        for body in (
+            {"answers": {"colors": ["red"]}},
+            {"answers": {"tactile": "soft"}},
+            {"answers": {"tactile": ["Soft Touch"]}},
+            {"answers": {}, "completed": "yes"},
+            {"completed": True},
+        ):
+            self.assertEqual(self.request("PUT", "/agent/v1/onboarding", body, token)[0], 400, body)
+        self.assertEqual(self.request("PUT", "/agent/v1/onboarding", {"answers": {}})[0], 401)
+        self.assertEqual(self.auth_request("GET", "/agent/v1/onboarding")[1]["completed"], False)
+
+    def test_onboarding_tactile_picks_become_explicit_preferences(self) -> None:
+        token = self.request(
+            "POST", "/agent/v1/auth/register",
+            {"email": "onboarding-prefs@example.com", "password": "password123", "display_name": "취향"},
+        )[1]["access_token"]
+        user_id = self.request("GET", "/agent/v1/auth/me", token=token)[1]["user"]["user_id"]
+        self.app.database.upsert_preference(
+            user_id, scope_category=None, attribute_type="tactile", attribute="cool", direction="more",
+            strength=.65, confidence=.75, source="chat_auto",
+        )
+
+        def put(tactile, voice=()):
+            body = {"answers": {"tactile": list(tactile), "voice": list(voice)}, "completed": True}
+            self.assertEqual(self.request("PUT", "/agent/v1/onboarding", body, token)[0], 200)
+            items = self.request("GET", "/agent/v1/preferences", token=token)[1]["items"]
+            return {(p["attribute"], p["source"]) for p in items if p["attribute_type"] == "tactile"}, items
+
+        prefs, items = put(["soft", "thin", "cool", "not_a_class"])
+        self.assertEqual(prefs, {("soft", "onboarding"), ("thin", "onboarding"), ("cool", "chat_auto")})
+        soft = next(p for p in items if p["attribute"] == "soft")
+        self.assertEqual((soft["direction"], soft["scope_category"]), ("more", None))
+
+        # Forgotten in 내 취향, then an unrelated save (voice) must not bring it back.
+        self.assertEqual(self.request("DELETE", f"/agent/v1/preferences/{soft['preference_id']}", token=token)[0], 200)
+        prefs, _ = put(["soft", "thin", "cool"], voice=["tts"])
+        self.assertNotIn(("soft", "onboarding"), prefs)
+        # Unpicking removes only what onboarding created; the chat-learned "cool" stays.
+        prefs, _ = put(["warm"])
+        self.assertEqual(prefs, {("warm", "onboarding"), ("cool", "chat_auto")})
+
     def test_catalog_session_message_preferences_and_detail(self) -> None:
         status, catalog, _ = self.auth_request("GET", "/agent/v1/products?page=1&page_size=30")
         self.assertEqual((status, len(catalog["items"]), catalog["total"]), (200, 30, 465))

@@ -119,6 +119,19 @@ class AgentDatabase:
                 CREATE INDEX IF NOT EXISTS idx_preferences_user
                     ON preferences(user_id, active, updated_at DESC);
 
+                CREATE INDEX IF NOT EXISTS idx_agent_sessions_user
+                    ON agent_sessions(user_id, updated_at DESC);
+                CREATE INDEX IF NOT EXISTS idx_messages_session
+                    ON messages(session_id, created_at);
+
+                CREATE TABLE IF NOT EXISTS onboarding (
+                    user_id TEXT PRIMARY KEY REFERENCES users(user_id) ON DELETE CASCADE,
+                    answers_json TEXT NOT NULL,
+                    completed INTEGER NOT NULL DEFAULT 0,
+                    created_at TEXT NOT NULL,
+                    updated_at TEXT NOT NULL
+                );
+
                 CREATE TABLE IF NOT EXISTS cart_items (
                     user_id TEXT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
                     product_id TEXT NOT NULL,
@@ -243,6 +256,26 @@ class AgentDatabase:
         value["state"] = json.loads(value.pop("state_json"))
         return value
 
+    def list_agent_sessions(self, user_id: str, *, limit: int = 30) -> list[dict[str, Any]]:
+        """Conversations that have at least one message, most recently active first."""
+        with self.connect() as db:
+            rows = db.execute(
+                """
+                SELECT s.session_id, s.created_at, s.updated_at,
+                    (SELECT content FROM messages m WHERE m.session_id=s.session_id AND m.role='user'
+                        ORDER BY m.created_at LIMIT 1) AS first_user_message,
+                    (SELECT content FROM messages m WHERE m.session_id=s.session_id
+                        ORDER BY m.created_at DESC LIMIT 1) AS last_message,
+                    (SELECT COUNT(*) FROM messages m WHERE m.session_id=s.session_id) AS message_count
+                FROM agent_sessions s
+                WHERE s.user_id=? AND EXISTS(SELECT 1 FROM messages m WHERE m.session_id=s.session_id)
+                ORDER BY s.updated_at DESC, s.session_id
+                LIMIT ?
+                """,
+                (user_id, limit),
+            ).fetchall()
+        return [dict(row) for row in rows]
+
     def update_agent_state(self, session_id: str, user_id: str, state: dict[str, Any]) -> None:
         with self.connect() as db:
             changed = db.execute(
@@ -339,6 +372,48 @@ class AgentDatabase:
         assert row is not None
         return self._preference_dict(row)
 
+    def add_preference_if_absent(
+        self,
+        user_id: str,
+        *,
+        attribute_type: str,
+        attribute: str,
+        direction: str,
+        strength: float,
+        confidence: float,
+        source: str,
+        source_text: str = "",
+    ) -> bool:
+        """Insert an unscoped preference unless the same one already exists (from any source)."""
+        now = iso_now()
+        with self.connect() as db:
+            return bool(
+                db.execute(
+                    """
+                    INSERT INTO preferences(
+                        preference_id,user_id,scope_category,attribute_type,attribute,direction,
+                        strength,confidence,source,source_text,active,created_at,updated_at
+                    ) VALUES(?,?,'',?,?,?,?,?,?,?,1,?,?)
+                    ON CONFLICT(user_id,scope_category,attribute_type,attribute,direction) DO NOTHING
+                    """,
+                    (f"pref_{uuid.uuid4().hex}", user_id, attribute_type, attribute, direction,
+                     float(strength), float(confidence), source, source_text, now, now),
+                ).rowcount
+            )
+
+    def delete_sourced_preference(
+        self, user_id: str, *, attribute_type: str, attribute: str, direction: str, source: str
+    ) -> bool:
+        """Delete an unscoped preference only if `source` created it (chat-learned rows stay)."""
+        with self.connect() as db:
+            return bool(
+                db.execute(
+                    "DELETE FROM preferences WHERE user_id=? AND scope_category='' AND attribute_type=? "
+                    "AND attribute=? AND direction=? AND source=?",
+                    (user_id, attribute_type, attribute, direction, source),
+                ).rowcount
+            )
+
     @staticmethod
     def _preference_dict(row: sqlite3.Row) -> dict[str, Any]:
         value = dict(row)
@@ -391,6 +466,36 @@ class AgentDatabase:
             ).rowcount
         if not changed:
             raise KeyError("Preference not found")
+
+    def get_onboarding(self, user_id: str) -> dict[str, Any] | None:
+        with self.connect() as db:
+            row = db.execute("SELECT * FROM onboarding WHERE user_id=?", (user_id,)).fetchone()
+        if not row:
+            return None
+        return {
+            "answers": json.loads(row["answers_json"]),
+            "completed": bool(row["completed"]),
+            "created_at": row["created_at"],
+            "updated_at": row["updated_at"],
+        }
+
+    def save_onboarding(self, user_id: str, answers: dict[str, list[str]], *, completed: bool) -> dict[str, Any]:
+        now = iso_now()
+        with self.connect() as db:
+            db.execute(
+                """
+                INSERT INTO onboarding(user_id, answers_json, completed, created_at, updated_at)
+                VALUES(?,?,?,?,?)
+                ON CONFLICT(user_id) DO UPDATE SET
+                    answers_json=excluded.answers_json,
+                    completed=excluded.completed,
+                    updated_at=excluded.updated_at
+                """,
+                (user_id, json.dumps(answers, ensure_ascii=False), int(completed), now, now),
+            )
+        value = self.get_onboarding(user_id)
+        assert value is not None
+        return value
 
     def record_event(
         self,

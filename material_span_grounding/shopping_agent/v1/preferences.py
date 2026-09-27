@@ -4,6 +4,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
+from demo_agent.models import TACTILE_CLASSES
 from recommendation_api.tactile_agent import parse_tactile_intent
 from recommendation_api.tactile_models import TactileIntent
 
@@ -64,18 +65,34 @@ class PreferenceService:
         message: str,
         *,
         previous_intent: TactileIntent | None = None,
+        structured: dict[str, Any] | None = None,
     ) -> ExtractedPreferences:
+        """Save what the message says about tactile, color and style.
+
+        `structured` is the tool model's own reading of the message (category, want, avoid
+        as Last2 classes). It handles negation such as "안 까끌한" that the keyword parser
+        misses, so when given it replaces the keyword parser for tactile preferences.
+        """
         intent = parse_tactile_intent(message, previous=previous_intent)
-        scope = intent.category
         strength, confidence = _explicit_strength(message)
         saved: list[dict[str, Any]] = []
 
-        tactile_groups = (
-            (intent.desired_more, "more"),
-            (intent.desired_less, "less"),
-            (intent.avoid, "avoid"),
-            (intent.must_have, "must_have"),
-        )
+        if structured is not None:
+            scope = structured.get("category")
+            tactile_groups: tuple[tuple[Any, str], ...] = (
+                (structured.get("want", ()), "more"),
+                (structured.get("avoid", ()), "avoid"),
+            )
+            tactile_confidence = confidence
+        else:
+            scope = intent.category
+            tactile_groups = (
+                (intent.desired_more, "more"),
+                (intent.desired_less, "less"),
+                (intent.avoid, "avoid"),
+                (intent.must_have, "must_have"),
+            )
+            tactile_confidence = min(confidence, intent.confidence)
         for concepts, direction in tactile_groups:
             for concept in concepts:
                 saved.append(
@@ -86,7 +103,7 @@ class PreferenceService:
                         attribute=concept,
                         direction=direction,
                         strength=strength,
-                        confidence=min(confidence, intent.confidence),
+                        confidence=tactile_confidence,
                         source="chat_auto",
                         source_text=message,
                     )
@@ -126,6 +143,31 @@ class PreferenceService:
                     )
                 )
         return ExtractedPreferences(intent=intent, saved=saved)
+
+    def save_onboarding(
+        self, user_id: str, answers: dict[str, list[str]], *, completed: bool
+    ) -> dict[str, Any]:
+        """Save onboarding answers and mirror the tactile picks as explicit preferences.
+
+        Onboarding tactile option ids are Last2 classes (soft, thin, elastic, ...). Only picks
+        that changed since the last save are synced, so a preference the user forgot or turned
+        off in 내 취향 is not brought back by an unrelated save such as a voice setting.
+        """
+        before = self.database.get_onboarding(user_id)
+        saved = self.database.save_onboarding(user_id, answers, completed=completed)
+        classes = lambda ids: {value for value in ids if value in TACTILE_CLASSES}
+        old = classes(before["answers"].get("tactile", [])) if before else set()
+        new = classes(answers.get("tactile", []))
+        for attribute in sorted(new - old):
+            self.database.add_preference_if_absent(
+                user_id, attribute_type="tactile", attribute=attribute, direction="more",
+                strength=1.0, confidence=0.95, source="onboarding", source_text="onboarding",
+            )
+        for attribute in sorted(old - new):
+            self.database.delete_sourced_preference(
+                user_id, attribute_type="tactile", attribute=attribute, direction="more", source="onboarding",
+            )
+        return saved
 
     def tactile_intent_for_category(
         self,

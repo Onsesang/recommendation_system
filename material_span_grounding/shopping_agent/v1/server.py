@@ -5,6 +5,7 @@ import argparse
 import json
 import mimetypes
 import os
+import re
 import traceback
 import uuid
 from http import HTTPStatus
@@ -29,6 +30,8 @@ from .tracing import TraceRecorder
 
 
 MAX_BODY_BYTES = 256 * 1024
+ONBOARDING_GROUPS = ("categories", "tactile", "voice")
+ONBOARDING_OPTION = re.compile(r"^[a-z0-9_-]{1,32}$")
 STATIC_ROOT = Path(__file__).resolve().parent / "static"
 COOKIE_NAME = "shopping_agent_session"
 
@@ -38,6 +41,37 @@ def _int(query: dict[str, list[str]], name: str, default: int) -> int:
         return int(query.get(name, [str(default)])[0])
     except ValueError as exc:
         raise ValueError(f"{name} must be an integer") from exc
+
+
+def _onboarding_answers(value: Any) -> dict[str, list[str]]:
+    """Option ids per onboarding step; the ids themselves belong to the frontend."""
+    if not isinstance(value, dict):
+        raise ValueError("answers must be an object")
+    unknown = set(value) - set(ONBOARDING_GROUPS)
+    if unknown:
+        raise ValueError(f"answers supports only {', '.join(ONBOARDING_GROUPS)}")
+    answers: dict[str, list[str]] = {}
+    for group in ONBOARDING_GROUPS:
+        items = value.get(group, [])
+        if not isinstance(items, list) or len(items) > 20:
+            raise ValueError(f"answers.{group} must be an array of at most 20 option ids")
+        if any(not isinstance(item, str) or not ONBOARDING_OPTION.match(item) for item in items):
+            raise ValueError(f"answers.{group} items must match {ONBOARDING_OPTION.pattern}")
+        answers[group] = list(dict.fromkeys(items))
+    return answers
+
+
+def _session_summary(row: dict[str, Any]) -> dict[str, Any]:
+    first = " ".join(str(row["first_user_message"] or "").split())
+    last = " ".join(str(row["last_message"] or "").split())
+    return {
+        "session_id": row["session_id"],
+        "title": first[:40] or "새 대화",
+        "last_message": last[:80],
+        "message_count": int(row["message_count"]),
+        "created_at": row["created_at"],
+        "updated_at": row["updated_at"],
+    }
 
 
 def _openapi() -> dict[str, Any]:
@@ -53,7 +87,10 @@ def _openapi() -> dict[str, Any]:
             "/agent/v1/auth/me": {"get": {"summary": "Current user"}},
             "/agent/v1/products": {"get": {"summary": "Personalization-ready product catalog"}},
             "/agent/v1/products/{product_id}": {"get": {"summary": "Grounded product detail"}},
-            "/agent/v1/sessions": {"post": {"summary": "Create shopping conversation"}},
+            "/agent/v1/sessions": {
+                "get": {"summary": "List the user's conversations, most recent first"},
+                "post": {"summary": "Create shopping conversation"},
+            },
             "/agent/v1/sessions/{session_id}": {"get": {"summary": "Conversation state and messages"}},
             "/agent/v1/sessions/{session_id}/messages": {"post": {"summary": "Run personalized shopping agent"}},
             "/agent/v1/events": {"post": {"summary": "Record an idempotent behavior event"}},
@@ -61,6 +98,10 @@ def _openapi() -> dict[str, Any]:
             "/agent/v1/preferences/{preference_id}": {
                 "patch": {"summary": "Correct a preference"},
                 "delete": {"summary": "Forget a preference"},
+            },
+            "/agent/v1/onboarding": {
+                "get": {"summary": "Saved onboarding answers"},
+                "put": {"summary": "Replace onboarding answers"},
             },
             "/agent/v1/cart": {"get": {"summary": "Current user cart"}},
             "/agent/v1/cart/items": {"post": {"summary": "Add or update cart item"}},
@@ -162,7 +203,7 @@ def make_handler(app: AgentApplication):
                     self.send_header("Access-Control-Allow-Private-Network", "true")
             self.send_header("Vary", "Origin")
             self.send_header("Access-Control-Expose-Headers", "Retry-After")
-            self.send_header("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS")
+            self.send_header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
             self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
             self.send_header("Cache-Control", "no-store")
             for key, value in (extra or {}).items():
@@ -292,6 +333,25 @@ def make_handler(app: AgentApplication):
                     for row in app.database.list_cart(user["user_id"]):
                         items.append({**row, "product": app.tools.public_product(row["product_id"])})
                     self._json(HTTPStatus.OK, {"items": items, "checkout_enabled": False})
+                elif path == "/agent/v1/sessions":
+                    user = self._user()
+                    limit = _int(query, "limit", 30)
+                    if not 1 <= limit <= 100:
+                        raise ValueError("limit must be between 1 and 100")
+                    rows = app.database.list_agent_sessions(user["user_id"], limit=limit)
+                    self._json(HTTPStatus.OK, {"items": [_session_summary(row) for row in rows]})
+                elif path == "/agent/v1/onboarding":
+                    user = self._user()
+                    saved = app.database.get_onboarding(user["user_id"])
+                    self._json(
+                        HTTPStatus.OK,
+                        saved or {
+                            "answers": {group: [] for group in ONBOARDING_GROUPS},
+                            "completed": False,
+                            "created_at": None,
+                            "updated_at": None,
+                        },
+                    )
                 elif path.startswith("/agent/v1/sessions/"):
                     user = self._user()
                     session_id = path.removeprefix("/agent/v1/sessions/")
@@ -395,6 +455,25 @@ def make_handler(app: AgentApplication):
                     self._json(HTTPStatus.CREATED, {"status": "added", "product_id": product_id, "quantity": quantity})
                 else:
                     raise KeyError("Route not found")
+            except Exception as exc:
+                self._route_error(exc)
+
+        def do_PUT(self) -> None:
+            path = urlparse(self.path).path
+            try:
+                user = self._user()
+                if path != "/agent/v1/onboarding":
+                    raise KeyError("Route not found")
+                body = self._body()
+                completed = body.get("completed", False)
+                if not isinstance(completed, bool):
+                    raise ValueError("completed must be a boolean")
+                self._json(
+                    HTTPStatus.OK,
+                    app.preferences.save_onboarding(
+                        user["user_id"], _onboarding_answers(body.get("answers")), completed=completed
+                    ),
+                )
             except Exception as exc:
                 self._route_error(exc)
 

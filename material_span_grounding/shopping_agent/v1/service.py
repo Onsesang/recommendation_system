@@ -327,6 +327,10 @@ class ShoppingAgentService:
             return output
 
         run = self.tool_agent.run(instructions=instructions, input_items=input_items, execute=execute)
+        if not run.calls:
+            # A plain statement such as "검은색 좋아" calls no tool; remember it anyway. Turns
+            # about a shown product or the cart are skipped: "1번 부드러워?" is a question.
+            turn.remember_preferences()
         if run.rewritten:
             self.tracer.tool(
                 trace,
@@ -591,6 +595,15 @@ class _ToolTurn:
         if product_id not in self.referenced_ids:
             self.referenced_ids.append(product_id)
 
+    def remember_preferences(self, structured: dict[str, Any] | None = None) -> None:
+        """Save this message's preferences once per turn (tactile from `structured` when given)."""
+        if self._preferences_extracted:
+            return
+        self._preferences_extracted = True
+        self.saved_preferences = self.service.preferences.extract_and_save(
+            self.user_id, self.text, structured=structured
+        ).saved
+
     # -- dispatch ------------------------------------------------------------
 
     def execute(self, name: str, arguments: dict[str, Any]) -> dict[str, Any]:
@@ -615,16 +628,10 @@ class _ToolTurn:
         unsupported_concepts: list[str],
     ) -> dict[str, Any]:
         service = self.service
-        if not self._preferences_extracted:
-            # Chat memory keeps using the model-independent extractor on the raw message.
-            extracted = service.preferences.extract_and_save(
-                self.user_id, self.text, previous_intent=self.previous
-            )
-            self.saved_preferences = extracted.saved
-            self._preferences_extracted = True
         category = category if category in SUPPORTED_CATEGORIES else None
         avoid = list(dict.fromkeys(avoid))
         want = [value for value in dict.fromkeys(want) if value not in avoid]
+        self.remember_preferences({"category": category, "want": want, "avoid": avoid})
         keywords = [str(value) for value in keywords if str(value).strip()][:8]
         self.unsupported_concepts = [str(value) for value in unsupported_concepts][:5]
         query_text = str(query_text).strip() or self.text

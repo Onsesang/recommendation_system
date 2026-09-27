@@ -347,6 +347,37 @@ class ToolAgentServiceTests(unittest.TestCase):
         self.assertEqual(follow_up["action"], "search_products")
 
     @patch("shopping_agent.v1.tool_agent._post_json")
+    def test_search_saves_the_models_tactile_reading_as_preferences(self, post) -> None:
+        post.side_effect = [
+            {"id": "resp_1", "output": [_call("search_products", {**SEARCH_ARGUMENTS, "category": "sweater",
+                                                                    "want": [], "avoid": ["rough"]})]},
+            {"id": "resp_2", "output": [_answer("찾았습니다.")]},
+        ]
+        # The keyword parser does not know "까끌"; the model's avoid=["rough"] must still be kept.
+        result = self.app.agent.message(self.user_id, self.session(), "안 까끌한 니트 찾아줘")
+        saved = {(row["attribute_type"], row["attribute"], row["direction"], row["scope_category"])
+                 for row in result["preferences_saved"]}
+        self.assertEqual(saved, {("tactile", "rough", "avoid", "sweater")})
+
+    @patch("shopping_agent.v1.tool_agent._post_json")
+    def test_plain_statement_without_tools_is_remembered(self, post) -> None:
+        post.side_effect = [{"id": "resp_1", "output": [_answer("검은색을 좋아하시는군요.")]}]
+        result = self.app.agent.message(self.user_id, self.session(), "검은색 좋아")
+        saved = [(row["attribute_type"], row["attribute"], row["direction"]) for row in result["preferences_saved"]]
+        self.assertEqual(saved, [("color", "black", "more")])
+        self.assertIn("black", [row["attribute"] for row in self.app.database.list_preferences(self.user_id)])
+
+    @patch("shopping_agent.v1.tool_agent._post_json")
+    def test_question_about_a_product_saves_no_preference(self, post) -> None:
+        product_id = str(self.app.tools.tactile.index.asins[0])
+        post.side_effect = [
+            {"id": "resp_1", "output": [_call("get_product_detail", {"product_id": product_id})]},
+            {"id": "resp_2", "output": [_answer("부드러운 편이에요.")]},
+        ]
+        result = self.app.agent.message(self.user_id, self.session(), "1번 부드러워?")
+        self.assertEqual(result["preferences_saved"], [])
+
+    @patch("shopping_agent.v1.tool_agent._post_json")
     def test_remote_failure_falls_back_to_local_router(self, post) -> None:
         post.side_effect = RuntimeError("LLM API request failed: timeout")
         result = self.app.agent.message(self.user_id, self.session(), "부드러운 바지 찾아줘")

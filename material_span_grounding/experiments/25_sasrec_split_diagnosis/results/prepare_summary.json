@@ -1,0 +1,31 @@
+{
+  "events": 2474375,
+  "users": 2035490,
+  "items_catalog": 825869,
+  "items_recommendable": 483779,
+  "events_on_recommendable": 1311244,
+  "loo_counts": [
+    157490,
+    281395,
+    2035490
+  ],
+  "tsp_counts": [
+    2171166,
+    194798,
+    108411
+  ],
+  "tsp_ranges": {
+    "train": {
+      "min_ts": 1020736288000,
+      "max_ts": 1628643368841
+    },
+    "valid": {
+      "min_ts": 1628643447242,
+      "max_ts": 1658002369126
+    },
+    "test": {
+      "min_ts": 1658002830672,
+      "max_ts": 1694402678515
+    }
+  }
+}

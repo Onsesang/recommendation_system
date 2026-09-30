@@ -1,0 +1,37 @@
+--protocol loo --data all --loss bce --tag loo-all-bce-s20260917
+--protocol tsp --data all --loss bce --tag tsp-all-bce-s20260917
+--protocol uh --data all --loss bce --tag uh-all-bce-s20260917
+--protocol loo --data rec --loss bce --tag loo-rec-bce-s20260917
+--protocol tsp --data rec --loss bce --tag tsp-rec-bce-s20260917
+--protocol uh --data rec --loss bce --tag uh-rec-bce-s20260917
+--protocol loo --data all --loss ce --tag loo-all-ce-s20260917
+--protocol tsp --data all --loss ce --tag tsp-all-ce-s20260917
+--protocol uh --data all --loss ce --tag uh-all-ce-s20260917
+--protocol loo --data rec --loss ce --tag loo-rec-ce-s20260917
+--protocol tsp --data rec --loss ce --tag tsp-rec-ce-s20260917
+--protocol uh --data rec --loss ce --tag uh-rec-ce-s20260917
+--protocol loo --data all --loss bce --lr 3e-4 --tag loo-all-bce-lr3e-4-s20260917
+--protocol loo --data all --loss bce --seed 1 --tag loo-all-bce-s1
+--protocol tsp --data all --loss bce --seed 1 --tag tsp-all-bce-s1
+--protocol uh --data all --loss bce --seed 1 --tag uh-all-bce-s1
+--protocol loo --data rec --loss bce --seed 1 --tag loo-rec-bce-s1
+--protocol tsp --data rec --loss bce --seed 1 --tag tsp-rec-bce-s1
+--protocol uh --data rec --loss bce --seed 1 --tag uh-rec-bce-s1
+--protocol loo --data all --loss ce --seed 1 --tag loo-all-ce-s1
+--protocol tsp --data all --loss ce --seed 1 --tag tsp-all-ce-s1
+--protocol uh --data all --loss ce --seed 1 --tag uh-all-ce-s1
+--protocol loo --data rec --loss ce --seed 1 --tag loo-rec-ce-s1
+--protocol tsp --data rec --loss ce --seed 1 --tag tsp-rec-ce-s1
+--protocol uh --data rec --loss ce --seed 1 --tag uh-rec-ce-s1
+--protocol loo --data all --loss bce --seed 2 --tag loo-all-bce-s2
+--protocol tsp --data all --loss bce --seed 2 --tag tsp-all-bce-s2
+--protocol uh --data all --loss bce --seed 2 --tag uh-all-bce-s2
+--protocol loo --data rec --loss bce --seed 2 --tag loo-rec-bce-s2
+--protocol tsp --data rec --loss bce --seed 2 --tag tsp-rec-bce-s2
+--protocol uh --data rec --loss bce --seed 2 --tag uh-rec-bce-s2
+--protocol loo --data all --loss ce --seed 2 --tag loo-all-ce-s2
+--protocol tsp --data all --loss ce --seed 2 --tag tsp-all-ce-s2
+--protocol uh --data all --loss ce --seed 2 --tag uh-all-ce-s2
+--protocol loo --data rec --loss ce --seed 2 --tag loo-rec-ce-s2
+--protocol tsp --data rec --loss ce --seed 2 --tag tsp-rec-ce-s2
+--protocol uh --data rec --loss ce --seed 2 --tag uh-rec-ce-s2

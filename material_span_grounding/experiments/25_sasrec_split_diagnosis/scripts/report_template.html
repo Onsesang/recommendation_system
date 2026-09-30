@@ -1,0 +1,265 @@
+<title>SASRec 후보 검색 진단</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#f5f7f9;--surface:#ffffff;--ink:#16202c;--ink-2:#45505f;--muted:#737e8c;--line:#dce2e8;--line-2:#eef1f4;
+  --accent:#1c5d86;--accent-soft:#e3eef6;--note-bg:#fbf3e4;--note-ink:#6f4a0c;
+  --s1:#2a78d6;--s2:#eb6834;--train:#8d97a5;
+  --sans:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;
+  --bg:#0f141a;--surface:#161d25;--ink:#e5e9ef;--ink-2:#b3bcc8;--muted:#8a95a4;--line:#2a3440;--line-2:#1d252f;
+  --accent:#86bde3;--accent-soft:#1a2c3b;--note-bg:#2a2214;--note-ink:#e9c98a;--s1:#3987e5;--s2:#d95926;--train:#6e7988;}}
+:root[data-theme="dark"]{color-scheme:dark;
+  --bg:#0f141a;--surface:#161d25;--ink:#e5e9ef;--ink-2:#b3bcc8;--muted:#8a95a4;--line:#2a3440;--line-2:#1d252f;
+  --accent:#86bde3;--accent-soft:#1a2c3b;--note-bg:#2a2214;--note-ink:#e9c98a;--s1:#3987e5;--s2:#d95926;--train:#6e7988;}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15.5px;line-height:1.7;margin:0}
+.wrap{max-width:980px;margin:0 auto;padding:40px 20px 80px;display:flex;flex-direction:column;gap:44px}
+header{display:flex;flex-direction:column;gap:10px;border-bottom:1px solid var(--line);padding-bottom:26px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:30px;line-height:1.3;margin:0;font-weight:700;text-wrap:balance}
+h2{font-size:21px;margin:0;font-weight:700;text-wrap:balance}
+h3{font-size:16px;margin:0;font-weight:600}
+.lede{color:var(--ink-2);max-width:68ch;margin:0}
+.meta{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+section{display:flex;flex-direction:column;gap:14px}
+section>p,li{max-width:74ch}
+p{margin:0}
+.q{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+.answer{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:22px 24px;display:flex;flex-direction:column;gap:12px}
+.answer ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:9px}
+.answer li b{color:var(--ink)}
+.note{background:var(--note-bg);color:var(--note-ink);border-radius:8px;padding:12px 16px;font-size:14.5px}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{padding:9px 12px;border-bottom:1px solid var(--line-2);text-align:left;vertical-align:top}
+th{font-weight:600;color:var(--ink-2);background:var(--line-2);font-size:12.5px;line-height:1.4}
+table.num td:not(:first-child),table.num th:not(:first-child){text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+.sub{color:var(--muted);font-size:12px;font-family:var(--sans)}
+.sd{color:var(--muted);font-size:11.5px}
+.factors{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+.factor{display:grid;grid-template-columns:90px 1fr;gap:18px;padding:16px 0;border-bottom:1px solid var(--line)}
+.impact{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;padding-top:3px}
+.impact.hi{color:var(--s2)}.impact.mid{color:var(--accent)}.impact.lo{color:var(--muted)}
+.factor p{color:var(--ink-2)}
+.factor h3{margin-bottom:4px}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 18px 12px;display:flex;flex-direction:column;gap:10px}
+.fig svg{display:block;width:100%;height:auto}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:11px;height:11px;border-radius:50%;display:inline-block}
+.cap{font-size:13px;color:var(--muted)}
+.cuts{overflow-x:auto}
+.cuts svg{min-width:720px}
+#tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--bg);font-size:12.5px;padding:7px 10px;border-radius:6px;line-height:1.5;font-family:var(--sans)}
+.bar:hover,.bar:focus{opacity:.8;outline:none}
+code{font-family:var(--mono);font-size:13px;background:var(--line-2);padding:1px 5px;border-radius:4px}
+ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+@media (max-width:560px){h1{font-size:24px}.factor{grid-template-columns:1fr;gap:4px}.wrap{padding-top:28px}}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Experiment 25 · Amazon_Fashion 2023 · SASRec</div>
+  <h1>SASRec 첫 후보 검색은 왜 인기도 수준에 머무르는가</h1>
+  <p class="lede">정답을 추천 가능한 옷으로 제한하고, 데이터를 자르는 세 가지 방식으로 SASRec을 다시 학습해 측정했습니다. 설정마다 시드 {{N_SEEDS}}개를 돌렸고, 모든 순위는 전체 상품을 대상으로 매겼습니다(full ranking). 이미 본 상품은 제외했습니다.</p>
+  <div class="meta">2026-09-30 · experiments/25_sasrec_split_diagnosis · RTX 3060</div>
+</header>
+
+<section>
+  <div class="answer">
+    <h2>결론</h2>
+    <ol>
+      <li><b>코드 버그가 아니라 데이터 구조의 문제입니다.</b> 같은 SASRec 코드를 MovieLens-1M에서 돌리면 논문 수치가 그대로 재현됩니다(HR@10 {{ML_S_HR}}, 논문 0.8245). Amazon_Fashion에서는 test 정답의 {{COLD_LOO}}가 학습에서 한 번도 학습되지 않는 상품입니다. ID 기반 모델은 이런 상품을 원리상 후보에 올릴 수 없고, 실제로 cold 정답의 Recall@500은 모든 설정에서 0입니다.</li>
+      <li><b>정답을 추천 가능 상품으로 제한해도 거의 변하지 않습니다.</b> last_out 기준 Recall@500은 {{V1_R500}}에서 {{REC_R500}}로 조금 오를 뿐입니다. 추천 불가 정답(38.5%)은 평가 기준을 서비스에 맞추는 문제이지, 성능 병목은 아닙니다.</li>
+      <li><b>세로(시점 기준)나 가로(사용자 분할)로 자르면 Recall@500이 5~6%로 오르지만, 어느 방식에서도 SASRec 후보는 인기도 목록보다 낫지 않습니다.</b> last_out에서는 3개 시드 중 2개에서 인기도보다 유의하게 낮았고, 나머지 설정에서는 차이가 없었습니다. 자르는 방식은 warm 정답 비율과 평가의 현실성을 바꿀 뿐이고, 모델이 개인화된 후보를 찾게 해주지는 않습니다.</li>
+      <li><b>기존 학습 레시피에도 손해가 있었습니다.</b> validation 성능이 epoch 1~4에서 최고점을 찍고 떨어지는데, 5 epoch마다 검증하면 이 최고점을 놓칩니다. 매 epoch 검증으로 바꾸자 test NDCG@10이 {{V5_NDCG}}에서 {{V1_NDCG}}로 올랐습니다.</li>
+      <li><b>개선 여지는 콘텐츠 기반 후보에 있습니다.</b> 이미지 특징 kNN은 cold 정답도 {{KNN_COLD}} 찾아냅니다. SASRec 250개와 이미지 kNN 250개를 합치면, 후보 수는 똑같이 500개인데 recall이 {{SAS_LOO}}에서 {{UNION_LOO}}로 오릅니다.</li>
+    </ol>
+  </div>
+</section>
+
+<section id="cuts">
+  <h2>교수님 질문: 가로로 자를까, 세로로 자를까</h2>
+  <p>사용자를 행, 시간을 열로 놓은 표로 보면 차이가 분명합니다. 현재 실험(exp16·17·24)은 <b>행마다 따로 자르는 last_out</b>입니다. 세로로 자르면 모든 사용자를 같은 시점에서 자르고(공식 timestamp split, t1 = 2021-08-11, t2 = 2022-07-16), 가로로 자르면 사용자 자체를 학습용과 평가용으로 나눕니다. 교수님이 말씀하신 가로·세로가 이 해석과 같은지 한 번 확인해 주세요.</p>
+  <div class="fig">
+    <div class="cuts"><svg id="cutsvg" viewBox="0 0 960 300" role="img" aria-label="세 가지 데이터 분할 방식 도식"></svg></div>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--train)"></i>학습</span>
+      <span><i class="sw" style="background:var(--s2)"></i>검증 정답</span>
+      <span><i class="sw" style="background:var(--s1)"></i>테스트 정답</span>
+      <span><i class="sw" style="border:2px solid var(--train);width:10px;height:10px"></i>평가 때 입력으로만 쓰는 이력</span>
+    </div>
+  </div>
+  {{SPLIT_TABLE}}
+  <p class="cap">학습 쌍 = SASRec이 실제로 배우는 (이전 상품 → 다음 상품) 쌍의 수. warm 정답 = 정답 상품이 학습 쌍에 한 번 이상 등장해 embedding이 학습된 경우.</p>
+  <ul class="plain">
+    <li><b>last_out</b>은 리뷰가 1개뿐인 사용자 175만 명의 리뷰를 전부 test로 보냅니다. 그래서 전체 2,474,375건 중 6.4%만 학습에 쓰입니다. 또 test 사용자마다 자기 정답보다 늦은 시점의 학습 이벤트가 평균 {{LEAK}} 섞여 있어, 미래 정보가 새는 쪽(낙관적)으로 편향됩니다.</li>
+    <li><b>세로(timestamp)</b>는 미래 정보가 새지 않아 실제 서비스 상황에 가장 가깝습니다. 학습 이벤트는 14배로 늘어나지만 대부분 1건짜리 사용자여서, 학습 쌍은 4.7배만 늘어납니다. 대신 t2 이전 이력이 3개 이상이면서 t2 이후에도 구매한 사용자만 평가할 수 있어서 평가 사용자가 2,446명으로 줄고, 신뢰구간이 넓어집니다.</li>
+    <li><b>가로(user holdout)</b>는 warm 정답 비율이 2배(51%)로 가장 높습니다. 하지만 학습 사용자의 미래 행동이 그대로 학습에 들어가므로, last_out과 같은 누수가 있습니다.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>정답을 추천 가능 상품으로 제한한 결과</h2>
+  <p>last_out에서 test 정답의 38.5%는 액세서리·신발·가방처럼 에이전트가 추천하지 않는 상품이었습니다. 이 정답을 빼고, 순위도 추천 가능 상품 483,779개 안에서만 매겼습니다(recommendable_fashion_v1 기준).</p>
+  {{SCOPE_TABLE}}
+  <p>세 번째 줄은 평가 사용자 집단이 달라서(비의류 이력을 지우면 이력 3개 이상 사용자가 줄어듦) 그대로 비교할 수 없습니다. 같은 사용자 {{SAME_N}}명으로 맞추면 전체 학습 {{SAME_ALL}}, 추천 가능만 학습 {{SAME_REC}}, 인기도 {{SAME_POP}}로 차이가 작습니다. 학습 범위는 결과를 거의 바꾸지 않으므로, 이력 정보를 버리지 않는 <b>전체 데이터 학습 + 추천 가능 상품 평가</b>를 기본으로 권합니다. 아래 표부터는 모두 이 평가 기준(정답·후보 모두 추천 가능 상품)입니다.</p>
+</section>
+
+<section>
+  <h2>세 가지 split × 두 가지 학습 범위</h2>
+  <div class="fig">
+    <h3>Recall@500 (첫 후보 500개에 정답이 들어간 비율)</h3>
+    <div class="legend"><span><i class="sw" style="background:var(--s1)"></i>SASRec (시드 평균)</span><span><i class="sw" style="background:var(--s2)"></i>인기도 목록</span></div>
+    <svg id="barsvg" viewBox="0 0 760 330" role="img" aria-label="설정별 SASRec과 인기도의 Recall@500 막대 그래프"></svg>
+    <p class="cap">막대에 마우스를 올리면 값과 평가 사용자 수가 보입니다. 같은 값은 아래 표에 있습니다.</p>
+  </div>
+  {{MAIN_TABLE}}
+  <p class="cap">± 는 시드 간 표준편차. 95% CI는 첫 시드에서 사용자 단위 paired bootstrap(1,000회)으로 구한 SASRec − 인기도 Recall@500 차이입니다. 인기도는 학습 데이터에서 많이 등장한 순서의 고정 목록이며, 시드와 무관합니다.</p>
+</section>
+
+<section>
+  <h2>성능을 떨어뜨리는 요인</h2>
+  <div class="factors">
+    <div class="factor"><div class="impact hi">결정적</div><div>
+      <h3>극단적으로 희소한 데이터</h3>
+      <p>사용자 2,035,490명 중 86.2%는 리뷰가 1개뿐이고, 상품 825,869개 중 59.8%도 리뷰가 1개뿐입니다. SASRec 논문들이 쓰는 5-core로 거르면 <b>이벤트가 0건</b>이 되고, 3-core로 걸러도 12,490건(사용자 2,223명)만 남습니다. 공식 벤치마크에 Amazon_Fashion 5-core가 없는 것도 이 때문입니다. 다음 상품 예측을 배울 쌍이 last_out 기준 80,735개뿐입니다.</p>
+    </div></div>
+    <div class="factor"><div class="impact hi">결정적</div><div>
+      <h3>정답의 대부분이 학습되지 않은 상품 (cold item)</h3>
+      <p>last_out test 정답의 {{COLD_LOO}}는 학습 쌍에 한 번도 나오지 않은 상품입니다(학습 등장 0회만 따져도 {{TC0}}). 이 상품들의 embedding은 초기값 그대로라서, cold 정답의 Recall@500은 모든 설정·시드에서 0.00%입니다. 반대로 warm 정답만 보면 SASRec Recall@500은 11~26%입니다. 전체 점수가 낮은 이유는 이 비율로 거의 다 설명됩니다.</p>
+    </div></div>
+    <div class="factor"><div class="impact hi">큼</div><div>
+      <h3>모델이 인기도 목록으로 수렴</h3>
+      <p>SASRec top-500의 {{OVERLAP}}(last_out), {{OVERLAP_UH}}(user holdout)가 인기도 top-500과 겹칩니다. 사용자 이력이 짧고(test 사용자 중앙값 3개) 학습 쌍이 적으면, 모델은 "많이 팔린 것"을 넘어서는 신호를 거의 배우지 못합니다. 이력이 길수록 나아지는지는 아래 표에서 볼 수 있습니다.</p>
+      {{HIST_TABLE}}
+    </div></div>
+    <div class="factor"><div class="impact mid">중간</div><div>
+      <h3>검증 주기와 조기 과적합</h3>
+      <p>validation NDCG@10은 epoch 1~4에서 최고점을 찍고 계속 떨어집니다. exp24 레시피(5 epoch마다 검증)로 학습하면 test NDCG@10 {{V5_NDCG}}, Recall@500 {{V5_R500}}입니다. 매 epoch 검증으로 바꾸면 각각 {{V1_NDCG}}, {{V1_R500}}로 오릅니다. 학습률을 3e-4로 낮추면 최고점이 epoch {{LR3_EPOCH}}로 늦어지고, test NDCG@10 {{LR3_NDCG}}, Recall@500 {{LR3_R500}}입니다.</p>
+    </div></div>
+    <div class="factor"><div class="impact mid">중간</div><div>
+      <h3>평가 정답 범위 (추천 불가 상품 38.5%)</h3>
+      <p>숫자의 의미를 바꾸지만 병목은 아닙니다. 제한 전후 차이는 Recall@500 {{SCOPE_DIFF}}입니다. 그래도 서비스와 맞는 기준이므로 앞으로는 제한된 기준으로 보고해야 합니다.</p>
+    </div></div>
+    <div class="factor"><div class="impact mid">중간</div><div>
+      <h3>카테고리 이동</h3>
+      <p>last_out 정답의 {{CAT_SHIFT}}는 사용자 이력에 한 번도 없던 카테고리입니다(예: 상의만 사던 사용자가 드레스를 삼). 짧은 이력만으로는 이런 이동을 예측할 근거가 없습니다.</p>
+    </div></div>
+    <div class="factor"><div class="impact lo">작음</div><div>
+      <h3>손실 함수 (BCE → sampled softmax CE)</h3>
+      <p>최근 연구에서 SASRec을 크게 개선한 CE 손실(음성 4,096개)로 바꿔 봤습니다. Recall@500은 user holdout·전체 학습에서만 약 0.5%p 올랐고, NDCG@10은 대부분 떨어졌으며, 시드 간 편차가 크게 커졌습니다. 학습 신호 자체가 부족해서 손실 함수로는 해결되지 않습니다.</p>
+      {{LOSS_TABLE}}
+    </div></div>
+    <div class="factor"><div class="impact lo">작음</div><div>
+      <h3>같은 상품의 재등록</h3>
+      <p>cold 정답 중 학습된 다른 상품과 제목이 완전히 같은 경우는 {{RELIST}}뿐입니다. 판매자가 같은 옷을 다른 ASIN으로 다시 올린 경우를 합쳐도 상한이 거의 오르지 않습니다.</p>
+    </div></div>
+  </div>
+</section>
+
+<section>
+  <h2>SASRec 구현 검증</h2>
+  <ul class="plain">
+    <li><b>MovieLens-1M</b>(사용자 6,040명, 이벤트 100만 건)에서 논문과 같은 설정으로 학습했습니다. negative 100개 샘플링 평가에서 HR@10 {{ML_S_HR}} / NDCG@10 {{ML_S_NDCG}}로, 논문 수치(0.8245 / 0.5905)와 일치합니다. full ranking에서는 HR@10 {{ML_FULL_HR}} / NDCG@10 {{ML_FULL_NDCG}}로, 공개된 재현 연구(NDCG@10 약 0.13)와 같은 범위입니다.</li>
+    <li><b>exp24 재현</b>: 같은 last_out·전체 카탈로그 조건에서 인기도 NDCG@10 0.00281은 exp17b와 소수 다섯째 자리까지 같습니다. SASRec NDCG@10 {{V1_NDCG}}도 exp24 R0(0.00349)와 비슷합니다.</li>
+    <li>평가에 쓴 이력에 정답이 섞인 경우는 없습니다(Amazon 공식 파일이 사용자–상품 중복을 이미 제거함). 순위는 exp17b와 같이 동점일 때 iid가 작은 쪽을 앞에 둡니다.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>다음 단계 제안</h2>
+  <div class="note">첫 후보 단계에 SASRec 하나만 쓰는 구조로는 cold 정답을 찾을 수 없습니다. 후보 생성에 콘텐츠를 넣어야 합니다.</div>
+  {{UNION_TABLE}}
+  <p class="cap">학습 없이 사용자 이력 이미지(exp16 SMORE 512차원)의 평균과 코사인 유사도로 순위를 매긴 결과입니다. 합집합도 후보 수는 500개로 같습니다.</p>
+  <ol>
+    <li><b>평가 프로토콜</b>: 교수님 의도가 세로 자르기라면 공식 timestamp split을 주 평가로 쓰는 것을 권합니다. 누수가 없고 서비스 상황과 같습니다. 평가 사용자가 적으므로 시드 반복과 신뢰구간을 같이 보고해야 합니다.</li>
+    <li><b>후보 생성</b>: SASRec(또는 인기도) 후보와 이미지·텍스트 kNN 후보를 합치고, 그 위에서 촉감 재정렬을 평가합니다. 합집합만으로 last_out 후보 recall이 {{UNION_GAIN}} 오르고, user holdout에서도 {{UNION_GAIN_UH}} 오릅니다. timestamp에서는 이미지 kNN이 약해 효과가 거의 없으므로, 텍스트 특징 등 다른 콘텐츠 신호도 함께 봐야 합니다.</li>
+    <li><b>콘텐츠 기반 순차 모델</b>: 상품 ID embedding 대신 이미지·텍스트 특징으로 상품을 표현하는 모델(예: UniSRec, 이미지 인코더를 쓰는 SASRec)을 쓰면 cold 상품도 점수를 받을 수 있습니다.</li>
+    <li><b>보고 방식</b>: 전체 점수와 함께 warm / cold 정답을 나눠서 보고해야, 촉감 정보가 어느 쪽에 기여하는지 드러납니다.</li>
+  </ol>
+</section>
+
+<section>
+  <h2>재현</h2>
+  <ul class="plain">
+    <li><code>scripts/prepare.py</code> 두 공식 split(last_out, timestamp)을 한 이벤트 표로 합칩니다. timestamp CSV는 <code>data/amazon_fashion_0core_timestamp/</code>에 있고, 같은 HF revision이며 SHA256을 기록해 두었습니다.</li>
+    <li><code>scripts/protocols.py</code> 세 가지 자르기 × 두 가지 데이터 범위 · <code>scripts/train25.py</code> 학습·평가 · <code>scripts/run_queue.sh logs/queue1.txt</code> 전체 실행</li>
+    <li><code>split_stats.py</code>, <code>factor_stats.py</code>, <code>content_knn.py</code>, <code>union_candidates.py</code>, <code>sanity_ml1m.py</code>, <code>summarize.py</code>, <code>make_report.py</code></li>
+  </ul>
+</section>
+</div>
+<div id="tip" hidden></div>
+
+<script>
+(function(){
+const NS="http://www.w3.org/2000/svg";
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;parent.appendChild(e);return e;}
+const tip=document.getElementById("tip");
+function showTip(ev,html){tip.innerHTML=html;tip.hidden=false;const x=Math.min(ev.clientX+14,window.innerWidth-tip.offsetWidth-8);tip.style.left=x+"px";tip.style.top=(ev.clientY+14)+"px";}
+function hideTip(){tip.hidden=true;}
+
+// ---- split diagram
+const rows=[[10,35,60,88],[20,72],[55],[5,30,45,80,95],[15,50,66,78],[40,62,90]];
+const T1=58,T2=76;
+const svg=document.getElementById("cutsvg");
+const panels=[{x:10,title:"현재: 사용자마다 마지막을 떼기",sub:"last_out"},{x:330,title:"세로로 자르기: 같은 시점",sub:"timestamp (t1, t2)"},{x:650,title:"가로로 자르기: 사용자 나누기",sub:"user holdout"}];
+const W=280,top=64,rowH=36;
+panels.forEach((p,pi)=>{
+  el("text",{x:p.x,y:22,fill:"var(--ink)","font-size":"14","font-weight":"600","font-family":"var(--sans)"},svg,p.title);
+  el("text",{x:p.x,y:42,fill:"var(--muted)","font-size":"12","font-family":"var(--mono)"},svg,p.sub);
+  rows.forEach((r,ri)=>{
+    const y=top+ri*rowH;
+    el("line",{x1:p.x,x2:p.x+W,y1:y,y2:y,stroke:"var(--line)","stroke-width":"1"},svg);
+    el("text",{x:p.x-2,y:y-8,fill:"var(--muted)","font-size":"10","font-family":"var(--mono)"},svg,"u"+(ri+1));
+    r.forEach((t,ti)=>{
+      let role="train";
+      if(pi===0){ if(ti===r.length-1) role="test"; else if(ti===r.length-2) role="val"; }
+      if(pi===1){ role = t>=T2 ? "test" : (t>=T1 ? "val" : "train"); }
+      if(pi===2){ if(ri===4) role = ti===r.length-1 ? "val" : "input"; if(ri===5) role = ti===r.length-1 ? "test" : "input"; }
+      const cx=p.x+t/100*W;
+      const fill={train:"var(--train)",val:"var(--s2)",test:"var(--s1)",input:"var(--surface)"}[role];
+      el("circle",{cx:cx,cy:y,r:7,fill:fill,stroke:role==="input"?"var(--train)":"var(--surface)","stroke-width":2},svg);
+    });
+  });
+  const bottom=top+(rows.length-1)*rowH+18;
+  el("text",{x:p.x+W,y:bottom+8,fill:"var(--muted)","font-size":"11","text-anchor":"end","font-family":"var(--sans)"},svg,"시간 →");
+  if(pi===1){
+    [[T1,"t1"],[T2,"t2"]].forEach(([t,l])=>{const x=p.x+t/100*W-10;el("line",{x1:x,x2:x,y1:top-16,y2:bottom,stroke:"var(--ink-2)","stroke-width":"1.5","stroke-dasharray":"4 3"},svg);el("text",{x:x,y:top-20,fill:"var(--ink-2)","font-size":"11","text-anchor":"middle","font-family":"var(--mono)"},svg,l);});
+  }
+  if(pi===2){
+    const y=top+3.5*rowH;el("line",{x1:p.x-6,x2:p.x+W,y1:y,y2:y,stroke:"var(--ink-2)","stroke-width":"1.5","stroke-dasharray":"4 3"},svg);
+    el("text",{x:p.x,y:bottom+8,fill:"var(--muted)","font-size":"11","font-family":"var(--sans)"},svg,"점선 위: 학습 사용자 / 아래: 평가 사용자");
+  }
+  if(pi===0){ el("text",{x:p.x,y:bottom+8,fill:"var(--muted)","font-size":"11","font-family":"var(--sans)"},svg,"u3처럼 리뷰 1개면 학습에 안 쓰임"); }
+});
+
+// ---- bar chart
+const data={{CHART_DATA}};
+const b=document.getElementById("barsvg");
+const L=190,R=740,T=10,rowG=52,barH=16,max=0.08;
+const x=v=>L+(v/max)*(R-L);
+[0,0.02,0.04,0.06,0.08].forEach(v=>{
+  el("line",{x1:x(v),x2:x(v),y1:T,y2:T+data.length*rowG,stroke:"var(--line)","stroke-width":1},b);
+  el("text",{x:x(v),y:T+data.length*rowG+16,fill:"var(--muted)","font-size":"11","text-anchor":"middle","font-family":"var(--mono)"},b,(v*100).toFixed(0)+"%");
+});
+data.forEach((d,i)=>{
+  const y0=T+i*rowG+8;
+  el("text",{x:L-10,y:y0+barH+2,fill:"var(--ink-2)","font-size":"12","text-anchor":"end","font-family":"var(--sans)"},b,d.label);
+  [["sasrec","var(--s1)","SASRec"],["pop","var(--s2)","인기도"]].forEach(([k,c,name],j)=>{
+    const y=y0+j*(barH+2), w=Math.max(x(d[k])-L,1);
+    const r=el("path",{d:`M${L},${y} h${w-4} a4,4 0 0 1 4,4 v${barH-8} a4,4 0 0 1 -4,4 h-${w-4} z`,fill:c,class:"bar",tabindex:0},b);
+    const html=`<b>${d.label}</b><br>${name} Recall@500: ${(d[k]*100).toFixed(2)}%<br>평가 사용자 ${d.users.toLocaleString()}명`;
+    r.addEventListener("mousemove",ev=>showTip(ev,html));r.addEventListener("mouseleave",hideTip);
+    r.addEventListener("focus",()=>{const bb=r.getBoundingClientRect();showTip({clientX:bb.right,clientY:bb.top},html);});r.addEventListener("blur",hideTip);
+    if(j===0) el("text",{x:L+w+6,y:y+barH-4,fill:"var(--ink-2)","font-size":"11","font-family":"var(--mono)"},b,(d[k]*100).toFixed(2)+"%");
+  });
+});
+})();
+</script>

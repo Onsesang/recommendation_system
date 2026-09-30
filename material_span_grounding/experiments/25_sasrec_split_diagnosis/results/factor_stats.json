@@ -1,0 +1,111 @@
+{
+  "catalog": {
+    "items": 825869,
+    "items_sharing_title_with_another": 0.10418359328174323,
+    "distinct_titles": 768790
+  },
+  "loo-all": {
+    "users": 29991,
+    "target_cold": 0.7551598812977226,
+    "cold_target_with_warm_same_title": 0.02100630189056717,
+    "warm_ceiling_if_relistings_merged": 0.2658464205928445,
+    "target_train_count_share": {
+      "0": 0.7151145343603081,
+      "1": 0.1150011670167717,
+      "2-4": 0.086926077823347,
+      "5-19": 0.06115167883698443,
+      "20+": 0.021806541962588778
+    },
+    "target_category_in_history": 0.6094161581807875,
+    "target_recommendable": 0.6150511820212731,
+    "train_events_after_target_mean_share": 0.2509199804198038,
+    "users_with_any_train_event_after_target": 1.0
+  },
+  "tsp-all": {
+    "users": 2446,
+    "target_cold": 0.7256745707277187,
+    "cold_target_with_warm_same_title": 0.02616516762060507,
+    "warm_ceiling_if_relistings_merged": 0.3004905968928863,
+    "target_train_count_share": {
+      "0": 0.6267375306623058,
+      "1": 0.09484873262469337,
+      "2-4": 0.08135731807031889,
+      "5-19": 0.06704824202780049,
+      "20+": 0.13000817661488143
+    },
+    "target_category_in_history": 0.6034341782502044,
+    "target_recommendable": 0.6279640228945217
+  },
+  "uh-all": {
+    "users": 8997,
+    "target_cold": 0.4859397576970101,
+    "cold_target_with_warm_same_title": 0.035233966877848175,
+    "warm_ceiling_if_relistings_merged": 0.549294209180838,
+    "target_train_count_share": {
+      "0": 0.32221851728353895,
+      "1": 0.13371123707902635,
+      "2-4": 0.1721685006113149,
+      "5-19": 0.19039679893297765,
+      "20+": 0.18150494609314216
+    },
+    "target_category_in_history": 0.6054240302322996,
+    "target_recommendable": 0.614649327553629
+  },
+  "loo-rec": {
+    "users": 9804,
+    "target_cold": 0.8000815993472052,
+    "cold_target_with_warm_same_title": 0.023663810689514484,
+    "warm_ceiling_if_relistings_merged": 0.22358221134230927,
+    "target_train_count_share": {
+      "0": 0.7545899632802937,
+      "1": 0.1124031007751938,
+      "2-4": 0.0740514075887393,
+      "5-19": 0.04589963280293757,
+      "20+": 0.013055895552835577
+    },
+    "target_category_in_history": 0.6684006527947777,
+    "target_recommendable": 1.0,
+    "train_events_after_target_mean_share": 0.22605273274265644,
+    "users_with_any_train_event_after_target": 1.0
+  },
+  "tsp-rec": {
+    "users": 988,
+    "target_cold": 0.7945344129554656,
+    "cold_target_with_warm_same_title": 0.025303643724696356,
+    "warm_ceiling_if_relistings_merged": 0.23076923076923078,
+    "target_train_count_share": {
+      "0": 0.687246963562753,
+      "1": 0.10222672064777327,
+      "2-4": 0.06477732793522267,
+      "5-19": 0.0597165991902834,
+      "20+": 0.0860323886639676
+    },
+    "target_category_in_history": 0.652834008097166,
+    "target_recommendable": 1.0
+  },
+  "uh-rec": {
+    "users": 3545,
+    "target_cold": 0.5754583921015515,
+    "cold_target_with_warm_same_title": 0.04033850493653032,
+    "warm_ceiling_if_relistings_merged": 0.4648801128349788,
+    "target_train_count_share": {
+      "0": 0.37179125528913964,
+      "1": 0.1548660084626234,
+      "2-4": 0.1757404795486601,
+      "5-19": 0.17404795486600846,
+      "20+": 0.1235543018335684
+    },
+    "target_category_in_history": 0.6722143864598026,
+    "target_recommendable": 1.0
+  },
+  "5core-all": {
+    "events": 0,
+    "users": 0,
+    "items": 0
+  },
+  "5core-rec": {
+    "events": 0,
+    "users": 0,
+    "items": 0
+  }
+}
